@@ -1,17 +1,27 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './profile.css';
 
 function Profile() {
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+    navigate('/'); // ← Переход на главную
+  };
+  const handleGoWishlist = () => {
+    navigate('/wishlist'); // ← Переход на главную
+  };
+
   return (
-    <div className="overlay2">
-      <div className="card2">
+    <div className="overlay_profile">
+      <div className="card_profile">
         <h1>МОЙ ПРОФИЛЬ</h1>
 
         {/* Контейнер для двух колонок */}
         <div className="profile-content">
           
           <div className="column personal-data">
-            <h3>ЛИЧНЫЕ ДАННЫЕ</h3>
+            <h3 >ЛИЧНЫЕ ДАННЫЕ</h3>
             <form>
               <div className="input-readonly">
                 <span className="value">Иван Иванов</span>
@@ -23,15 +33,15 @@ function Profile() {
 
                 <button type="button" className="sec">
               
-                ИЗМЕНИТЬ ДАННЫЕ
+                Изменить данные
               </button>
 
-             <button type="button" className="prim">
-                ВИШЛИСТ
+             <button type="button" className="prim" onClick={handleGoWishlist}>
+                Мой вишлист
               </button>
 
-              <button type="button" className="sec">
-                НА ГЛАВНУЮ
+              <button type="button" className="sec" onClick={handleGoHome}>
+                На главную
               </button>
             </form>
           </div>
@@ -56,6 +66,10 @@ function Profile() {
               <button type="button" className="game-item">Команда 7</button>
               <button type="button" className="game-item">Команда 8</button> 
             </div>
+            <button type="button" className="sec">
+              
+                Создать новую игру
+            </button>
           </div>
 
         </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './home.css';
 
 function Home() {
@@ -7,6 +8,31 @@ function Home() {
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  const navigate = useNavigate();
+
+  const handleGoProfile = () => {
+    navigate('/profile'); // ← Переход на главную
+  };
+
+  const handleGoRegistration = () => {
+    navigate('/registration'); // ← Переход на главную
+  };
+
+  const handleGoWishlist = () => {
+    navigate('/wishlist'); // ← Переход на главную
+  };
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',  // Плавная прокрутка
+        block: 'start'       // Прокрутить к началу элемента
+      });
+    }
+  };
+
 
   const faqData = [
     { question: "Как долго длится игра?", answer: "Стандартно: 2–3 недели (от заполнения вишлистов до доставки). Даты задаёт организатор при создании." },
@@ -29,15 +55,15 @@ function Home() {
       {/* HEADER */}
       <header className="header">
         <nav>
-          <a href="#profile">Профиль</a>
-          <a href="#wishlist">Вишлист</a>
+          <a href="#profile" onClick={handleGoProfile}>Профиль</a>
+          <a href="#wishlist" onClick={handleGoWishlist}>Вишлист</a>
           <a href="#" className="logo">
             <img src="/sdek-logo.png" alt="СДЭК" className="logo-img" 
                  onError={(e) => {e.target.style.display='none'; e.target.nextSibling.style.display='inline'}} />
             <span style={{color: '#44E858', fontWeight: 'bold', fontSize: '24px', display: 'none'}}>СДЭК</span>
           </a>
-          <a href="#rules">Правила</a>
-          <a href="#faq">Вопросы</a>
+          <a href="#rules" onClick={() => scrollToSection('rules')}>Правила</a>
+          <a href="#faq" onClick={() => scrollToSection('faq')}>Вопросы</a>
         </nav>
       </header>
 
@@ -45,7 +71,7 @@ function Home() {
       <section className="hero">
         <h1>ТАЙНЫЙ САНТА</h1>
         <p>Один клик — и вы в игре. Один конверт — и вы узнаёте, чью жизнь сделаете чуточку ярче этим Новым годом!</p>
-        <button>НАЧАТЬ</button>
+        <button onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
       {/* ADVANTAGES */}
@@ -67,7 +93,7 @@ function Home() {
       </section>
 
       {/* RULES */}
-      <section className="rules">
+      <section className="rules" id="rules">
         <h2>ПРАВИЛА ИГРЫ</h2>
         <ul>
           {rulesData.map((rule, index) => (
@@ -77,11 +103,11 @@ function Home() {
             </li>
           ))}
         </ul>
-        <button>НАЧАТЬ</button>
+        <button onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
       {/* FAQ */}
-      <section className="faq">
+      <section className="faq" id="faq">
         <h2>ЧАСТЫЕ ВОПРОСЫ</h2>
         <div className="faq-list">
           {faqData.map((item, index) => (
@@ -93,7 +119,7 @@ function Home() {
             </details>
           ))}
         </div>
-        <button className="footer-button">СОЗДАТЬ ИГРУ</button>
+        <button className="footer-button" onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
       {/* FOOTER */}
