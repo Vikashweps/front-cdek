@@ -1,18 +1,33 @@
-# React + Vite
+# 🎄 Тайный Санта от СДЭК
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Корпоративный лендинг для новогодней акции «Тайный Санта» — игра по обмену подарками с возможностью регистрации участников. Проект выполнен в новогодней стилистике с использованием фирменных цветов СДЭК.
 
-Currently, two official plugins are available:
+## 📋 Описание проекта
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Одностраничное приложение (Landing Page), содержащее:
+- Информацию о правилах игры.
+- Преимущества участия.
+- Форму регистрации.
+- Адаптивный дизайн для всех устройств.
 
-## React Compiler
+## 🚀 Технологии
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+ React - Библиотека для построения пользовательского интерфейса 
+ Vite - Инструмент сборки и разработки 
+ CSS3 - Чистая стилизация без препроцессоров 
 
-Note: This will impact Vite dev & build performances.
+## 🧰 Почему Vite?
 
-## Expanding the ESLint configuration
+Vite был выбран в качестве сборщика по следующим причинам:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Преимущество | Описание |
+|--------------|----------|
+| **Мгновенный запуск** | Сервер разработки стартует практически мгновенно за счет нативного ES-модулей |
+| **Быстрая горячая замена модулей (HMR)** | Изменения в коде отображаются моментально без перезагрузки страницы |
+| **Оптимизированная сборка** | Использует esbuild для предварительной сборки зависимостей и Rollup для продакшен-сборки |
+| **Простота настройки** | Минимальная конфигурация по сравнению с Webpack |
+| **Современный стек** | Из коробки поддерживает React, TypeScript, CSS Modules и другие современные инструменты |
+
+## 📁 Структура проекта
+
+На основе актуальной структуры проекта:
