@@ -1,0 +1,202 @@
+/* Основные стили карточки (если их еще нет) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+/* ФОН */
+body {
+    margin: 0;
+}
+
+/* затемнение */
+.overlay2 {
+    min-height: 100vh;
+    /*width: 100%; */
+    background-image: url('/bg_registry.png');
+    padding: 0px 0px 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 70%;
+
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+.card2 {
+  background: rgba(255, 255, 255, 1); /* Полупрозрачный фон для читаемости */
+  padding: 30px;
+  border-radius: 14px;
+  max-width: 900px; /* Ограничиваем ширину, чтобы было место для 2 колонок */
+  width: 90%;
+  color: #333;
+}
+
+.card2 h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* --- СЕТКА ДЛЯ ДВУХ КОЛОНОК --- */
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Две равные колонки */
+  gap: 40px; /* Расстояние между колонками */
+  align-items: start; /* Чтобы колонки не растягивались по высоте друг друга */
+}
+
+/* Адаптивность: на мобильных устройствах колонки станут одна под другой */
+@media (max-width: 768px) {
+  .profile-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+.input-readonly {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  background: #f9f9f9;          /* Светлый фон */
+  border: 1px solid #eee;       /* Граница как у input */
+  border-radius: 14px;
+  color: #444;
+  font-size: 16px;
+}
+
+.input-readonly .label {
+  font-size: 12px;
+  color: #444;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.input-readonly .value {
+  font-weight: 500;
+  color: #1c1c1c;
+}
+
+/* Стили формы */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  font-size: 16px;
+}
+
+/* Общие стили кнопок */
+button {
+  padding: 12px 20px;
+  margin-top: 7px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.prim {
+  background-color: #39d353;
+  color: white;
+}
+
+.prim:hover {
+    background: #2fb344;   /* чуть темнее */
+    transform: scale(1.02); /* лёгкое увеличение */
+}
+
+.sec {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  border: 1px solid #bdc3c7;
+}
+
+.sec:hover {
+    background: #39d353;
+    color: white;
+    transform: scale(1.02);
+}
+
+/* --- СТИЛИ ДЛЯ СКРОЛЛА ИГР --- */
+.games-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Занимает доступную высоту */
+}
+
+.games-scroll-container {
+  /* Фиксированная высота, после которой появится скролл */
+  max-height: 300px; 
+  
+  /* Включение вертикального скролла */
+  overflow-y: auto; 
+  
+  /* Отступы и оформление контейнера скролла */
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Расстояние между кнопками команд */
+}
+
+/* Стилизация скроллбара (для Chrome, Safari, Edge) */
+.games-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.games-scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 14px;
+}
+
+.games-scroll-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 14px;
+}
+
+.games-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* Стиль кнопок внутри списка игр */
+.game-item {
+  width: 100%;
+  text-align: left;
+  background: white;
+  border: 1px solid #ddd;
+  color: #444;
+  justify-content: flex-start;
+}
+
+.game-item:hover {
+  background: #eef2f5;
+  border-color: #39d353;
+  color: #39d353;
+}
