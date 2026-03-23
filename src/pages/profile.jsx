@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import './styles.css';
 
-function Registration() {
+function Profile() {
   return (
     <div>
-      <h1>Регистрация</h1>
+      <h1>Профиль пользователя</h1>
       {/* Ваш контент */}
     </div>
   )
 }
 
-export default Registration
+export default Profile

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles.css';
 
-function App() {
+function Home() {
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFaq = (index) => {
@@ -125,4 +125,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
