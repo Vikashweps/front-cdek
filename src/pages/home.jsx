@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './styles.css';
+import './home.css';
 
 function Home() {
   const [openIndex, setOpenIndex] = useState(null);
