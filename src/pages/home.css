@@ -22,7 +22,7 @@ body {
 }
 
 .header nav {
-    max-width: 1400px;
+    max-width: 1000px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -52,28 +52,18 @@ body {
     width: auto;
     object-fit: contain;
 }
-
 /* HERO - Фон 1 */
 .hero {
     text-align: center;
-    padding: 60px 20px 40px;
-    background-image: url('/bg-hero.jpg');
+    /* Отступы фона остаются большими */
+    padding: 400px 50px 500px;
+    
+    background-image: url('/bg_hero.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center 85%;
+    
     background-repeat: no-repeat;
     position: relative;
-}
-
-/* Затемнение для читаемости текста */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.85);
-    z-index: 0;
 }
 
 .hero h1, .hero p, .hero button {
@@ -82,7 +72,9 @@ body {
 }
 
 .hero h1 {
-    font-size: 28px;
+    margin-top: -330px;
+    
+    font-size: 35px;
     font-weight: 900;
     margin-bottom: 16px;
     color: #1E1E1E;
@@ -90,10 +82,10 @@ body {
 }
 
 .hero p {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto 30px;
-    font-size: 16px;
-    color: #333;
+    font-size: 24.5px;
+    color: #757575;
     line-height: 1.5;
 }
 
@@ -104,7 +96,7 @@ body {
     color: white;
     cursor: pointer;
     border-radius: 14px;
-    font-size: 16px;
+    font-size: 24.5px;
     font-weight: 600;
     transition: transform 0.2s, background 0.3s;
 }
@@ -112,28 +104,6 @@ body {
 .hero button:hover {
     background: #333;
     transform: translateY(-2px);
-}
-
-/* ADVANTAGES - Фон 2 */
-.advantages {
-    padding: 150px 20px 80px;
-    text-align: center;
-    background-image: url('/bg-advantages.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-}
-
-.advantages::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.9);
-    z-index: 0;
 }
 
 .advantages h2, .advantages .cards {
@@ -144,28 +114,29 @@ body {
 .advantages h2 {
     font-size: 28px;
     font-weight: 900;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     color: #1E1E1E;
 }
 
 .cards {
     display: flex;
-    justify-content: center;
+    justify-content: center;  
     gap: 24px;
-    margin-top: 40px;
+    margin-top: 100px;
     flex-wrap: wrap;
     max-width: 1200px;
-    margin-left: auto;
+    margin-left: auto;   
     margin-right: auto;
 }
 
 .card {
     border: 2px solid #44E858;
-    padding: 32px 24px;
+    padding: 52px 24px;
     border-radius: 14px;
     width: 320px;
     background: white;
     transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;  /* ← Текст внутри карточки по центру */
 }
 
 .card:hover {
@@ -188,23 +159,12 @@ body {
 
 /* RULES - Фон 3 */
 .rules {
-    padding: 80px 20px;
+    padding: 120px 20px;
     background-image: url('/bg-rules.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
-}
-
-.rules::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.85);
-    z-index: 0;
 }
 
 .rules h2, .rules ul, .rules button {
@@ -216,19 +176,20 @@ body {
     text-align: center;
     font-size: 28px;
     font-weight: 900;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     color: #1E1E1E;
 }
 
 .rules ul {
     list-style: none;
     max-width: 800px;
-    margin: 0 auto 40px;
+    margin: 0 auto 20px;
     padding: 0;
 }
 
 .rules li {
-    margin: 24px 0;
+    /* Отступ между элементами списка - 20px */
+    margin: 20px 0;  
     padding-left: 32px;
     position: relative;
     font-size: 16px;
@@ -239,17 +200,27 @@ body {
     content: "»";
     position: absolute;
     left: 0;
+    top: 0;  /* ← Прижать к верху элемента */
     color: #44E858;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 30px;
+    line-height: 1;  /* ← Чтобы стрелка не съезжала */
 }
 
 .rules li strong {
     display: block;
-    font-size: 18px;
-    margin-bottom: 8px;
+    font-size: 24px;
+    /* Отступ между чёрным и серым текстом - 7px */
+    margin-bottom: 7px;
     color: #1E1E1E;
     font-weight: 700;
+}
+
+.rules li span {
+    display: block;
+    font-size: 16px;
+    color: #757575;  /* ← Серый цвет для описания */
+    line-height: 1.5;
 }
 
 .rules button {
@@ -261,35 +232,27 @@ body {
     color: white;
     cursor: pointer;
     border-radius: 14px;
-    font-size: 16px;
+    font-size: 24.5px;
     font-weight: 600;
     transition: transform 0.2s, background 0.3s;
 }
 
 .rules button:hover {
-    background: #333;
+    background: #757575;
     transform: translateY(-2px);
 }
-
-/* FAQ - Фон 4 */
 .faq {
-    padding: 80px 20px;
+    /* Увеличиваем padding-top чтобы текст был ниже */
+    padding: 255px 20px 100px;
+    
     background-image: url('/bg-faq.jpg');
     background-size: cover;
-    background-position: center;
+    
+    /* Меньше процент = выше картинка (20% показывает больше верха) */
+    background-position: center 20%;
+    
     background-repeat: no-repeat;
     position: relative;
-}
-
-.faq::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.9);
-    z-index: 0;
 }
 
 .faq h2, .faq-list, .faq .footer-button {
@@ -298,16 +261,18 @@ body {
 }
 
 .faq h2 {
+    margin-top: 0;
+    
     text-align: center;
     font-size: 28px;
     font-weight: 900;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     color: #1E1E1E;
 }
 
 .faq-list {
     max-width: 800px;
-    margin: 0 auto 40px;
+    margin: 0 auto 20px;
 }
 
 .faq-item {
@@ -361,7 +326,7 @@ body {
 
 .footer-button {
     display: block;
-    margin: 40px auto 0;
+    margin: 20px auto 0;
     padding: 16px 48px;
     background: #1E1E1E;
     color: white;
@@ -378,9 +343,11 @@ body {
     transform: translateY(-2px);
 }
 
-/* FOOTER - Фон 5 */
+/* FOOTER - Чёрный фон */
 .footer {
-    background: #1E1E1E;
+    /* Было: #1E1E1E (тёмно-серый) */
+    /* Стало: #000000 (чёрный) */
+    background: #000000;
     color: white;
     padding: 60px 20px 30px;
     text-align: center;
@@ -411,7 +378,7 @@ body {
 
 .footer-section p,
 .footer-section a {
-    font-size: 13px;
+    font-size: 14px;
     color: #999;
     line-height: 1.8;
     text-decoration: none;
@@ -438,7 +405,7 @@ body {
     max-width: 1200px;
     margin: 40px auto 0;
     padding-top: 20px;
-    border-top: 1px solid #333;
+    border-top: 1px solid #222;
     text-align: center;
     color: #666;
     font-size: 12px;

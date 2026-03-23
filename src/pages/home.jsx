@@ -50,7 +50,6 @@ function Home() {
 
       {/* ADVANTAGES */}
       <section className="advantages">
-        <h2>НАШИ ПРЕИМУЩЕСТВА</h2>
         <div className="cards">
           <div className="card">
             <h3>Доставка через СДЭК</h3>
