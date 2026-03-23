@@ -1,0 +1,397 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    background: white;
+    color: #1E1E1E;
+    line-height: 1.6;
+    
+    /* Фоновое изображение */
+    background-image: url('/background.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+    background: white;
+    padding: 20px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.header nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header a {
+    text-decoration: none;
+    color: #1E1E1E;
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.header a:hover {
+    color: #44E858;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-img {
+    height: 15px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+}
+
+.hero h1 {
+    font-size: 28px;  /* ← ИЗМЕНЕНО: 28px */
+    font-weight: 900;
+    margin-bottom: 16px;
+    color: #1E1E1E;
+    letter-spacing: -0.5px;
+}
+
+.hero p {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.hero button {
+    padding: 16px 48px;
+    border: none;
+    background: #1E1E1E;
+    color: white;
+    cursor: pointer;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.hero button:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+
+/* ADVANTAGES */
+.advantages {
+    padding: 150px 20px 80px;
+    text-align: center;
+}
+
+.advantages h2 {
+    font-size: 28px;  /* ← ИЗМЕНЕНО: 28px */
+    font-weight: 900;
+    margin-bottom: 40px;
+    color: #1E1E1E;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card {
+    border: 2px solid #44E858;
+    padding: 32px 24px;
+    border-radius: 14px;
+    width: 320px;
+    background: white;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(68, 232, 88, 0.15);
+}
+
+.card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #1E1E1E;
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* RULES */
+.rules {
+    padding: 80px 20px;
+}
+
+.rules h2 {
+    text-align: center;
+    font-size: 28px;  /* ← ИЗМЕНЕНО: 28px */
+    font-weight: 900;
+    margin-bottom: 40px;
+    color: #1E1E1E;
+}
+
+.rules ul {
+    list-style: none;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    padding: 0;
+}
+
+.rules li {
+    margin: 24px 0;
+    padding-left: 32px;
+    position: relative;
+    font-size: 16px;
+    color: #333;
+}
+
+.rules li::before {
+    content: "»";
+    position: absolute;
+    left: 0;
+    color: #44E858;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.rules li strong {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #1E1E1E;
+    font-weight: 700;
+}
+
+.rules button {
+    display: block;
+    margin: 40px auto 0;
+    padding: 16px 48px;
+    border: none;
+    background: #1E1E1E;
+    color: white;
+    cursor: pointer;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.rules button:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+
+/* FAQ */
+.faq {
+    padding: 80px 20px;
+}
+
+.faq h2 {
+    text-align: center;
+    font-size: 28px;  /* ← ИЗМЕНЕНО: 28px */
+    font-weight: 900;
+    margin-bottom: 40px;
+    color: #1E1E1E;
+}
+
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.faq-item {
+    margin: 0 auto 12px;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.faq-item summary {
+    padding: 20px 24px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    color: #1E1E1E;
+    position: relative;
+    list-style: none;
+    transition: background 0.3s;
+}
+
+.faq-item summary:hover {
+    background: #f8fff8;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: "›";
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: #44E858;
+    transition: transform 0.3s;
+}
+
+.faq-item[open] summary::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.faq-item p {
+    padding: 0 24px 20px 24px;
+    color: #666;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.footer-button {
+    display: block;  /* ← ИЗМЕНЕНО: block для центрирования */
+    margin: 40px auto 0;  /* ← auto по горизонтали центрирует */
+    padding: 16px 48px;
+    background: #1E1E1E;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.footer-button:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+
+/* FOOTER */
+.footer {
+    background: #1E1E1E;
+    color: white;
+    padding: 60px 20px 30px;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 40px;
+    text-align: left;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-section h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: white;
+}
+
+.footer-section p,
+.footer-section a {
+    font-size: 13px;
+    color: #999;
+    line-height: 1.8;
+    text-decoration: none;
+    display: block;
+}
+
+.footer-section a:hover {
+    color: #44E858;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-logo-img {
+    height: 15px;
+    width: auto;
+    object-fit: contain;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .hero h1,
+    .advantages h2,
+    .rules h2,
+    .faq h2 {
+        font-size: 24px;
+    }
+    
+    .header nav {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .card {
+        width: 100%;
+        max-width: 320px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
