@@ -9,13 +9,6 @@ body {
     background: white;
     color: #1E1E1E;
     line-height: 1.6;
-    
-    /* Фоновое изображение */
-    background-image: url('/background.jpg');
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-    min-height: 100vh;
 }
 
 /* HEADER */
@@ -55,19 +48,41 @@ body {
 }
 
 .logo-img {
-    height: 15px;
+    height: 30px;
     width: auto;
     object-fit: contain;
 }
 
-/* HERO */
+/* HERO - Фон 1 */
 .hero {
     text-align: center;
     padding: 60px 20px 40px;
+    background-image: url('/bg-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* Затемнение для читаемости текста */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 0;
+}
+
+.hero h1, .hero p, .hero button {
+    position: relative;
+    z-index: 1;
 }
 
 .hero h1 {
-    font-size: 28px;  /* ← ИЗМЕНЕНО: 28px */
+    font-size: 28px;
     font-weight: 900;
     margin-bottom: 16px;
     color: #1E1E1E;
@@ -99,14 +114,35 @@ body {
     transform: translateY(-2px);
 }
 
-/* ADVANTAGES */
+/* ADVANTAGES - Фон 2 */
 .advantages {
     padding: 150px 20px 80px;
     text-align: center;
+    background-image: url('/bg-advantages.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.advantages::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 0;
+}
+
+.advantages h2, .advantages .cards {
+    position: relative;
+    z-index: 1;
 }
 
 .advantages h2 {
-    font-size: 28px;  /* ← ИЗМЕНЕНО: 28px */
+    font-size: 28px;
     font-weight: 900;
     margin-bottom: 40px;
     color: #1E1E1E;
@@ -150,14 +186,35 @@ body {
     line-height: 1.5;
 }
 
-/* RULES */
+/* RULES - Фон 3 */
 .rules {
     padding: 80px 20px;
+    background-image: url('/bg-rules.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.rules::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 0;
+}
+
+.rules h2, .rules ul, .rules button {
+    position: relative;
+    z-index: 1;
 }
 
 .rules h2 {
     text-align: center;
-    font-size: 28px;  /* ← ИЗМЕНЕНО: 28px */
+    font-size: 28px;
     font-weight: 900;
     margin-bottom: 40px;
     color: #1E1E1E;
@@ -214,14 +271,35 @@ body {
     transform: translateY(-2px);
 }
 
-/* FAQ */
+/* FAQ - Фон 4 */
 .faq {
     padding: 80px 20px;
+    background-image: url('/bg-faq.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.faq::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 0;
+}
+
+.faq h2, .faq-list, .faq .footer-button {
+    position: relative;
+    z-index: 1;
 }
 
 .faq h2 {
     text-align: center;
-    font-size: 28px;  /* ← ИЗМЕНЕНО: 28px */
+    font-size: 28px;
     font-weight: 900;
     margin-bottom: 40px;
     color: #1E1E1E;
@@ -282,8 +360,8 @@ body {
 }
 
 .footer-button {
-    display: block;  /* ← ИЗМЕНЕНО: block для центрирования */
-    margin: 40px auto 0;  /* ← auto по горизонтали центрирует */
+    display: block;
+    margin: 40px auto 0;
     padding: 16px 48px;
     background: #1E1E1E;
     color: white;
@@ -300,7 +378,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* FOOTER */
+/* FOOTER - Фон 5 */
 .footer {
     background: #1E1E1E;
     color: white;
@@ -351,7 +429,7 @@ body {
 }
 
 .footer-logo-img {
-    height: 15px;
+    height: 30px;
     width: auto;
     object-fit: contain;
 }
