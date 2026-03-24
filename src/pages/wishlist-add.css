@@ -1,0 +1,222 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    margin: 0;
+}
+
+/* ФОН */
+.overlay_wishlist {
+    min-height: 100vh;
+    background-image: url('/bg_registry.png');
+    padding: 0px 0px 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 70%;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+/* МОДАЛЬНОЕ ОКНО */
+.card_wishlist {
+    background: rgba(255, 255, 255, 1);
+    padding: 25px;  /* ✅ Уменьшено с 40px */
+    border-radius: 14px;
+    max-width: 900px;
+    width: 90%;
+    color: #333;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+/* ЗАГОЛОВОК */
+.card_wishlist h1 {
+    text-align: center;
+    margin: 0 0 4px 0;  /* ✅ Было 7px → теперь 4px */
+    color: #2c3e50;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* СЕТКА */
+.wishlist-content {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;  /* ✅ Было 40px → теперь 20px */
+    align-items: start;
+    margin: 4px 0;  /* ✅ Было 7px → теперь 4px */
+}
+
+/* ЛЕВАЯ КОЛОНКА - ФОРМА */
+.form-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;  /* ✅ Было 7px → теперь 4px */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;  /* ✅ Было 7px → теперь 3px */
+    margin: 3px 0;  /* ✅ Было 7px → теперь 3px */
+}
+
+.form-group label {
+    font-size: 13px;  /* ✅ Чуть меньше для компактности */
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.required {
+    color: #e74c3c;
+    margin-left: 3px;
+}
+
+input {
+    padding: 10px 12px;  /* ✅ Уменьшено с 12px 15px */
+    border: 1px solid #ddd;
+    border-radius: 14px;
+    font-size: 14px;  /* ✅ Чуть меньше */
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #39d353;
+}
+
+/* ПРАВАЯ КОЛОНКА - ЗАГРУЗКА */
+.form-right {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;  /* ✅ Было 7px → теперь 4px */
+}
+
+.upload-area {
+    border: 2px dashed #bdc3c7;
+    border-radius: 14px;
+    padding: 25px 15px;  /* ✅ Уменьшено с 40px 20px */
+    text-align: center;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 200px;  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;  
+    margin: 4px 0;  
+}
+
+.upload-area:hover {
+    border-color: #39d353;
+    background: #f1f8f4;
+}
+
+.upload-area.dragover {
+    border-color: #39d353;
+    background: #e8f5e9;
+}
+
+.upload-icon {
+    font-size: 40px;  
+    color: #39d353;
+}
+
+.upload-text {
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 13px;  
+    line-height: 1.3;
+}
+
+.upload-hint {
+    color: #95a5a6;
+    font-size: 11px;  
+}
+
+/* Список файлов */
+.file-list {
+    margin: 4px 0;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 14px;
+    font-size: 12px;
+}
+
+.file-item {
+    margin: 3px 0;
+    color: #666;
+}
+
+/* КНОПКИ */
+.button-container {
+    margin: 7px 0 0 0;  
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    gap: 7px;  
+    justify-content: center;
+    margin: 7px 0 0 0;  
+}
+
+button {
+    padding: 12px 35px;  
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;  
+    transition: all 0.2s;
+    margin: 7px 0;  
+}
+
+.prim {
+  background-color: #39d353;
+  color: white;
+}
+
+.prim:hover {
+    background: #2fb344;   
+    transform: scale(1.02); 
+}
+
+.sec {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+}
+
+.sec:hover {
+    background: #39d353;
+    color: white;
+    transform: scale(1.02);
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 768px) {
+    .wishlist-content {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .card_wishlist {
+        padding: 20px;
+    }
+    
+    .card_wishlist h1 {
+        font-size: 24px;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+}
