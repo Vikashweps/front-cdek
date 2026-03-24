@@ -123,41 +123,66 @@ body {
 
 .cards {
     display: flex;
-    justify-content: center;  
+    justify-content: center;
+    align-items: center;
     gap: 24px;
     margin-top: 100px;
     flex-wrap: wrap;
     max-width: 1200px;
-    margin-left: auto;   
+    margin-left: auto;
     margin-right: auto;
 }
 
+/* Обновлённые стили для карточек с иконками и эффектом подъёма */
 .card {
     border: 2px solid #44E858;
     padding: 52px 24px;
     border-radius: 14px;
     width: 320px;
     background: white;
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-align: center;  /* ← Текст внутри карточки по центру */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
+/* Эффект приподнимания при наведении */
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(68, 232, 88, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(68, 232, 88, 0.2);
+}
+
+.card i {
+    font-size: 48px;
+    color: #44E858;
+    transition: transform 0.3s ease;
+}
+
+/* Дополнительный эффект для иконки при наведении на карточку */
+.card:hover i {
+    transform: scale(1.1);
 }
 
 .card h3 {
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin: 0;
     color: #1E1E1E;
+    transition: color 0.3s ease;
+}
+
+/* Опционально: изменение цвета заголовка при наведении */
+.card:hover h3 {
+    color: #44E858;
 }
 
 .card p {
     font-size: 14px;
     color: #666;
     line-height: 1.5;
+    margin: 0;
 }
 
 /* RULES - Фон 3 */

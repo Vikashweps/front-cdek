@@ -12,27 +12,26 @@ function Home() {
   const navigate = useNavigate();
 
   const handleGoProfile = () => {
-    navigate('/profile'); // ← Переход на главную
+    navigate('/profile');
   };
 
   const handleGoRegistration = () => {
-    navigate('/registration'); // ← Переход на главную
+    navigate('/registration');
   };
 
   const handleGoWishlist = () => {
-    navigate('/wishlist'); // ← Переход на главную
+    navigate('/wishlist');
   };
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({
-        behavior: 'smooth',  // Плавная прокрутка
-        block: 'start'       // Прокрутить к началу элемента
+        behavior: 'smooth',
+        block: 'start'
       });
     }
   };
-
 
   const faqData = [
     { question: "Как долго длится игра?", answer: "Стандартно: 2–3 недели (от заполнения вишлистов до доставки). Даты задаёт организатор при создании." },
@@ -47,6 +46,25 @@ function Home() {
     { title: "Заполните вишлисты", desc: "Каждый участник переходит по ссылке, регистрируется и добавляет желаемые подарки." },
     { title: "Жеребьёвка", desc: "В назначенную дату система автоматически распределяет пары." },
     { title: "Дарите подарки!", desc: "" }
+  ];
+
+  // Данные для карточек преимуществ с иконками
+  const advantagesData = [
+    { 
+      icon: "ti ti-truck", 
+      title: "Доставка через СДЭК", 
+      desc: "Доставим ваш подарок курьером дедом-морозом" 
+    },
+    { 
+      icon: "ti ti-list", 
+      title: "Вишлисты", 
+      desc: "Добавляйте ссылки на желаемые товары" 
+    },
+    { 
+      icon: "ti ti-message-circle", 
+      title: "Анонимные вопросы", 
+      desc: "Задавайте вопросы адресату в секретном чате" 
+    }
   ];
 
   return (
@@ -77,18 +95,13 @@ function Home() {
       {/* ADVANTAGES */}
       <section className="advantages">
         <div className="cards">
-          <div className="card">
-            <h3>Доставка через СДЭК</h3>
-            <p>Доставим ваш подарок курьером дедом-морозом</p>
-          </div>
-          <div className="card">
-            <h3>Вишлисты</h3>
-            <p>Добавляйте ссылки на желаемые товары</p>
-          </div>
-          <div className="card">
-            <h3>Анонимные вопросы</h3>
-            <p>Задавайте вопросы адресату в секретном чате</p>
-          </div>
+          {advantagesData.map((item, index) => (
+            <div className="card" key={index}>
+              <i className={item.icon} style={{ fontSize: '48px', color: '#44E858', marginBottom: '20px' }}></i>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 

@@ -14,7 +14,16 @@ function WishlistAdd() {
     const [isDragging, setIsDragging] = useState(false);
     const [files, setFiles] = useState([]);
 
-    // Обработка ввода
+    // Обработка ввода для поля цены (разрешаем только ручной ввод)
+    const handlePriceChange = (e) => {
+        const value = e.target.value;
+        // Разрешаем пустую строку или число с точкой
+        if (value === '' || /^\d*\.?\d*$/.test(value)) {
+            setFormData(prev => ({ ...prev, price: value }));
+        }
+    };
+
+    // Остальные поля
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -95,13 +104,12 @@ function WishlistAdd() {
                             <div className="form-group">
                                 <label>Цена</label>
                                 <input 
-                                    type="number" 
+                                    type="text" 
                                     name="price"
                                     placeholder="0" 
                                     value={formData.price}
-                                    onChange={handleChange}
-                                    step="0.01" 
-                                    min="0" 
+                                    onChange={handlePriceChange}
+                                    inputMode="decimal"
                                 />
                             </div>
                             
@@ -126,7 +134,7 @@ function WishlistAdd() {
                                 onDragLeave={handleDragLeave}
                                 onDrop={handleDrop}
                             >
-                                <div className="upload-icon">⬆</div>
+                                <i className="ti ti-upload" style={{ fontSize: '48px', color: '#44E858' }}></i>
                                 <div className="upload-text">
                                     Чтобы загрузить файл кликните или<br/>перетащите его в эту область
                                 </div>
