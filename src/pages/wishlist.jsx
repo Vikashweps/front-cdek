@@ -13,7 +13,7 @@ function Wishlist() {
     navigate('/wishlist-add'); 
   };
   const handleGoWishlist_red = () => {
-    navigate('/wishlist_red'); 
+    navigate('/wishlist-red'); 
   };
 
   return (
