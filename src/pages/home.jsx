@@ -51,17 +51,17 @@ function Home() {
   // Данные для карточек преимуществ с иконками
   const advantagesData = [
     { 
-      icon: "ti ti-truck", 
+      icon: "ti ti-truck-delivery", 
       title: "Доставка через СДЭК", 
       desc: "Доставим ваш подарок курьером дедом-морозом" 
     },
     { 
-      icon: "ti ti-list", 
+      icon: "ti ti-heart", 
       title: "Вишлисты", 
       desc: "Добавляйте ссылки на желаемые товары" 
     },
     { 
-      icon: "ti ti-message-circle", 
+      icon: "ti ti-message-question", 
       title: "Анонимные вопросы", 
       desc: "Задавайте вопросы адресату в секретном чате" 
     }

@@ -5,7 +5,7 @@
     font-family: Roboto, sans-serif;
 }
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -55,16 +55,14 @@ body {
     width: auto;
     object-fit: contain;
 }
+
 /* HERO - Фон 1 */
 .hero {
     text-align: center;
-    /* Отступы фона остаются большими */
     padding: 400px 50px 500px;
-    
     background-image: url('/bg_hero.jpg');
     background-size: cover;
     background-position: center 85%;
-    
     background-repeat: no-repeat;
     position: relative;
 }
@@ -76,37 +74,43 @@ body {
 
 .hero h1 {
     margin-top: -330px;
-    
     font-size: 35px;
     font-weight: 900;
     margin-bottom: 16px;
     color: #1E1E1E;
     letter-spacing: -0.5px;
+    text-transform: uppercase;
 }
 
 .hero p {
     max-width: 800px;
     margin: 0 auto 30px;
-    font-size: 24.5px;
+    font-size: 17.5px;
     color: #757575;
     line-height: 1.5;
 }
 
 .hero button {
-    padding: 16px 48px;
+    padding: 14px 42px;
     border: none;
     background: #1E1E1E;
     color: white;
     cursor: pointer;
     border-radius: 14px;
-    font-size: 24.5px;
+    font-size: 17.5px;
     font-weight: 600;
     transition: transform 0.2s, background 0.3s;
+    min-width: 220px;
 }
 
 .hero button:hover {
     background: #333;
     transform: translateY(-2px);
+}
+
+/* ADVANTAGES */
+.advantages {
+    padding: 80px 20px;
 }
 
 .advantages h2, .advantages .cards {
@@ -119,6 +123,8 @@ body {
     font-weight: 900;
     margin-bottom: 20px;
     color: #1E1E1E;
+    text-transform: uppercase;
+    text-align: center;
 }
 
 .cards {
@@ -126,17 +132,17 @@ body {
     justify-content: center;
     align-items: center;
     gap: 24px;
-    margin-top: 100px;
+    margin-top: 50px;
     flex-wrap: wrap;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Обновлённые стили для карточек с иконками и эффектом подъёма */
+/* Карточки */
 .card {
     border: 2px solid #44E858;
-    padding: 52px 24px;
+    padding: 40px 24px;
     border-radius: 14px;
     width: 320px;
     background: white;
@@ -148,7 +154,6 @@ body {
     gap: 12px;
 }
 
-/* Эффект приподнимания при наведении */
 .card:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 25px rgba(68, 232, 88, 0.2);
@@ -160,34 +165,33 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Дополнительный эффект для иконки при наведении на карточку */
 .card:hover i {
     transform: scale(1.1);
 }
 
 .card h3 {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 700;
     margin: 0;
     color: #1E1E1E;
     transition: color 0.3s ease;
+    text-transform: uppercase;
 }
 
-/* Опционально: изменение цвета заголовка при наведении */
 .card:hover h3 {
     color: #44E858;
 }
 
 .card p {
-    font-size: 14px;
-    color: #666;
+    font-size: 17.5px;
+    color: #757575;
     line-height: 1.5;
     margin: 0;
 }
 
-/* RULES - Фон 3 */
+/* RULES */
 .rules {
-    padding: 120px 20px;
+    padding: 80px 20px;
     background-image: url('/bg-rules.jpg');
     background-size: cover;
     background-position: center;
@@ -206,6 +210,7 @@ body {
     font-weight: 900;
     margin-bottom: 50px;
     color: #1E1E1E;
+    text-transform: uppercase;
 }
 
 .rules ul {
@@ -216,11 +221,10 @@ body {
 }
 
 .rules li {
-    /* Отступ между элементами списка - 20px */
-    margin: 20px 0;  
+    margin: 20px 0;
     padding-left: 32px;
     position: relative;
-    font-size: 16px;
+    font-size: 17.5px;
     color: #333;
 }
 
@@ -228,57 +232,55 @@ body {
     content: "»";
     position: absolute;
     left: 0;
-    top: 0;  /* ← Прижать к верху элемента */
+    top: 0;
     color: #44E858;
     font-weight: bold;
     font-size: 30px;
-    line-height: 1;  /* ← Чтобы стрелка не съезжала */
+    line-height: 1;
 }
 
 .rules li strong {
     display: block;
-    font-size: 24px;
-    /* Отступ между чёрным и серым текстом - 7px */
+    font-size: 21px;
     margin-bottom: 7px;
     color: #1E1E1E;
     font-weight: 700;
+    text-transform: uppercase;
 }
 
 .rules li span {
     display: block;
-    font-size: 16px;
-    color: #757575;  /* ← Серый цвет для описания */
+    font-size: 17.5px;
+    color: #757575;
     line-height: 1.5;
 }
 
 .rules button {
     display: block;
     margin: 40px auto 0;
-    padding: 16px 48px;
+    padding: 14px 42px;
     border: none;
     background: #1E1E1E;
     color: white;
     cursor: pointer;
     border-radius: 14px;
-    font-size: 24.5px;
+    font-size: 17.5px;
     font-weight: 600;
     transition: transform 0.2s, background 0.3s;
+    min-width: 220px;
 }
 
 .rules button:hover {
     background: #757575;
     transform: translateY(-2px);
 }
+
+/* FAQ */
 .faq {
-    /* Увеличиваем padding-top чтобы текст был ниже */
-    padding: 255px 20px 100px;
-    
+    padding: 80px 20px;
     background-image: url('/bg-faq.jpg');
     background-size: cover;
-    
-    /* Меньше процент = выше картинка (20% показывает больше верха) */
     background-position: center 20%;
-    
     background-repeat: no-repeat;
     position: relative;
 }
@@ -289,13 +291,12 @@ body {
 }
 
 .faq h2 {
-    margin-top: 0;
-    
     text-align: center;
     font-size: 28px;
     font-weight: 900;
     margin-bottom: 20px;
     color: #1E1E1E;
+    text-transform: uppercase;
 }
 
 .faq-list {
@@ -315,11 +316,12 @@ body {
     padding: 20px 24px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 21px;
     color: #1E1E1E;
     position: relative;
     list-style: none;
     transition: background 0.3s;
+    text-transform: none;
 }
 
 .faq-item summary:hover {
@@ -336,7 +338,7 @@ body {
     right: 24px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 24px;
+    font-size: 28px;
     color: #44E858;
     transition: transform 0.3s;
 }
@@ -347,34 +349,33 @@ body {
 
 .faq-item p {
     padding: 0 24px 20px 24px;
-    color: #666;
+    color: #757575;
     line-height: 1.6;
-    font-size: 14px;
+    font-size: 17.5px;
 }
 
-.footer-button {
+.faq .footer-button {
     display: block;
     margin: 20px auto 0;
-    padding: 16px 48px;
+    padding: 14px 42px;
     background: #1E1E1E;
     color: white;
     border: none;
     border-radius: 14px;
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 17.5px;
     cursor: pointer;
     transition: transform 0.2s, background 0.3s;
+    min-width: 220px;
 }
 
-.footer-button:hover {
+.faq .footer-button:hover {
     background: #333;
     transform: translateY(-2px);
 }
 
-/* FOOTER - Чёрный фон */
+/* FOOTER */
 .footer {
-    /* Было: #1E1E1E (тёмно-серый) */
-    /* Стало: #000000 (чёрный) */
     background: #000000;
     color: white;
     padding: 60px 20px 30px;
@@ -402,6 +403,7 @@ body {
     font-weight: 700;
     margin-bottom: 16px;
     color: white;
+    text-transform: uppercase;
 }
 
 .footer-section p,
@@ -439,13 +441,44 @@ body {
     font-size: 12px;
 }
 
-/* Адаптивность для мобильных */
+/* Адаптивность */
 @media (max-width: 768px) {
-    .hero h1,
+    .hero h1 {
+        font-size: 28px;
+    }
+    
+    .hero p {
+        font-size: 16px;
+    }
+    
     .advantages h2,
     .rules h2,
     .faq h2 {
         font-size: 24px;
+    }
+    
+    .card h3 {
+        font-size: 18px;
+    }
+    
+    .card p,
+    .rules li,
+    .rules li span,
+    .faq-item p {
+        font-size: 14px;
+    }
+    
+    .rules li strong,
+    .faq-item summary {
+        font-size: 16px;
+    }
+    
+    .hero button,
+    .rules button,
+    .faq .footer-button {
+        padding: 12px 32px;
+        font-size: 16px;
+        min-width: 180px;
     }
     
     .header nav {
