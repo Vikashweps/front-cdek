@@ -5,92 +5,113 @@
     font-family: Roboto, sans-serif;
 }
 
-/* ФОН */
 body {
     margin: 0;
 }
 
-/* затемнение */
 .overlay1 {
     min-height: 100vh;
-    /*width: 100%; */
     background-image: url('/bg_registry.png');
     padding: 100px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center 70%;
-
     display: flex; 
     justify-content: center;
     align-items: center;
 }
 
-/* карточка */
 .card1 {
     background: #fbfbfb;
-    padding: 100px 100px;
+    padding: 50px 60px;
     border-radius: 14px; 
-    width: 600px;
+    width: 100%;
+    max-width: 500px;
     text-align: center;
-    /* box-shadow: 0 10px 30px rgba(0,0,0,0.2); */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
-/* заголовок */
 .card1 h1 {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     font-size: 28px;
 }
 
-/* форма */
-form {
+/* ✅ Форма только внутри .card1 */
+.card1 form {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 15px;
 }
 
-input {
-    padding: 7px;
+/* ✅ Input только внутри .card1 */
+.card1 input {
+    padding: 12px 15px;
     border-radius: 14px;
     border: 1px solid #ccc;
     font-size: 14px;
+    width: 100%;
 }
 
-/* кнопки */
-button {
+.card1 input:focus {
+    outline: none;
+    border-color: #44E858;
+}
+
+/* ✅ Кнопки только внутри .card1 */
+.card1 button {
     padding: 12px 35px;
     border-radius: 14px;
     border: 1px solid transparent;
     cursor: pointer;
     font-size: 14px;
-    width: 100%;  
-}
-
-.primary1 {
-    background: #44E858;
-    color: white;
     font-weight: bold;
+    transition: all 0.2s;
+    width: 100%;
 }
 
-.primary1:hover {
-    background: #188700;   /* чуть темнее */
-    transform: scale(1.02); /* лёгкое увеличение */
-}
-
-.secondary1 {
-    background: white;
-    border: 2px solid #44E858;
-    color: #44E858;
-}
-
-.secondary1:hover {
-    background: #44E858;
-    color: white;
+.card1 button:hover {
     transform: scale(1.02);
 }
 
-/* текст снизу */
-.agreement1 {
-    margin-top: 35px;
-    font-size: 12.25px;
+.card1 .primary1 {
+    background: #44E858;
+    color: white;
+    border: 1px solid #44E858;
+}
+
+.card1 .primary1:hover {
+    background: #188700;
+}
+
+.card1 .secondary1 {
+    background: white;
+    border: 1px solid #44E858;
+    color: #44E858;
+}
+
+.card1 .secondary1:hover {
+    background: #44E858;
+    color: white;
+}
+
+.card1 .agreement1 {
+    margin-top: 25px;
+    font-size: 12px;
     color: #777;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .overlay1 {
+        padding: 40px 20px;
+    }
+    
+    .card1 {
+        padding: 30px 25px;
+        max-width: 90%;
+    }
+    
+    .card1 h1 {
+        font-size: 24px;
+    }
 }

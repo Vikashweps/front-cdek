@@ -38,7 +38,7 @@
     margin-bottom: 30px;
     color: var(--dark-color);
     font-size: 28px;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 /* === ФОРМА === */
@@ -51,10 +51,10 @@ form {
 .form-group_profile_red {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
     width: 100%;
     max-width: 350px; /* ← ОГРАНИЧЕНИЕ ШИРИНЫ ПОЛЕЙ */
-    margin-bottom: 15px;
+    margin-bottom: 7px;
 }
 
 .form-group_profile_red label {
@@ -66,7 +66,7 @@ form {
 /* === ПОЛЯ ВВОДА === */
 input {
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1.5px solid #ddd;
     border-radius: var(--border-radius);
     font-size: 14px;
     transition: border-color 0.3s;
@@ -82,14 +82,14 @@ input:focus {
 /* === КНОПКИ === */
 .button-group_profile_red {
     display: flex;
-    gap: 15px;
+    gap: 7px;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 7px;
     flex-wrap: wrap; /* Чтобы кнопки переносились на мобильных */
 }
 
 button {
-    padding: 12px 28px;
+    padding: 12px 48px;
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
@@ -114,9 +114,9 @@ button {
 
 /* Вторичная кнопка (серая) */
 .sec_profile_red {
-    background-color: #ecf0f1;
+    background-color: #ffffff;
     color: var(--dark-color);
-    border: 1px solid #bdc3c7;
+    border: 1px solid #44E858;
 }
 
 .sec_profile_red:hover {
