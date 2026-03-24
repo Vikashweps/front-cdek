@@ -6,16 +6,11 @@ function Wishlist() {
   const navigate = useNavigate();
 
   const handleGoProfile = () => {
-    navigate('/profile'); // ← Переход на главную
+    navigate('/profile'); 
   };
 
-  // Обработчик выбора файла
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Создаем временную ссылку на файл в браузере
-      setAvatar(URL.createObjectURL(file));
-    }
+  const handleGoWishlist_add = () => {
+    navigate('/wishlist-add'); 
   };
 
   return (
@@ -36,8 +31,12 @@ function Wishlist() {
                 <span className="value">Ссылка на товар</span>
                 </div>
 
-             <button type="button" className="prim">
+             <button type="button" className="sec">
                 Редактировать
+              </button>
+
+              <button type="button" className="prim" onClick={handleGoWishlist_add}>
+                Добавить новый товар
               </button>
 
               <button type="button" className="sec" onClick={handleGoProfile}>
@@ -47,20 +46,20 @@ function Wishlist() {
           </div>
 
           <div className="column picture">
-                {/* --- БЛОК ЗАГРУЗКИ АВАТАРА --- */}
                 <div className="avatar-upload">
-                <label className="avatar-btn">
-                    Загрузить фото
-                    <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleAvatarChange} 
-                    />
-                </label>
+                    <div className="avatar-preview">
+                        <img src="/Group 47.png"  />
+                    </div>
                 </div>
           </div>
 
         </div>
+        <button type="button" className="sec">
+                1
+        </button>
+        <button type="button" className="sec">
+                N
+        </button>
       </div>
     </div>
   );

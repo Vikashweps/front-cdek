@@ -5,6 +5,10 @@ import './wishlist-add.css';
 function WishlistAdd() {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
+
+    const handleGoWishlist = () => {
+        navigate('/wishlist'); 
+    };
     
     const [formData, setFormData] = useState({
         name: '',
@@ -170,7 +174,7 @@ function WishlistAdd() {
                         <button 
                             type="button" 
                             className="sec"
-                            onClick={() => navigate('/wishlist')}
+                            onClick={handleGoWishlist}
                         >
                             Отмена
                         </button>
