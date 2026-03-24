@@ -86,14 +86,9 @@ body {
     font-weight: 500;
 }
 
-.required {
-    color: #e74c3c;
-    margin-left: 3px;
-}
-
 input {
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1.5px solid #ddd;
     border-radius: var(--border-radius);
     font-size: 14px;
     transition: border-color 0.3s;

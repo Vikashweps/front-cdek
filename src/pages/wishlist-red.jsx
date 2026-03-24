@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './wishlist-add.css';
+import './wishlist-red.css';
 
 function WishlistRed() {
     const navigate = useNavigate();
@@ -121,9 +121,9 @@ function WishlistRed() {
                                 onDragLeave={handleDragLeave}
                                 onDrop={handleDrop}
                             >
-                                <div className="upload-icon">⬆</div>
+                                 <i className="ti ti-upload" style={{ fontSize: '48px', color: '#44E858' }}></i>
                                 <div className="upload-text">
-                                    Чтобы загрузить файл кликните или<br/>перетащите его в эту область
+                                    Загрузить новый файл <br/>
                                 </div>
                                 <div className="upload-hint">
                                     Можно загрузить не более 1 файла
