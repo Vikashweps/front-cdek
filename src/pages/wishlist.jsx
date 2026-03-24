@@ -24,7 +24,7 @@ function Wishlist() {
         <div className="wishlist-content">
           
           <div className="column staff-data">
-            <h1 >Название</h1>
+            <h1>Название</h1>
             <form>
               <div className="input-data">
                 <span className="value">000 Р</span>

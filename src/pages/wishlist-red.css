@@ -34,7 +34,7 @@
     margin-bottom: 30px;
     color: var(--dark-color);
     font-size: 28px;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 .wishlist-content {
@@ -49,29 +49,29 @@
 .form-left {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 7px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
 }
 
 .form-group label {
     font-size: 14px;
     color: var(--dark-color);
-    font-weight: 500;
+    
 }
 
 .required {
     color: #44E858;
-    margin-left: 3px;
+    margin-left: 1px;
 }
 
 input {
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1.5px solid #DBDADA;
     border-radius: var(--border-radius);
     font-size: 14px;
     transition: border-color 0.3s;
@@ -172,20 +172,19 @@ input:focus {
 
 .button-group {
     display: flex;
-    gap: 15px;
+    gap: 7px;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 7px;
 }
 
 button {
-    padding: 12px 28px;
+    padding: 14px 68px;
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
-    font-weight: 600;
     font-size: 14px;
     transition: all 0.2s;
-    display: inline-flex;
+    display: 40;
     align-items: center;
     justify-content: center;
 }
@@ -211,9 +210,9 @@ button {
 }
 
 .sec {
-    background-color: #ecf0f1;
+    background-color: #ffffff;
     color: var(--dark-color);
-    border: 1px solid #bdc3c7;
+    border: 1.5px solid #44E858;
 }
 
 .sec:hover {

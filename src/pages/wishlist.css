@@ -1,4 +1,12 @@
-/* Основные стили карточки (если их еще нет) */
+/* Основные переменные */
+:root {
+    --primary-color: #44E858;
+    --primary-hover: #188700;
+    --dark-color: #1E1E1E;
+    --gray-color: #757575;
+    --border-radius: 14px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,221 +14,231 @@
     font-family: Roboto, sans-serif;
 }
 
-/* ФОН */
 body {
     margin: 0;
 }
 
-/* затемнение */
+/* ФОН */
 .overlay_wishlist {
     min-height: 100vh;
-    /*width: 100%; */
     background-image: url('/bg_registry.png');
-    padding: 0px 0px 0px;
+    padding: 100px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center 70%;
-
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* МОДАЛЬНОЕ ОКНО */
 .card_wishlist {
-  background: rgba(255, 255, 255, 1); /* Полупрозрачный фон для читаемости */
-  padding: 30px;
-  border-radius: 14px;
-  max-width: 900px; /* Ограничиваем ширину, чтобы было место для 2 колонок */
-  width: 90%;
-  color: #333;
+    background: rgba(255, 255, 255, 1);
+    padding: 10px 10px;
+    border-radius: var(--border-radius);
+    max-width: 500px;
+    width: 100%;
+    color: var(--dark-color);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
+/* ЗАГОЛОВОК */
 .card_wishlist h1 {
-  padding: 0px 0px 0px;
-  margin-left: 0px;
-  margin-bottom: 20px;
-  color: #2c3e50;
+    text-align: center;
+
+    color: var(--dark-color);
+    font-size: 28px;
 }
 
 .card_wishlist h3 {
-  margin-top: 15px;
-  color: #2c3e50;
-  text-align: center;
+    margin-top: 6px;
+    color: var(--dark-color);
+    text-align: center;
 }
 
-/* --- СЕТКА ДЛЯ ДВУХ КОЛОНОК --- */
+/* СЕТКА - две колонки */
 .wishlist-content {
-  display: grid;
-  width: 100%;
-  grid-template-columns: 1fr 1fr; /* Две равные колонки */
-  gap: 40px; /* Расстояние между колонками */
-  align-items: start; /* Чтобы колонки не растягивались по высоте друг друга */
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: stretch;
+    margin-bottom: 7px;
 }
 
-/* Адаптивность: на мобильных устройствах колонки станут одна под другой */
-@media (max-width: 768px) {
-  .profile-wishlist {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
+/* ЛЕВАЯ КОЛОНКА - ДАННЫЕ ТОВАРА */
+.column.staff-data {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 }
+
+/* ПРАВАЯ КОЛОНКА - ФОТО */
+.column.picture {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* БЛОКИ С ДАННЫМИ */
 .input-data {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px;
-  background: #f9f9f9;          /* Светлый фон */
-  border: 1px solid #eee;       /* Граница как у input */
-  border-radius: 14px;
-  color: #444;
-  font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 10px;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: var(--border-radius);
+    color: var(--dark-color);
+    font-size: 14px;
 }
 
 .input-data .value {
-  font-weight: 500;
-  color: #1c1c1c;
+    font-weight: 500;
+    color: var(--dark-color);
 }
 
-/* Стили формы */
+/* ФОРМА */
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 }
 
-input {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  font-size: 16px;
-}
-
-/* Общие стили кнопок */
+/* КНОПКИ */
 button {
-  padding: 12px 20px;
-  margin-top: 7px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  transition: transform 0.2s, opacity 0.2s;
+    padding: 12px 15px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.2s;
+    margin-top: 7px;
 }
 
 button:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
 .prim {
-  background-color: #39d353;
-  color: white;
+    background-color: var(--primary-color);
+    color: white;
 }
 
 .prim:hover {
-    background: #2fb344;   /* чуть темнее */
-    transform: scale(1.02); /* лёгкое увеличение */
+    background: var(--primary-hover);
+    transform: scale(1.02);
 }
 
 .sec {
-  background-color: #ecf0f1;
-  color: #2c3e50;
-  border: 1px solid #bdc3c7;
+    background-color: #ecf0f1;
+    color: var(--dark-color);
+    border: 1px solid #bdc3c7;
 }
 
 .sec:hover {
-    background: #39d353;
+    background: var(--primary-color);
     color: white;
     transform: scale(1.02);
 }
 
+/* СТРЕЛКИ ПАГИНАЦИИ */
 .arrow {
-  /* 1. Сброс стандартных стилей кнопки */
-  background: white;
-  padding: 0 !important; /* Убираем любые отступы */
-  margin: 0;
-  cursor: pointer;
-  
-  /* 2. Размеры */
-  width: 50px;
-  height: 50px;
-  
-  /* 3. Центрирование (Flexbox) */
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  
-  /* 4. Оформление */
-  border-radius: 50%;
-  transition: all 0.2s;
-  
-  /* 5. Важно: убираем смещение текста/иконки */
-  text-align: center;
-  line-height: 1;
+    background: white;
+    padding: 0 !important;
+    margin: 0;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+    border: 1px solid #bdc3c7;
 }
 
 .arrow:hover {
-  background: #39d353;
-  border-color: #39d353;
-  color: white;
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
 }
 
-/* Сброс стилей для SVG внутри кнопки */
 .arrow svg {
-  display: block;
-  margin: 0 auto; /* Центрирует сам элемент SVG */
-  width: 20px;
-  height: 20px;
-}
-
-.avatar-upload {
-  /* display: flex; */
-  flex-direction: column;
-  align-items: center;
-  /* width: 200px;   
-  height: 200px; */
-  justify-content: center; /* Центрирует аватар внутри этого свободного места */
-  margin: 20px 0;     /* Отступы сверху и снизу вместо margin-bottom */
-}
-
-.avatar-preview {
-  width: 290px;
-  height: 350px;
-  overflow: hidden;
-  border: 4px solid #ecf0f1;
-  border-radius: 14px;
-  background: #f5f5f5;
-}
-
-.avatar-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: fill; /* Растягивает картинку на весь блок */
-  display: block;
-}
-
-
-.avatar-btn {
-  background-color: #39d353;
-  color: white;
-  padding: 10px 25px;
-  border-radius: 14px;
-  font-weight: bold;
-  font-size: 14px;
-  cursor: pointer;
-  transition: transform 0.2s, opacity 0.2s;
-  text-align: center;
-  align-items: center;
-}
-
-.avatar-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+    display: block;
+    margin: 0 auto;
+    width: 20px;
+    height: 20px;
 }
 
 .arrows-container {
-  margin: 20px 0; 
-  display: flex;
-  gap: 40px; /* Изменяйте это значение (10px, 20px, 30px...) */
-  justify-content: center; 
+    margin: 20px 0;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* ФОТО ТОВАРА */
+.avatar-upload {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 80px 0;
+}
+
+.avatar-preview {
+    width: 390px;
+    height: 250px;
+    overflow: hidden;
+    border: 4px solid #ecf0f1;
+    border-radius: var(--border-radius);
+    background: #f5f5f5;
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+}
+
+/* АДАПТИВНОСТЬ */
+@media (max-width: 768px) {
+    .overlay_wishlist {
+        padding: 40px 20px;
+    }
+    
+    .card_wishlist {
+        padding: 25px;
+    }
+    
+    .wishlist-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .card_wishlist h1 {
+        font-size: 24px;
+    }
+    
+    .arrows-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .arrow {
+        width: 100%;
+        height: 40px;
+    }
+
+     .avatar-preview {
+        width: 250px;  
+        height: 180px;
+    }
+    
+    button {
+        width: 100%;
+    }
 }
