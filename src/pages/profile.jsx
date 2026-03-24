@@ -12,6 +12,10 @@ function Profile() {
     navigate('/wishlist'); // ← Переход на главную
   };
 
+  const handleGoProfileRed = () => {
+    navigate('/profile-red'); // ← Переход на главную
+  };
+
   return (
     <div className="overlay_profile">
       <div className="card_profile">
@@ -31,7 +35,7 @@ function Profile() {
                 <span className="value">ivan@example.com</span>
                 </div>
 
-                <button type="button" className="sec">
+                <button type="button" className="sec" onClick={handleGoProfileRed}>
               
                 Изменить данные
               </button>
