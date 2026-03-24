@@ -51,7 +51,7 @@ function WishlistRed() {
         };
         
         fetchProduct();
-    }, [id, navigate]);  // ✅ Добавили зависимости
+    }, [id, navigate]);  
 
     // Обработка цены
     const handlePriceChange = (e) => {

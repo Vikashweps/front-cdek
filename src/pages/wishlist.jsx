@@ -12,6 +12,9 @@ function Wishlist() {
   const handleGoWishlist_add = () => {
     navigate('/wishlist-add'); 
   };
+  const handleGoWishlist_red = () => {
+    navigate('/wishlist_red'); 
+  };
 
   return (
     <div className="overlay_wishlist">
@@ -31,7 +34,7 @@ function Wishlist() {
                 <span className="value">Ссылка на товар</span>
                 </div>
 
-             <button type="button" className="sec">
+             <button type="button" className="sec" onClick={handleGoWishlist_red}>
                 Редактировать
               </button>
 
