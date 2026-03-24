@@ -50,6 +50,31 @@ body {
   text-align: center;
 }
 
+.personal-data form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.personal-data button {
+  width: 100%;          /* ← Растягиваем кнопки */
+  box-sizing: border-box;
+  padding: 14px 20px;   /* Чуть больше вертикальный отступ */
+  margin-top: 0;        /* Убираем лишний отступ, так как есть gap у формы */
+  justify-content: center; /* Центрируем текст внутри кнопки */
+
+  padding: 12px 20px;
+  margin-top: 7px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+
 /* --- СЕТКА ДЛЯ ДВУХ КОЛОНОК --- */
 .profile-content {
   display: grid;
@@ -66,6 +91,7 @@ body {
   }
 }
 .input-readonly {
+  width: 100%; 
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -197,7 +223,6 @@ button:hover {
 }
 
 .game-item:hover {
-  background: #eef2f5;
   border-color: #39d353;
   color: #39d353;
 }
