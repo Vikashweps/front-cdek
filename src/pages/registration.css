@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
     /*width: 100%; */
     background-image: url('/bg_registry.png');
-    padding: 0px 0px 0px;
+    padding: 100px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center 70%;
@@ -28,16 +28,16 @@ body {
 /* карточка */
 .card1 {
     background: #fbfbfb;
-    padding: 50px 60px;
+    padding: 100px 100px;
     border-radius: 14px; 
-    width: 500px;
+    width: 600px;
     text-align: center;
     /* box-shadow: 0 10px 30px rgba(0,0,0,0.2); */
 }
 
 /* заголовок */
 .card1 h1 {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     font-size: 28px;
 }
 
@@ -45,11 +45,11 @@ body {
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 7px;
 }
 
 input {
-    padding: 12px;
+    padding: 7px;
     border-radius: 14px;
     border: 1px solid #ccc;
     font-size: 14px;
@@ -57,32 +57,32 @@ input {
 
 /* кнопки */
 button {
-    padding: 12px;
+    padding: 7px;
     border-radius: 14px;
     border: none;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .primary1 {
-    background: #39d353;
+    background: #44E858;
     color: white;
     font-weight: bold;
 }
 
 .primary1:hover {
-    background: #2fb344;   /* чуть темнее */
+    background: #188700;   /* чуть темнее */
     transform: scale(1.02); /* лёгкое увеличение */
 }
 
 .secondary1 {
     background: white;
-    border: 2px solid #39d353;
-    color: #39d353;
+    border: 2px solid #44E858;
+    color: #44E858;
 }
 
 .secondary1:hover {
-    background: #39d353;
+    background: #44E858;
     color: white;
     transform: scale(1.02);
 }
@@ -90,6 +90,6 @@ button {
 /* текст снизу */
 .agreement1 {
     margin-top: 35px;
-    font-size: 10px;
+    font-size: 12.25px;
     color: #777;
 }
