@@ -54,7 +54,7 @@ body {
 .profile-content {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Две равные колонки */
-  gap: 40px; /* Расстояние между колонками */
+  gap: 50px; /* Расстояние между колонками */
   align-items: start; /* Чтобы колонки не растягивались по высоте друг друга */
 }
 
