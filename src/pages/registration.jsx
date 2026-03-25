@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './registration.css';
+import './profile.css';
 
 function Registration() {
   const navigate = useNavigate();

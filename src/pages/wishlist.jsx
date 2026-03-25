@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './wishlist.css';
+import './profile.css';
 
 function Wishlist() {
   const navigate = useNavigate();
@@ -34,11 +34,11 @@ function Wishlist() {
                 <span className="value">Ссылка на товар</span>
                 </div>
 
-             <button type="button" className="sec" onClick={handleGoWishlist-red}>
+             <button type="button" className="sec" onClick={handleGoWishlist_red}>
                 Редактировать
               </button>
 
-              <button type="button" className="prim" onClick={handleGoWishlist-add}>
+              <button type="button" className="prim" onClick={handleGoWishlist_add}>
                 Добавить новый товар
               </button>
 

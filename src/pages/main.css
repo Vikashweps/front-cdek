@@ -1,0 +1,565 @@
+/* ========================================
+   ГЛОБАЛЬНЫЕ НАСТРОЙКИ (только один раз!)
+   ======================================== */
+:root {
+  --primary-color: #44E858;
+  --primary-hover: #188700;
+  --danger-color: #e74c3c;
+  --danger-hover: #c0392b;
+  --dark-color: #1E1E1E;
+  --gray-color: #757575;
+  --border-radius: 14px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+/* Плавная прокрутка для якорных ссылок */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Отступ для фиксированной шапки */
+[id] {
+  scroll-margin-top: 80px;
+}
+
+/* ========================================
+   ОБЩИЕ КОМПОНЕНТЫ (используются везде)
+   ======================================== */
+
+/* Кнопки */
+button {
+  padding: 12px 28px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+/* Первичная кнопка (зелёная) */
+.prim,
+.prim_profile_red,
+.prim_wishlist {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.prim:hover,
+.prim_profile_red:hover,
+.prim_wishlist:hover {
+  background: var(--primary-hover);
+}
+
+/* Вторичная кнопка (серая/белая) */
+.sec,
+.sec_profile_red,
+.sec_wishlist {
+  background-color: #ecf0f1;
+  color: var(--dark-color);
+  border: 1px solid #bdc3c7;
+}
+
+.sec:hover,
+.sec_profile_red:hover,
+.sec_wishlist:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Поля ввода */
+input {
+  padding: 12px 15px;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  transition: border-color 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* Группы полей формы */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  color: var(--dark-color);
+  font-weight: 500;
+}
+
+/* Контейнер кнопок */
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* ========================================
+   СТРАНИЦА: РЕГИСТРАЦИЯ (.overlay1)
+   ======================================== */
+.overlay1 {
+  min-height: 100vh;
+  background-image: url('/bg_registry.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.card1 {
+  background: #fbfbfb;
+  padding: 50px 60px;
+  border-radius: var(--border-radius);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.card1 h1 {
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+.card1 form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card1 .primary1 {
+  background: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
+  width: 100%;
+}
+
+.card1 .primary1:hover {
+  background: var(--primary-hover);
+}
+
+.card1 .secondary1 {
+  background: white;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  width: 100%;
+}
+
+.card1 .secondary1:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.card1 .agreement1 {
+  margin-top: 25px;
+  font-size: 12px;
+  color: #777;
+}
+
+/* ========================================
+   СТРАНИЦА: ПРОФИЛЬ (.overlay_profile)
+   ======================================== */
+.overlay_profile {
+  min-height: 100vh;
+  background-image: url('/bg_registry.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.card_profile {
+  background: white;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  max-width: 900px;
+  width: 90%;
+  color: var(--dark-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.card_profile h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--dark-color);
+  font-size: 28px;
+}
+
+.card_profile h3 {
+  margin: 0 0 15px 0;
+  color: var(--dark-color);
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+/* Две колонки профиля */
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Левая колонка: данные */
+.personal-data form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.input-readonly {
+  width: 100%;
+  padding: 12px;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: var(--border-radius);
+  color: var(--dark-color);
+  font-size: 16px;
+}
+
+.input-readonly .value {
+  font-weight: 500;
+}
+
+.personal-data button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 0;
+  justify-content: center;
+}
+
+/* Правая колонка: игры со скроллом */
+.games-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.games-scroll-container {
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: var(--border-radius);
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.game-item {
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  color: var(--dark-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.game-item:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* Скроллбар */
+.games-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+.games-scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.games-scroll-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+.games-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* ========================================
+   СТРАНИЦА: РЕДАКТИРОВАНИЕ ПРОФИЛЯ (.overlay_profile_red)
+   ======================================== */
+.overlay_profile_red {
+  min-height: 100vh;
+  background-image: url('/bg_registry.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.card_profile_red {
+  background: white;
+  padding: 40px 50px;
+  border-radius: var(--border-radius);
+  max-width: 600px;
+  width: 100%;
+  color: var(--dark-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.card_profile_red h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--dark-color);
+  font-size: 28px;
+  text-transform: none;
+}
+
+.card_profile_red form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card_profile_red .form-group {
+  width: 100%;
+  max-width: 350px;
+  margin-bottom: 10px;
+}
+
+.card_profile_red .button-group {
+  margin-top: 10px;
+}
+
+.card_profile_red button {
+  padding: 12px 48px;
+}
+
+/* ========================================
+   СТРАНИЦА: ВИШЛИСТ (.overlay_wishlist)
+   ======================================== */
+.overlay_wishlist {
+  min-height: 100vh;
+  background-image: url('/bg_registry.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.card_wishlist {
+  background: white;
+  padding: 40px 50px;
+  border-radius: var(--border-radius);
+  max-width: 900px;
+  width: 100%;
+  color: var(--dark-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.card_wishlist h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--dark-color);
+  font-size: 28px;
+}
+
+/* Сетка вишлиста: две колонки */
+.wishlist-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+/* Зона загрузки */
+.upload-area {
+  border: 2px dashed var(--gray-color);
+  border-radius: var(--border-radius);
+  padding: 40px 20px;
+  text-align: center;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.upload-area:hover {
+  border-color: var(--primary-color);
+  background: #f1f8f4;
+}
+
+.upload-text {
+  color: var(--dark-color);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.upload-hint {
+  color: var(--gray-color);
+  font-size: 12px;
+}
+
+/* Превью изображения */
+.avatar-preview {
+  width: 200px;
+  height: 150px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 4px solid #ecf0f1;
+  background: #f5f5f5;
+}
+
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Стрелки пагинации */
+.arrow {
+  width: 40px;
+  height: 40px;
+  padding: 0 !important;
+  margin: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.arrow:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.arrow svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.arrows-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* ========================================
+   АДАПТИВНОСТЬ (медиа-запросы)
+   ======================================== */
+@media (max-width: 768px) {
+  /* Регистрация */
+  .card1 {
+    padding: 30px 25px;
+    max-width: 90%;
+  }
+  
+  .card1 h1 {
+    font-size: 24px;
+  }
+  
+  /* Профиль */
+  .card_profile {
+    padding: 25px;
+  }
+  
+  .profile-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .personal-data button {
+    width: 100%;
+  }
+  
+  /* Редактирование профиля */
+  .card_profile_red {
+    padding: 25px;
+  }
+  
+  .card_profile_red .form-group {
+    max-width: 100%;
+  }
+  
+  .card_profile_red .button-group {
+    flex-direction: column;
+  }
+  
+  .card_profile_red button {
+    width: 100%;
+    padding: 12px;
+  }
+  
+  /* Вишлист */
+  .card_wishlist {
+    padding: 25px;
+  }
+  
+  .wishlist-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .arrows-container {
+    flex-direction: column;
+  }
+  
+  .arrow {
+    width: 100%;
+    height: 40px;
+  }
+  
+  .avatar-preview {
+    width: 160px;
+    height: 120px;
+  }
+}
