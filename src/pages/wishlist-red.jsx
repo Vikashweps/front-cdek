@@ -150,19 +150,19 @@ function WishlistRed() {
                     
                     {/* ТОЛЬКО ТРИ КНОПКИ СНИЗУ */}
                     <div className="button-group">
-                        <button type="submit" className="prim">
+                        <button type="submit" className="btn-primary">
                             Сохранить
                         </button>
                         <button 
                             type="button" 
-                            className="sec"
+                            className="btn-secondary"
                             onClick={handleDelete}
                         >
                             Удалить
                         </button>
                         <button 
                             type="button" 
-                            className="sec"
+                            className="btn-secondary"
                             onClick={() => navigate('/wishlist')}
                         >
                             Отмена

@@ -35,16 +35,16 @@ function Profile() {
                 <span className="value">ivan@example.com</span>
                 </div>
 
-                <button type="button" className="sec" onClick={handleGoProfileRed}>
+                <button type="button" className="btn-secondary" onClick={handleGoProfileRed}>
               
                 Изменить данные
               </button>
 
-             <button type="button" className="prim" onClick={handleGoWishlist}>
+             <button type="button" className="btn-primary" onClick={handleGoWishlist}>
                 Мой вишлист
               </button>
 
-              <button type="button" className="sec" onClick={handleGoHome}>
+              <button type="button" className="btn-secondary" onClick={handleGoHome}>
                 На главную
               </button>
             </form>
@@ -70,8 +70,7 @@ function Profile() {
               <button type="button" className="game-item">Команда 7</button>
               <button type="button" className="game-item">Команда 8</button> 
             </div>
-            <button type="button" className="sec">
-              
+            <button type="button" className="btn-secondary">
                 Создать новую игру
             </button>
           </div>

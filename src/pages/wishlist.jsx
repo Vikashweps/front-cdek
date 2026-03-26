@@ -34,15 +34,15 @@ function Wishlist() {
                 <span className="value">Ссылка на товар</span>
                 </div>
 
-             <button type="button" className="sec" onClick={handleGoWishlist_red}>
+             <button type="button" className="btn-secondary" onClick={handleGoWishlist_red}>
                 Редактировать
               </button>
 
-              <button type="button" className="prim" onClick={handleGoWishlist_add}>
+              <button type="button" className="btn-primary" onClick={handleGoWishlist_add}>
                 Добавить новый товар
               </button>
 
-              <button type="button" className="sec" onClick={handleGoProfile}>
+              <button type="button" className="btn-secondary" onClick={handleGoProfile}>
                 Назад
               </button>
             </form>

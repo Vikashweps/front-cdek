@@ -33,7 +33,7 @@ function Profile_red() {
                 <h1>Редактирование профиля</h1>
 
                 <form onSubmit={handleSubmit}> 
-                    <div className="form-group_profile_red">
+                    <div className="form-group">
                         <label>Имя</label>
                         <input 
                             type="text" 
@@ -45,7 +45,7 @@ function Profile_red() {
                         />
                     </div>
                     
-                    <div className="form-group_profile_red">
+                    <div className="form-group">
                         <label>Почта</label>
                         <input 
                             type="email" 
@@ -55,11 +55,11 @@ function Profile_red() {
                         />
                     </div>
 
-                    <div className="button-group_profile_red">
-                        <button type="submit" className="prim_profile_red">
+                    <div className="button-group">
+                        <button type="submit" className="btn-primary">
                             Сохранить
                         </button>
-                        <button type="button" className="sec_profile_red" onClick={handleGoProfile}>
+                        <button type="button" className="btn-secondary" onClick={handleGoProfile}>
                             Отмена
                         </button>
                     </div>

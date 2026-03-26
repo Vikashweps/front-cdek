@@ -168,12 +168,12 @@ function WishlistAdd() {
                     
                     {/* КНОПКИ */}
                     <div className="button-group">
-                        <button type="submit" className="prim">
+                        <button type="submit" className="btn-primary">
                             Добавь в вишлист
                         </button>
                         <button 
                             type="button" 
-                            className="sec"
+                            className="btn-secondary"
                             onClick={handleGoWishlist}
                         >
                             Отмена

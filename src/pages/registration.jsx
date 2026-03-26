@@ -18,14 +18,14 @@ function Registration() {
           <input type="text" placeholder="Введите имя" />
           <input type="email" placeholder="Введите почту" />
 
-          <button className="primary1" type="submit1">
+          <button className="btn-primary" type="submit1">
             Создать аккаунт
           </button>
 
-          <button type="button" className="secondary1">
+          <button type="button" className="btn-secondary">
             Авторизоваться через Github
           </button>
-          <button type="button" className="secondary1" onClick={handleGoHome}>
+          <button type="button" className="btn-secondary" onClick={handleGoHome}>
                 На главную
           </button>
         </form>
