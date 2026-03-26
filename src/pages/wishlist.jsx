@@ -15,6 +15,9 @@ function Wishlist() {
   const handleGoWishlist_red = () => {
     navigate('/wishlist-red'); 
   };
+  const handleGoBack = () => {
+    navigate(-1);  
+  };
 
   return (
     <div className="overlay_wishlist">
@@ -42,7 +45,7 @@ function Wishlist() {
                 Добавить новый товар
               </button>
 
-              <button type="button" className="btn-secondary" onClick={handleGoProfile}>
+              <button type="button" className="btn-secondary" onClick={handleGoBack}>
                 Назад
               </button>
             </form>

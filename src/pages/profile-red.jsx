@@ -26,6 +26,9 @@ function Profile_red() {
         console.log('Сохраняем данные:', formData);
         handleGoProfile();
     };
+    const handleGoBack = () => {
+    navigate(-1);  // -1 = перейти на одну страницу назад в истории
+    };
 
     return (
         <div className="overlay_profile_red"> 
@@ -59,7 +62,7 @@ function Profile_red() {
                         <button type="submit" className="btn-primary">
                             Сохранить
                         </button>
-                        <button type="button" className="btn-secondary" onClick={handleGoProfile}>
+                        <button type="button" className="btn-secondary" onClick={handleGoBack}>
                             Отмена
                         </button>
                     </div>

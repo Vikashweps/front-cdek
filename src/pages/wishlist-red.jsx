@@ -56,15 +56,19 @@ function WishlistRed() {
     // Обработчики кнопок (Демо)
     const handleSave = (e) => {
         e.preventDefault();
-        alert('✅ Товар сохранён (демо)');
+        alert(' Товар сохранён ');
         navigate('/wishlist');
     };
 
     const handleDelete = () => {
         if (window.confirm('Удалить этот товар?')) {
-            alert('🗑️ Товар удалён (демо)');
+            alert(' Товар удалён ');
             navigate('/wishlist');
         }
+    };
+
+    const handleGoBack = () => {
+        navigate(-1); 
     };
 
     return (
@@ -163,7 +167,7 @@ function WishlistRed() {
                         <button 
                             type="button" 
                             className="btn-secondary"
-                            onClick={() => navigate('/wishlist')}
+                            onClick={handleGoBack}
                         >
                             Отмена
                         </button>

@@ -9,6 +9,9 @@ function WishlistAdd() {
     const handleGoWishlist = () => {
         navigate('/wishlist'); 
     };
+    const handleGoBack = () => {
+    navigate(-1);  // -1 = перейти на одну страницу назад в истории
+    };
     
     const [formData, setFormData] = useState({
         name: '',
@@ -174,7 +177,7 @@ function WishlistAdd() {
                         <button 
                             type="button" 
                             className="btn-secondary"
-                            onClick={handleGoWishlist}
+                            onClick={handleGoBack}
                         >
                             Отмена
                         </button>

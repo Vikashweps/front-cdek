@@ -23,6 +23,13 @@ function Game_add() {
         navigate('/profile'); 
     };
 
+    const handleGoGameAddLink = () => {
+        navigate('/game-add-link'); 
+    };
+
+    const handleGoBack = () => {
+    navigate(-1);  // -1 = перейти на одну страницу назад в истории
+    };
 
     return (
         <div className="overlay_profile_red"> 
@@ -67,10 +74,10 @@ function Game_add() {
                     </div>
 
                     <div className="button-group">
-                        <button type="submit" className="btn-primary">
+                        <button type="submit" className="btn-primary" onClick={handleGoGameAddLink}>
                             Создать
                         </button>
-                        <button type="button" className="btn-secondary" onClick={handleGoProfile}>
+                        <button type="button" className="btn-secondary" onClick={handleGoBack}>
                             Отмена
                         </button>
                     </div>
