@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './main.css'; // Убедитесь, что имя файла совпадает
+import './main.css'; 
 
 function Profile_red() {
     const navigate = useNavigate();

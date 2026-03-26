@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './profile.css';
+import './main.css';
 
 function WishlistRed() {
     const navigate = useNavigate();

@@ -1,11 +1,6 @@
-/* ========================================
-   ГЛОБАЛЬНЫЕ НАСТРОЙКИ (только один раз!)
-   ======================================== */
 :root {
   --primary-color: #44E858;
   --primary-hover: #188700;
-  --danger-color: #e74c3c;
-  --danger-hover: #c0392b;
   --dark-color: #1E1E1E;
   --gray-color: #757575;
   --border-radius: 14px;
@@ -55,31 +50,24 @@ button:hover {
 }
 
 /* Первичная кнопка (зелёная) */
-.prim,
-.prim_profile_red,
-.prim_wishlist {
+.btn-primary {
   background-color: var(--primary-color);
   color: white;
 }
 
-.prim:hover,
-.prim_profile_red:hover,
-.prim_wishlist:hover {
+.btn-primary:hover
+ {
   background: var(--primary-hover);
 }
 
-/* Вторичная кнопка (серая/белая) */
-.sec,
-.sec_profile_red,
-.sec_wishlist {
-  background-color: #ecf0f1;
+/* Вторичная кнопка (белая) */
+.btn-secondary {
+  background-color: #ffffff;
   color: var(--dark-color);
-  border: 1px solid #bdc3c7;
+  border: 1px solid #44E858;
 }
 
-.sec:hover,
-.sec_profile_red:hover,
-.sec_wishlist:hover {
+.btn-secondary:hover {
   background: var(--primary-color);
   color: white;
 }
@@ -104,7 +92,7 @@ input:focus {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .form-group label {
@@ -122,6 +110,17 @@ input:focus {
   flex-wrap: wrap;
 }
 
+.overlay-base {
+  min-height: 100vh;
+  background-image: url('/bg_registry.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 /* ========================================
    СТРАНИЦА: РЕГИСТРАЦИЯ (.overlay1)
    ======================================== */
@@ -231,7 +230,7 @@ input:focus {
 .profile-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 50px;
   align-items: start;
 }
 
@@ -381,21 +380,21 @@ input:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 60px;
 }
 
 .card_wishlist {
   background: white;
   padding: 40px 50px;
   border-radius: var(--border-radius);
-  max-width: 900px;
+  max-width: 700px;
   width: 100%;
   color: var(--dark-color);
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
 .card_wishlist h1 {
-  text-align: center;
+  text-align: left;
   margin-bottom: 30px;
   color: var(--dark-color);
   font-size: 28px;
@@ -443,8 +442,8 @@ input:focus {
 
 /* Превью изображения */
 .avatar-preview {
-  width: 200px;
-  height: 150px;
+  width: 300px;
+  height: 250px;
   border-radius: var(--border-radius);
   overflow: hidden;
   border: 4px solid #ecf0f1;
@@ -466,7 +465,7 @@ input:focus {
   margin: 0;
   background: white;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 50px;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;

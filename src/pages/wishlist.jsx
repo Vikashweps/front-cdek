@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './profile.css';
+import './main.css';
 
 function Wishlist() {
   const navigate = useNavigate();
