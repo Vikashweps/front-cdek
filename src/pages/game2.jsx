@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main.css';
 
-function Game() {
+function Game2() {
   const navigate = useNavigate();
 
   const [gameData] = useState({
     teamName: 'КОМАНДА1',
     period: '10.12.26 - 28.12.26',
     drawDate: '14.12.26',
-    stage: 'Добавление участников',
+    stage: 'Дарение подарков',
     participantsCount: 10,
-    isDrawDone: false,
-    isChatAvailable: false
+    isDrawDone: true,
+    isChatAvailable: true
   });
 
   const handleGoWishlist = () => {
@@ -129,4 +129,4 @@ return (
   );
 }
 
-export default Game;
+export default Game2;
