@@ -20,6 +20,10 @@ function Profile() {
     navigate('/game-add'); 
   };
 
+  const handleGoGame = () => {
+    navigate('/game'); 
+  };
+
   return (
     <div className="overlay_profile">
       <div className="card_profile">
@@ -59,20 +63,14 @@ function Profile() {
             
             {/* Контейнер со скроллом для кнопок команд */}
             <div className="games-scroll-container">
-              <button type="button" className="game-item">
-                Команда 1
-              </button>
-
-              <button type="button" className="game-item">
-                Команда 2
-              </button>
-              
-              <button type="button" className="game-item">Команда 3</button>
-              <button type="button" className="game-item">Команда 4</button>
-              <button type="button" className="game-item">Команда 5</button>
-              <button type="button" className="game-item">Команда 6</button>
-              <button type="button" className="game-item">Команда 7</button>
-              <button type="button" className="game-item">Команда 8</button> 
+              <button type="button" className="game-item" onClick={handleGoGame}>Команда 1 </button>
+              <button type="button" className="game-item" onClick={handleGoGame}>Команда 2</button>
+              <button type="button" className="game-item" onClick={handleGoGame}>Команда 3</button>
+              <button type="button" className="game-item" onClick={handleGoGame}>Команда 4</button>
+              <button type="button" className="game-item" onClick={handleGoGame}>Команда 5</button>
+              <button type="button" className="game-item" onClick={handleGoGame}>Команда 6</button>
+              <button type="button" className="game-item" onClick={handleGoGame}>Команда 7</button>
+              <button type="button" className="game-item" onClick={handleGoGame}>Команда 8</button> 
             </div>
             <button type="button" className="btn-secondary" onClick={handleGoGameAdd}>
                 Создать новую игру
