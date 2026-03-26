@@ -1032,7 +1032,7 @@ input:focus {
 
 .chat-container .btn-secondary {
   position: absolute;
-  top: 20px;
+  top: 70px;
   right: 20px;
   z-index: 10;
   padding: 10px 24px;
@@ -1089,6 +1089,96 @@ input:focus {
   align-items: flex-end;
   gap: 10px;
   animation: messageSlide 0.3s ease-out;
+}
+
+/* === ВКЛАДКИ ЧАТА === */
+.chat-tabs {
+  display: flex;
+  gap: 0;
+  padding: 10px 10px 0;
+  background: #f8f9fa;
+  border-radius: 20px 20px 0 0;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.chat-tab {
+  flex: 1;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 12px 12px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-color);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.chat-tab:hover {
+  background: rgba(68, 232, 88, 0.1);
+  color: var(--dark-color);
+}
+
+.chat-tab.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.chat-tab.active:hover {
+  background: var(--primary-hover);
+}
+
+/* Обновляем заголовок под вкладки */
+.chat-header {
+  text-align: center;
+  padding: 15px 20px 20px;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.chat-title {
+  font-size: 20px;
+  color: var(--dark-color);
+  margin: 0 0 5px 0;
+  font-weight: 700;
+}
+
+.chat-team {
+  font-size: 16px;
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ← НОВОЕ: Имя собеседника */
+.chat-partner {
+  font-size: 13px;
+  color: var(--gray-color);
+  margin: 8px 0 0;
+  font-style: italic;
+}
+
+/* Адаптивность для вкладок */
+@media (max-width: 768px) {
+  .chat-tabs {
+    padding: 8px 8px 0;
+  }
+  
+  .chat-tab {
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+  
+  .chat-title {
+    font-size: 16px;
+  }
+  
+  .chat-team {
+    font-size: 14px;
+  }
 }
 
 @keyframes messageSlide {

@@ -4,15 +4,24 @@ import './main.css';
 
 function SecretChat() {
   const navigate = useNavigate();
+  
+  // Состояние для активной вкладки
+  const [activeTab, setActiveTab] = useState('recipient'); // 'recipient' или 'sender'
+  
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([
-    { id: 1, text: 'Placeholder', sender: 'them', time: '10:30' },
-    { id: 2, text: 'Placeholder', sender: 'me', time: '10:32' },
-    { id: 3, text: 'Placeholder', sender: 'them', time: '10:35' },
-    { id: 4, text: 'Placeholder', sender: 'me', time: '10:36' },
-    { id: 5, text: 'Placeholder', sender: 'them', time: '10:40' },
-    { id: 6, text: 'Placeholder', sender: 'me', time: '10:42' },
-  ]);
+  
+  // Сообщения для двух чатов
+  const [messages, setMessages] = useState({
+    recipient: [  // Чат с тем, кому вы дарите
+      { id: 1, text: 'Привет! Это твой тайный Санта ', sender: 'them', time: '10:30' },
+      { id: 2, text: 'О, привет!', sender: 'me', time: '10:32' },
+      { id: 3, text: 'Уже выбрал(а) подарок?', sender: 'them', time: '10:35' },
+    ],
+    sender: [  // Чат с тем, кто дарит вам
+      { id: 1, text: 'Привет! Я твой тайный Санта ', sender: 'them', time: '11:00' },
+      { id: 2, text: 'Ура! А я уже добавил(а) всё в вишлист', sender: 'me', time: '11:02' },
+    ]
+  });
   
   const messagesEndRef = useRef(null);
 
@@ -20,20 +29,26 @@ function SecretChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Прокрутка при смене вкладки или новом сообщении
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, activeTab]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (message.trim()) {
       const newMessage = {
-        id: messages.length + 1,
+        id: Date.now(),
         text: message,
         sender: 'me',
         time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
       };
-      setMessages([...messages, newMessage]);
+      
+      // Добавляем сообщение в активный чат
+      setMessages(prev => ({
+        ...prev,
+        [activeTab]: [...prev[activeTab], newMessage]
+      }));
       setMessage('');
     }
   };
@@ -42,31 +57,57 @@ function SecretChat() {
     navigate(-1);
   };
 
+  //Данные для отображения в заголовке
+  const chatData = {
+    recipient: {
+      title: 'Секретный чат с Имя',
+      partner: 'Имя'
+    },
+    sender: {
+      title: 'Секретный чат с Сантой',
+      partner: 'Тайный отправитель'
+    }
+  };
+
   return (
     <div className="chat-page">
-
-      {/* Основной контейнер чата */}
       <div className="chat-container">
-        {/* Кнопка Назад */}
         <button className="btn-secondary" onClick={handleGoBack}>
           Назад
         </button>
 
-        {/* Заголовок */}
+        <div className="chat-tabs">
+          <button
+            className={`chat-tab ${activeTab === 'recipient' ? 'active' : ''}`}
+            onClick={() => setActiveTab('recipient')}
+          >
+            🎁 Тому, кому дарю
+          </button>
+          <button
+            className={`chat-tab ${activeTab === 'sender' ? 'active' : ''}`}
+            onClick={() => setActiveTab('sender')}
+          >
+            🎅 Кто дарит мне
+          </button>
+        </div>
+
         <div className="chat-header">
-          <h1 className="chat-title">Секретный чат с Имя</h1>
+          <h1 className="chat-title">{chatData[activeTab].title}</h1>
           <h2 className="chat-team">Команда "КОМАНДА1"</h2>
+          <p className="chat-partner">Собеседник: {chatData[activeTab].partner}</p>
         </div>
 
         {/* Область сообщений */}
         <div className="chat-messages">
-          {messages.map((msg) => (
+          {messages[activeTab].map((msg) => (
             <div 
               key={msg.id} 
               className={`message ${msg.sender === 'me' ? 'message-me' : 'message-them'}`}
             >
               {msg.sender === 'them' && (
-                <div className="message-avatar">👤</div>
+                <div className="message-avatar">
+                  {activeTab === 'recipient' ? '🎁' : '🎅'}
+                </div>
               )}
               
               <div className="message-bubble">
@@ -87,7 +128,7 @@ function SecretChat() {
           <input
             type="text"
             className="chat-input"
-            placeholder="Введите текст"
+            placeholder="Введите текст..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
