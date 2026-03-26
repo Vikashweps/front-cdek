@@ -9,7 +9,10 @@ function Registration_end() {
     navigate('/'); // ← Переход на главную
   };
   const handleGoWishlist = () => {
-    navigate('/wishlist'); // ← Переход на главную
+    navigate('/wishlist'); 
+  };
+  const handleGoProfile = () => {
+    navigate('/profile'); 
   };
 
   return (
@@ -22,6 +25,9 @@ function Registration_end() {
 
           <button className="btn-primary" type="submit1"  onClick={handleGoWishlist}>
             Создать вишлист
+          </button>
+          <button className="btn-primary" type="submit1"  onClick={handleGoProfile}>
+            Мой профиль
           </button>
 
           <button type="button" className="btn-secondary" onClick={handleGoHome}>

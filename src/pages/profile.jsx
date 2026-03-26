@@ -9,11 +9,15 @@ function Profile() {
     navigate('/'); // ← Переход на главную
   };
   const handleGoWishlist = () => {
-    navigate('/wishlist'); // ← Переход на главную
+    navigate('/wishlist'); 
   };
 
   const handleGoProfileRed = () => {
-    navigate('/profile-red'); // ← Переход на главную
+    navigate('/profile-red'); 
+  };
+
+  const handleGoGameAdd = () => {
+    navigate('/game-add'); 
   };
 
   return (
@@ -70,7 +74,7 @@ function Profile() {
               <button type="button" className="game-item">Команда 7</button>
               <button type="button" className="game-item">Команда 8</button> 
             </div>
-            <button type="button" className="btn-secondary">
+            <button type="button" className="btn-secondary" onClick={handleGoGameAdd}>
                 Создать новую игру
             </button>
           </div>

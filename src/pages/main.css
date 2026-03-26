@@ -532,6 +532,150 @@ input:focus {
   margin: 20px 0;
 }
 
+/* === ФОРМА КОМАНДЫ === */
+.team-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.form-group {
+  position: relative;
+}
+
+/* Обычные поля ввода */
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s;
+  background: white;
+  box-sizing: border-box;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(68, 232, 88, 0.1);
+}
+
+/* Поле даты */
+.date-input {
+  cursor: pointer;
+  position: relative;
+}
+
+/* Скрываем placeholder даты, когда есть значение */
+.date-input:not(:placeholder-shown) + .date-placeholder {
+  display: none;
+}
+
+.date-placeholder {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+  font-size: 16px;
+}
+
+/* Кастомный стиль для поля даты (убираем стандартный вид) */
+.date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.date-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Чекбокс */
+.checkbox-group {
+  margin-top: 8px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.checkbox-label:hover {
+  border-color: #ccc;
+  background: #f9f9f9;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.checkbox-text {
+  font-size: 16px;
+  color: var(--dark-color);
+  user-select: none;
+}
+
+/* Активное состояние чекбокса */
+.checkbox-label:has(.checkbox:checked) {
+  border-color: var(--primary-color);
+  background: rgba(68, 232, 88, 0.05);
+}
+
+/* Кнопка отправки */
+.team-form .btn-primary {
+  margin-top: 10px;
+  padding: 14px 28px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.team-form .btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .team-form {
+    max-width: 100%;
+    padding: 15px;
+  }
+  
+  .input-field,
+  .checkbox-label {
+    font-size: 14px;
+    padding: 12px 14px;
+  }
+  
+  .checkbox {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 /* ========================================
    АДАПТИВНОСТЬ (медиа-запросы)
    ======================================== */
