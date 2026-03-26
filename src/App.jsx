@@ -6,6 +6,7 @@ import Wishlist from './pages/wishlist';
 import Wishlist_add from './pages/wishlist-add';
 import Wishlist_red from './pages/wishlist-red';
 import Profile_red from './pages/profile-red';
+import Registration_end from './pages/registration-end';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/registration-end" element={<Registration_end />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/wishlist-add" element={<Wishlist_add />} />
