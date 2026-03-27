@@ -835,6 +835,156 @@ input:focus {
   width: 100%;
   padding: 12px 28px;
 }
+/* ========================================
+   СОЗДАНИЕ ИГРЫ (Game_add)
+   ======================================== */
+
+.overlay_game_add {
+  min-height: 100vh;
+  background-image: url('/bg_registry.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.card_game_add {
+  background: white;
+  padding: 40px 50px;
+  border-radius: var(--border-radius);
+  max-width: 600px;
+  width: 100%;
+  color: var(--dark-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.card_game_add h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: var(--dark-color);
+}
+
+.game-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.game-add-form .form-group {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto 7px auto;
+}
+
+/* Поле ввода названия команды */
+.game-add-form input[type="text"] {
+  padding: 14px 16px;
+  border: 2px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 15px;
+  width: 100%;
+}
+
+.game-add-form input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* Поле даты с ограничением */
+.date-group {
+  position: relative;
+  width: 100%;
+}
+
+.date-input {
+  padding: 14px 16px;
+  border: 2px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 15px;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  background: white;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* Placeholder для даты */
+.date-placeholder {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-color);
+  pointer-events: none;
+  font-size: 15px;
+  z-index: 1;
+}
+
+/* Скрываем placeholder когда есть значение */
+.date-input:not([value=""]) + .date-placeholder,
+.date-input:valid + .date-placeholder {
+  display: none;
+}
+
+/* Чекбокс */
+.checkbox-group {
+  margin-top: 5px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.checkbox-text {
+  font-size: 15px;
+  color: var(--dark-color);
+  user-select: none;
+}
+
+/* Кнопки создания игры — в строку */
+.game-add-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 7px;
+  justify-content: center;
+  margin-top: 15px;
+  width: 100%;
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-add-buttons button {
+  flex: 1;
+  padding: 12px 28px;
+}
+
+/* ========================================
+   АДАПТИВНОСТЬ — добавить в @media (max-width: 768px)
+   ======================================== */
+
 
 /* ========================================
    ПИСЬМО САНТЕ
@@ -1322,4 +1472,23 @@ input:focus {
     width: 36px;
     height: 36px;
   }
+
+  /* Создание игры — адаптивность */
+  .card_game_add {
+    padding: 25px;
+  }
+  
+  .card_game_add h1 {
+    font-size: 24px;
+  }
+  
+  .game-add-form .form-group {
+    max-width: 100%;
+  }
+  
+  /* Кнопки в столбик на мобильных */
+  .game-add-buttons {
+    flex-direction: column;
+  }
+  
 }

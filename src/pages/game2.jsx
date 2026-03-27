@@ -7,7 +7,7 @@ function Game2() {
 
   const [gameData] = useState({
     teamName: 'КОМАНДА1',
-    period: '10.12.26 - 28.12.26',
+    period: '10.12.26',
     drawDate: '14.12.26',
     stage: 'Дарение подарков',
     participantsCount: 10,
@@ -56,7 +56,7 @@ return (
 
         {/* Информация об игре */}
         <div className="game-info">
-          <p className="info-text">Период игры: {gameData.period}</p>
+          <p className="info-text">Начало игры: {gameData.period}</p>
           <p className="info-text">Дата жеребьёвки: {gameData.drawDate}</p>
         </div>
                   
