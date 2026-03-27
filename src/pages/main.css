@@ -8,6 +8,15 @@
   --border-radius: 14px;
 }
 
+@font-face {
+    font-family: 'Makan Hati Cyrillic'; /* Имя, которым будете пользоваться */
+    src: url('../fonts/MakanHatiCyrillic.otf') format('otf'); /* Путь к файлу */
+    font-weight: normal; /* Начертание: bold, 300, 400 и т.д. */
+    font-style: normal;  /* Стиль: italic, normal */
+    font-display: swap;  /* Оптимизация загрузки */
+}
+
+
 * {
   margin: 0;
   padding: 0;
@@ -887,30 +896,6 @@ input:focus {
   transform: rotate(90deg);
 }
 
-/* Декоративные элементы */
-.letter-decoration {
-  position: absolute;
-  font-size: 32px;
-  opacity: 0.8;
-}
-
-.letter-decoration.star {
-  top: 30px;
-  left: 40px;
-  animation: twinkle 2s ease-in-out infinite;
-}
-
-.letter-decoration.gingerbread {
-  top: 35px;
-  left: 90px;
-}
-
-.letter-decoration.snowglobe {
-  bottom: 40px;
-  right: 50px;
-  font-size: 28px;
-}
-
 @keyframes twinkle {
   0%, 100% { opacity: 0.8; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.1); }
@@ -921,61 +906,74 @@ input:focus {
   text-align: right;
   margin-bottom: 40px;
   padding-right: 20px;
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .letter-from,
 .letter-to {
   margin: 5px 0;
-  font-size: 16px;
+  font-size: 22px;
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .letter-from .label,
 .letter-to .label {
-  color: #7f8c8d;
+  color: var(--dark-color);
   margin-right: 5px;
+  font-size: 22px;
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .letter-from .name,
 .letter-to .name {
   color: var(--primary-color);
   font-weight: 600;
+  font-size: 22px;
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .letter-date {
   margin-top: 10px;
-  font-size: 15px;
+  font-size: 22px;
   color: var(--dark-color);
   font-weight: 500;
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 /* Тело письма */
 .letter-body {
   position: relative;
   z-index: 1;
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .greeting {
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 25px;
   color: var(--dark-color);
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .letter-text {
-  font-size: 16px;
+  font-size: 22px;
   line-height: 1.8;
   margin: 20px 0;
   color: var(--dark-color);
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .highlight {
-  color: var(--primary-color);
+  color: var(--primary-hover);
   font-weight: 600;
+  font-size: 22px;
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .closing {
   margin-top: 30px;
-  font-size: 16px;
+  font-size: 22px;
   color: var(--dark-color);
+  font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 /* Пунктирная рамка */
