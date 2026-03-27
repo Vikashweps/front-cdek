@@ -14,46 +14,112 @@ body {
     line-height: 1.6;
 }
 
-/* HEADER */
+/* ========================================
+   HEADER — ПК версия: лого центр, ссылки по бокам
+  
+/* ========== HEADER — ВСЁ ПО ЦЕНТРУ С ОТСТУПАМИ ========== */
 .header {
-    background: white;
-    padding: 20px 40px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: white;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.header-left,
+.header-right {
+    display: flex;
+    gap: 100px;  /* ← Отступ ВНУТРИ группы */
+    align-items: center;
+    z-index: 101;
 }
 
 .header nav {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;  /* ← Центрируем всё */
+  align-items: center;
+  gap: 100px;                /* ← Равномерные отступы между элементами */
+  position: relative;
+  min-height: 50px;
+  flex-wrap: wrap;          /* ← На маленьких экранах перенос */
 }
 
+/* Ссылки — просто ссылки, без лишних обёрток */
 .header a {
-    text-decoration: none;
-    color: #1E1E1E;
-    font-weight: 500;
-    font-size: 17.5px;
-    transition: color 0.3s;
+  text-decoration: none;
+  color: #1E1E1E;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s;
+  white-space: nowrap;
 }
+.header a:hover { color: #44E858; }
 
-.header a:hover {
-    color: #44E858;
-}
-
+/* Логотип */
 .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 102;
+  text-decoration: none;
+}
+.logo-img {
+  height: 30px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+.logo-fallback {
+  color: #44E858;
+  font-weight: bold;
+  font-size: 24px;
+  display: none;
+  white-space: nowrap;
 }
 
-.logo-img {
-    height: 30px;
-    width: auto;
-    object-fit: contain;
+/* Бургер — скрыт на ПК */
+/* Бургер — базовые стили */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 103;
+    order: 1; /* ← На мобильных: первый элемент (слева) */
+}
+
+.burger-menu span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #44E858;  /* ← ЗЕЛЁНЫЙ, не чёрный */
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.burger-menu.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.burger-menu.active span:nth-child(2) { opacity: 0; }
+.burger-menu.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+.burger-menu.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+  background: #44E858;
+}
+.burger-menu.active span:nth-child(2) { opacity: 0; }
+.burger-menu.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+  background: #44E858;
 }
 
 /* HERO - Фон 1 */
@@ -441,63 +507,131 @@ body {
     font-size: 12px;
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 28px;
-    }
+/* Всплывающее меню — компактное, под шапкой */
+/* Всплывающее меню — фиксированное, чтобы не обрезалось */
+.mobile-nav {
+    position: fixed;           /* ← FIX: было absolute */
+    top: 60px;                 /* ← Отступ вниз = высота хедера */
+    left: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    padding: 8px 0;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 999;              /* ← Выше всего */
     
-    .hero p {
-        font-size: 16px;
-    }
-    
-    .advantages h2,
-    .rules h2,
-    .faq h2 {
-        font-size: 24px;
-    }
-    
-    .card h3 {
-        font-size: 18px;
-    }
-    
-    .card p,
-    .rules li,
-    .rules li span,
-    .faq-item p {
-        font-size: 14px;
-    }
-    
-    .rules li strong,
-    .faq-item summary {
-        font-size: 16px;
-    }
-    
-    .hero button,
-    .rules button,
-    .faq .footer-button {
-        padding: 12px 32px;
-        font-size: 16px;
-        min-width: 180px;
+    /* Скрыто по умолчанию */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    pointer-events: none;      /* ← Не кликабельно, когда скрыто */
+}
+
+/* Показываем при активном классе */
+.mobile-nav.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;      /* ← Кликабельно, когда видно */
+}
+
+.mobile-nav a {
+    text-decoration: none;
+    color: #1E1E1E;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 10px 16px;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.mobile-nav a:hover {
+    background: #f8fff8;
+    color: #44E858;
+}
+
+/* Затемнение — для закрытия по клику вне меню */
+.mobile-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background: transparent;
+    z-index: 998;
+    cursor: default;           /* ← Не менять курсор */
+}
+
+/* ========================================
+   АДАПТИВНОСТЬ (Обновленный медиа-запрос)
+   ======================================== */
+/* ========== МОБИЛЬНАЯ ВЕРСИЯ (≤732px) ========== */
+@media (max-width: 732px) {
+    .header {
+        padding: 12px 15px;
     }
     
     .header nav {
-        flex-wrap: wrap;
-        gap: 16px;
+        max-width: 100%;
+        justify-content: center; /* Лого по центру */
+        position: relative;
+        padding: 0 40px; /* Место для бургера слева */
     }
     
-    .cards {
-        flex-direction: column;
-        align-items: center;
+    /* Скрываем десктопные группы */
+    .header-left,
+    .header-right {
+        display: none !important;
     }
     
-    .card {
-        width: 100%;
-        max-width: 320px;
+    /* Бургер — строго слева */
+    .burger-menu {
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        order: 1;
     }
     
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
+    /* Лого — строго по центру */
+    .logo {
+        position: static;
+        transform: none;
+        margin: 0;
+        order: 2;
     }
+    
+   
+    
+    /* Остальные адаптивы */
+    .hero { padding: 180px 15px 220px; background-position: center 80%; }
+    .hero h1 { font-size: 24px; margin-top: -140px; }
+    .hero p { font-size: 14px; }
+    .hero button { padding: 12px 28px; font-size: 15px; min-width: 160px; width: 100%; max-width: 260px; }
+    
+    .advantages { padding: 50px 15px; }
+    .advantages h2 { font-size: 22px; }
+    .cards { flex-direction: column; }
+    .card { width: 100%; max-width: 300px; padding: 28px 18px; }
+    
+    .rules { padding: 50px 15px; background-position: center 30%; }
+    .rules h2 { font-size: 22px; }
+    .rules li { font-size: 14px; padding-left: 24px; }
+    .rules button { padding: 12px 28px; font-size: 15px; min-width: 160px; width: 100%; max-width: 260px; }
+    
+    .faq { padding: 50px 15px; background-position: center 10%; }
+    .faq h2 { font-size: 22px; }
+    .faq-item summary { font-size: 16px; padding: 16px 18px; }
+    .faq-item p { font-size: 14px; padding: 0 18px 16px 18px; }
+    .faq .footer-button { padding: 12px 28px; font-size: 15px; min-width: 160px; width: 100%; max-width: 260px; }
+    
+    .footer { padding: 40px 15px 20px; }
+    .footer-content { flex-direction: column; text-align: center; gap: 24px; align-items: center; }
+    .footer-logo { margin: 0 auto; justify-content: center; }
+    .footer-section { min-width: 100%; }
+    .footer-bottom { font-size: 11px; }
 }
+   

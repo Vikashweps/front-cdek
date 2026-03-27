@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './home.css';
 
 function Home() {
   const [openIndex, setOpenIndex] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -11,26 +12,38 @@ function Home() {
 
   const navigate = useNavigate();
 
+  // Блокировка прокрутки при открытом меню
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobileMenuOpen]);
+
   const handleGoProfile = () => {
     navigate('/profile');
+    setIsMobileMenuOpen(false);
   };
 
   const handleGoRegistration = () => {
     navigate('/registration');
+    setIsMobileMenuOpen(false);
   };
 
   const handleGoWishlist = () => {
     navigate('/wishlist');
+    setIsMobileMenuOpen(false);
   };
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleMobileNavClick = (action) => {
+    setIsMobileMenuOpen(false);
+    action();
   };
 
   const faqData = [
@@ -48,51 +61,82 @@ function Home() {
     { title: "Дарите подарки!", desc: "" }
   ];
 
-  // Данные для карточек преимуществ с иконками
   const advantagesData = [
-    { 
-      icon: "ti ti-truck-delivery", 
-      title: "Доставка через СДЭК", 
-      desc: "Доставим ваш подарок курьером дедом-морозом" 
-    },
-    { 
-      icon: "ti ti-heart", 
-      title: "Вишлисты", 
-      desc: "Добавляйте ссылки на желаемые товары" 
-    },
-    { 
-      icon: "ti ti-message-question", 
-      title: "Анонимные вопросы", 
-      desc: "Задавайте вопросы адресату в секретном чате" 
-    }
+    { icon: "ti ti-truck-delivery", title: "Доставка через СДЭК", desc: "Доставим ваш подарок курьером дедом-морозом" },
+    { icon: "ti ti-heart", title: "Вишлисты", desc: "Добавляйте ссылки на желаемые товары" },
+    { icon: "ti ti-message-question", title: "Анонимные вопросы", desc: "Задавайте вопросы адресату в секретном чате" }
   ];
 
   return (
     <div className="app">
       
-      {/* HEADER */}
+      {/* ========== HEADER ========== */}
       <header className="header">
         <nav>
-          <a href="#profile" onClick={handleGoProfile}>Профиль</a>
-          <a href="#wishlist" onClick={handleGoWishlist}>Вишлист</a>
-          <a href="#" className="logo">
-            <img src="/sdek-logo.png" alt="СДЭК" className="logo-img" 
-                 onError={(e) => {e.target.style.display='none'; e.target.nextSibling.style.display='inline'}} />
-            <span style={{color: '#44E858', fontWeight: 'bold', fontSize: '24px', display: 'none'}}>СДЭК</span>
+           {/* Бургер — ПЕРВЫЙ, чтобы был слева */}
+    <button 
+      className={`burger-menu ${isMobileMenuOpen ? 'active' : ''}`}
+      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      aria-label="Меню"
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+          {/* Левые ссылки (ПК) */}
+          <div className="header-left">
+            <a href="#profile" onClick={handleGoProfile}>Профиль</a>
+            <a href="#wishlist" onClick={handleGoWishlist}>Вишлист</a>
+          </div>
+
+          {/* Логотип — центр */}
+          <a href="#" className="logo" onClick={(e) => { 
+            e.preventDefault(); 
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+          }}>
+            <img 
+              src="/sdek-logo.png" 
+              alt="СДЭК" 
+              className="logo-img"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                const parent = e.currentTarget.closest('.logo, .footer-logo');
+                const fallback = parent?.querySelector('.logo-fallback');
+                if (fallback) fallback.style.display = 'inline-block';
+              }} 
+            />
+            <span className="logo-fallback">СДЭК</span>
           </a>
-          <a href="#rules" onClick={() => scrollToSection('rules')}>Правила</a>
-          <a href="#faq" onClick={() => scrollToSection('faq')}>Вопросы</a>
+
+          {/* Правые ссылки (ПК) */}
+          <div className="header-right">
+            <a href="#rules" onClick={() => scrollToSection('rules')}>Правила</a>
+            <a href="#faq" onClick={() => scrollToSection('faq')}>Вопросы</a>
+          </div>
         </nav>
       </header>
 
-      {/* HERO */}
+      {/* ========== МОБИЛЬНОЕ МЕНЮ (ЭТОГО НЕ ХВАТАЛО!) ========== */}
+      
+      {/* Всплывающее меню — компактное, под шапкой */}
+      {isMobileMenuOpen && (
+        <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />
+      )}
+
+      <div className={`mobile-nav ${isMobileMenuOpen ? 'active' : ''}`}>
+        <a href="#profile" onClick={() => handleMobileNavClick(handleGoProfile)}>Профиль</a>
+        <a href="#wishlist" onClick={() => handleMobileNavClick(handleGoWishlist)}>Вишлист</a>
+        <a href="#rules" onClick={() => handleMobileNavClick(() => scrollToSection('rules'))}>Правила</a>
+        <a href="#faq" onClick={() => handleMobileNavClick(() => scrollToSection('faq'))}>Вопросы</a>
+      </div>
+
+      {/* ========== HERO ========== */}
       <section className="hero">
         <h1>ТАЙНЫЙ САНТА</h1>
         <p>Один клик — и вы в игре. Один конверт — и вы узнаёте, чью жизнь сделаете чуточку ярче этим Новым годом!</p>
         <button onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
-      {/* ADVANTAGES */}
+      {/* ========== ADVANTAGES ========== */}
       <section className="advantages">
         <div className="cards">
           {advantagesData.map((item, index) => (
@@ -105,7 +149,7 @@ function Home() {
         </div>
       </section>
 
-      {/* RULES */}
+      {/* ========== RULES ========== */}
       <section className="rules" id="rules">
         <h2>ПРАВИЛА ИГРЫ</h2>
         <ul>
@@ -119,7 +163,7 @@ function Home() {
         <button onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
-      {/* FAQ */}
+      {/* ========== FAQ ========== */}
       <section className="faq" id="faq">
         <h2>ЧАСТЫЕ ВОПРОСЫ</h2>
         <div className="faq-list">
@@ -135,7 +179,7 @@ function Home() {
         <button className="footer-button" onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
-      {/* FOOTER */}
+      {/* ========== FOOTER ========== */}
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-section">
@@ -151,9 +195,18 @@ function Home() {
             <a href="#rules">Правила игры</a>
           </div>
           <div className="footer-logo">
-            <img src="/sdek-logo.png" alt="СДЭК" className="footer-logo-img" 
-                 onError={(e) => {e.target.style.display='none'; e.target.nextSibling.style.display='inline'}} />
-            <span style={{color: '#44E858', fontWeight: 'bold', fontSize: '24px', display: 'none'}}>СДЭК</span>
+            <img 
+              src="/sdek-logo.png" 
+              alt="СДЭК" 
+              className="footer-logo-img"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                const parent = e.currentTarget.closest('.logo, .footer-logo');
+                const fallback = parent?.querySelector('.logo-fallback');
+                if (fallback) fallback.style.display = 'inline-block';
+              }} 
+            />
+            <span className="logo-fallback">СДЭК</span>
           </div>
         </div>
         <div className="footer-bottom">© 2026 Тайный Санта. Все права защищены.</div>
