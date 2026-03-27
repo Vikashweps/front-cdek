@@ -9,9 +9,9 @@
 }
 
 @font-face {
-    font-family: 'Makan Hati Cyrillic'; /* Имя, которым будете пользоваться */
-    src: url('../fonts/MakanHatiCyrillic.otf') format('otf'); /* Путь к файлу */
-    font-weight: normal; /* Начертание: bold, 300, 400 и т.д. */
+    font-family: 'Makan Hati Cyrillic'; 
+    src: url('../fonts/MakanHatiCyrillic.otf') format('otf'); 
+    font-weight: normal; 
     font-style: normal;  /* Стиль: italic, normal */
     font-display: swap;  /* Оптимизация загрузки */
 }
