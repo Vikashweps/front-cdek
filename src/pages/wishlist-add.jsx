@@ -170,18 +170,18 @@ function WishlistAdd() {
                     </div>
                     
                     {/* КНОПКИ */}
-                    <div className="button-group">
-                        <button type="submit" className="btn-primary">
-                            Добавь в вишлист
-                        </button>
-                        <button 
-                            type="button" 
-                            className="btn-secondary"
-                            onClick={handleGoBack}
-                        >
-                            Отмена
-                        </button>
-                    </div>
+                        <div className="wishlist-add-buttons">
+                            <button type="submit" className="btn-primary">
+                                Добавь в вишлист
+                            </button>
+                            <button 
+                                type="button" 
+                                className="btn-secondary"
+                                onClick={handleGoBack}
+                            >
+                                Отмена
+                            </button>
+                        </div>
                 </form>
             </div>
         </div>

@@ -12,10 +12,9 @@
     font-family: 'Makan Hati Cyrillic'; 
     src: url('../fonts/MakanHatiCyrillic.otf') format('otf'); 
     font-weight: normal; 
-    font-style: normal;  /* Стиль: italic, normal */
-    font-display: swap;  /* Оптимизация загрузки */
+    font-style: normal;
+    font-display: swap;
 }
-
 
 * {
   margin: 0;
@@ -28,21 +27,18 @@ body {
   margin: 0;
 }
 
-/* Плавная прокрутка для якорных ссылок */
 html {
   scroll-behavior: smooth;
 }
 
-/* Отступ для фиксированной шапки */
 [id] {
   scroll-margin-top: 80px;
 }
 
 /* ========================================
-   ОБЩИЕ КОМПОНЕНТЫ (используются везде)
+   КОМПОНЕНТЫ
    ======================================== */
 
-/* Кнопки */
 button {
   padding: 12px 28px;
   border: none;
@@ -60,32 +56,23 @@ button:hover {
   transform: translateY(-2px);
 }
 
-/* Первичная кнопка (зелёная) */
 .btn-primary {
   background-color: var(--primary-color);
   color: #1E1E1E;
 }
 
-.btn-primary:hover
- {
+.btn-primary:hover {
   background: var(--primary-hover);
 }
 
 .btn-primary:disabled {
   background: #f5f5f5;
   border-color: #ddd;
-  color:var(--gray-color);
+  color: var(--gray-color);
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-.btn-primaryy:disabled:hover {
-  background: #f5f5f5;
-  color: var(--gray-color);
-  transform: none; /* Убираем анимацию при наведении */
-}
-
-/* Вторичная кнопка (белая) */
 .btn-secondary {
   background-color: #ffffff;
   color: var(--dark-color);
@@ -97,21 +84,6 @@ button:hover {
   color: white;
 }
 
-.btn-secondary:disabled {
-  background: #f5f5f5;
-  border-color: #ddd;
-  color: var(--gray-color);
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.btn-secondary:disabled:hover {
-  background: #f5f5f5;
-  color: var(--gray-color);
-  transform: none; /* Убираем анимацию при наведении */
-}
-
-/* Поля ввода */
 input {
   padding: 12px 15px;
   border: 1.5px solid #ddd;
@@ -119,7 +91,6 @@ input {
   font-size: 14px;
   transition: border-color 0.3s;
   width: 100%;
-  box-sizing: border-box;
 }
 
 input:focus {
@@ -127,11 +98,11 @@ input:focus {
   border-color: var(--primary-color);
 }
 
-/* Группы полей формы */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 7px;
+  margin-bottom: 7px;
 }
 
 .form-group label {
@@ -140,29 +111,19 @@ input:focus {
   font-weight: 500;
 }
 
-/* Контейнер кнопок */
 .button-group {
   display: flex;
-  gap: 15px;
+  flex-direction: column;
+  gap: 7px;
   justify-content: center;
-  margin-top: 20px;
-  flex-wrap: wrap;
+  margin-top: 7px;
+  width: 100%;
 }
 
-.overlay-base {
-  min-height: 100vh;
-  background-image: url('/bg_registry.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
 /* ========================================
-   СТРАНИЦА: РЕГИСТРАЦИЯ (.overlay1)
+   РЕГИСТРАЦИЯ
    ======================================== */
+
 .overlay1 {
   min-height: 100vh;
   background-image: url('/bg_registry.png');
@@ -188,12 +149,13 @@ input:focus {
 .card1 h1 {
   margin-bottom: 30px;
   font-size: 28px;
+  color: var(--dark-color);
 }
 
 .card1 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 7px;
 }
 
 .card1 .primary1 {
@@ -201,10 +163,6 @@ input:focus {
   color: white;
   border: 1px solid var(--primary-color);
   width: 100%;
-}
-
-.card1 .primary1:hover {
-  background: var(--primary-hover);
 }
 
 .card1 .secondary1 {
@@ -225,10 +183,11 @@ input:focus {
   color: var(--gray-color);
 }
 
-/* === ВКЛАДКИ АВТОРИЗАЦИИ === */
+/* Вкладки авторизации */
+
 .auth-tabs {
   display: flex;
-  gap: 0;
+  gap: 7px;
   margin-bottom: 25px;
   background: #f0f0f0;
   border-radius: 12px;
@@ -246,10 +205,7 @@ input:focus {
   color: var(--gray-color);
   cursor: pointer;
   transition: all 0.2s;
-}
-
-.auth-tab:hover {
-  color: var(--dark-color);
+  width: 100%;
 }
 
 .auth-tab.active {
@@ -258,32 +214,18 @@ input:focus {
   box-shadow: 0 2px 8px rgba(68, 232, 88, 0.3);
 }
 
-.auth-tab.active:hover {
-  background: var(--primary-hover);
-}
-
-/* Форма авторизации */
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 7px;
 }
 
 .auth-form input {
-  width: 100%;
   padding: 14px 16px;
   border: 2px solid #ddd;
-  border-radius: var(--border-radius);
   font-size: 15px;
-  transition: border-color 0.3s;
 }
 
-.auth-form input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-/* Кнопка-ссылка "Забыли пароль?" */
 .btn-link {
   background: none;
   border: none;
@@ -291,44 +233,17 @@ input:focus {
   font-size: 14px;
   cursor: pointer;
   padding: 5px;
-  text-decoration: none;
-  transition: color 0.2s;
+  width: auto;
 }
 
 .btn-link:hover {
-  color: var(--primary-hover);
   text-decoration: underline;
-}
-
-/* Ссылка в соглашении */
-.agreement1 a {
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-.agreement1 a:hover {
-  text-decoration: underline;
-}
-
-/* Адаптивность для вкладок */
-@media (max-width: 768px) {
-  .auth-tabs {
-    margin-bottom: 20px;
-  }
-  
-  .auth-tab {
-    font-size: 14px;
-    padding: 10px 12px;
-  }
-  
-  .card1 {
-    padding: 30px 25px;
-  }
 }
 
 /* ========================================
-   СТРАНИЦА: ПРОФИЛЬ (.overlay_profile)
+   ПРОФИЛЬ
    ======================================== */
+
 .overlay_profile {
   min-height: 100vh;
   background-image: url('/bg_registry.png');
@@ -354,8 +269,8 @@ input:focus {
 .card_profile h1 {
   text-align: center;
   margin-bottom: 30px;
-  color: var(--dark-color);
   font-size: 28px;
+  color: var(--dark-color);
 }
 
 .card_profile h3 {
@@ -366,7 +281,6 @@ input:focus {
   text-align: center;
 }
 
-/* Две колонки профиля */
 .profile-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -374,22 +288,20 @@ input:focus {
   align-items: start;
 }
 
-/* Левая колонка: данные */
 .personal-data form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  width: 100%;
+  gap: 7px;
 }
 
 .input-readonly {
-  width: 100%;
   padding: 12px;
   background: #f9f9f9;
   border: 1px solid #eee;
   border-radius: var(--border-radius);
   color: var(--dark-color);
   font-size: 16px;
+  margin-bottom: 7px;
 }
 
 .input-readonly .value {
@@ -403,16 +315,16 @@ input:focus {
   justify-content: center;
 }
 
-/* Правая колонка: игры со скроллом */
 .games-list {
   display: flex;
   flex-direction: column;
+  gap: 7px;
   height: 100%;
 }
 
 .games-list > .btn-secondary {
-  margin-top: 10px; /* Отступ от скролл-контейнера */
-  width: 100%;      /* Чтобы кнопка была на всю ширину колонки */
+  margin-top: 10px;
+  width: 100%;
   justify-content: center;
 }
 
@@ -425,7 +337,7 @@ input:focus {
   border: 1px solid #eee;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 7px;
 }
 
 .game-item {
@@ -449,21 +361,21 @@ input:focus {
 .games-scroll-container::-webkit-scrollbar {
   width: 8px;
 }
+
 .games-scroll-container::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 4px;
 }
+
 .games-scroll-container::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 4px;
 }
-.games-scroll-container::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
-}
 
 /* ========================================
-   СТРАНИЦА: РЕДАКТИРОВАНИЕ ПРОФИЛЯ (.overlay_profile_red)
+   РЕДАКТИРОВАНИЕ ПРОФИЛЯ
    ======================================== */
+
 .overlay_profile_red {
   min-height: 100vh;
   background-image: url('/bg_registry.png');
@@ -489,34 +401,41 @@ input:focus {
 .card_profile_red h1 {
   text-align: center;
   margin-bottom: 30px;
-  color: var(--dark-color);
   font-size: 28px;
-  text-transform: none;
+  color: var(--dark-color);
 }
 
 .card_profile_red form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 7px;
 }
 
 .card_profile_red .form-group {
   width: 100%;
   max-width: 350px;
-  margin-bottom: 10px;
+  margin: 0 auto 7px auto;
 }
 
+/* Кнопки редактирования профиля — В СТРОКУ */
 .card_profile_red .button-group {
   margin-top: 10px;
+  flex-direction: row;
+  gap: 7px;
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card_profile_red button {
+  flex: 1;
   padding: 12px 48px;
 }
 
 /* ========================================
-   СТРАНИЦА: ВИШЛИСТ (.overlay_wishlist)
+   ВИШЛИСТ
    ======================================== */
+
 .overlay_wishlist {
   min-height: 100vh;
   background-image: url('/bg_registry.png');
@@ -539,8 +458,34 @@ input:focus {
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
-/* === Блоки с данными в вишлисте === */
-.card_wishlist .input-data {
+.card_wishlist h1 {
+  text-align: left;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: var(--dark-color);
+}
+
+.wishlist-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.card_wishlist .staff-data form {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+}
+
+.card_wishlist .staff-data button {
+  width: 100%;
+  justify-content: center;
+}
+
+.input-data {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -551,44 +496,13 @@ input:focus {
   color: var(--dark-color);
   font-size: 14px;
   width: 100%;
-  box-sizing: border-box;
+  margin-bottom: 7px;
 }
 
-.card_wishlist .input-data .value {
+.input-data .value {
   font-weight: 600;
-  color: var(--dark-color);
 }
 
-/* === ВИШЛИСТ: Форма и кнопки === */
-.card_wishlist .staff-data form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 100%;
-}
-
-.card_wishlist .staff-data button {
-  width: 100%;
-  justify-content: center;
-}
-
-.card_wishlist h1 {
-  text-align: left;
-  margin-bottom: 30px;
-  color: var(--dark-color);
-  font-size: 28px;
-}
-
-/* Сетка вишлиста: две колонки */
-.wishlist-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: start;
-  margin-bottom: 20px;
-}
-
-/* Зона загрузки */
 .upload-area {
   border: 2px dashed var(--gray-color);
   border-radius: var(--border-radius);
@@ -601,6 +515,7 @@ input:focus {
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  margin-bottom: 7px;
 }
 
 .upload-area:hover {
@@ -619,13 +534,14 @@ input:focus {
   font-size: 12px;
 }
 
-/* Превью изображения */
+/* Картинка вишлиста — ПК версия */
 .avatar-preview {
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   height: 250px;
   border-radius: var(--border-radius);
   overflow: hidden;
-  margin-top: 60px;  /* отступ сверху у картинки */
+  margin: 60px auto 0 auto;
   border: 4px solid #ecf0f1;
   background: #f5f5f5;
 }
@@ -637,7 +553,14 @@ input:focus {
   display: block;
 }
 
-/* Стрелки пагинации */
+/* Пагинация стрелки */
+.arrows-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
 .arrow {
   width: 40px;
   height: 40px;
@@ -665,160 +588,118 @@ input:focus {
   height: 20px;
 }
 
-.arrows-container {
+/* ========================================
+   ДОБАВЛЕНИЕ ТОВАРА
+   ======================================== */
+
+.overlay_wishlist_add {
+  min-height: 100vh;
+  background-image: url('/bg_registry.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 70%;
   display: flex;
-  gap: 15px;
   justify-content: center;
-  margin: 20px 0;
+  align-items: center;
+  padding: 60px;
 }
 
-/* === ФОРМА КОМАНДЫ === */
-.team-form {
+.card_wishlist_add {
+  background: white;
+  padding: 40px 50px;
+  border-radius: var(--border-radius);
+  max-width: 700px;
+  width: 100%;
+  color: var(--dark-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.card_wishlist_add h1 {
+  text-align: left;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: var(--dark-color);
+}
+
+.wishlist-add-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 400px;
-  padding: 20px;
+  gap: 7px;
 }
 
-.form-group {
-  position: relative;
-}
-
-/* Обычные поля ввода */
-.input-field {
-  width: 100%;
-  padding: 14px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  font-size: 16px;
-  transition: all 0.3s;
-  background: white;
-  box-sizing: border-box;
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(68, 232, 88, 0.1);
-}
-
-/* Поле даты */
-.date-input {
-  cursor: pointer;
-  position: relative;
-}
-
-/* Скрываем placeholder даты, когда есть значение */
-.date-input:not(:placeholder-shown) + .date-placeholder {
-  display: none;
-}
-
-.date-placeholder {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--gray-color);
-  pointer-events: none;
-  font-size: 16px;
-}
-
-/* Кастомный стиль для поля даты (убираем стандартный вид) */
-.date-input::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
-.date-input::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
-
-/* Чекбокс */
-.checkbox-group {
-  margin-top: 8px;
-}
-
-.checkbox-label {
+/* Кнопки добавления — В СТРОКУ */
+.wishlist-add-buttons {
   display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 14px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  transition: all 0.3s;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.checkbox-label:hover {
-  border-color: var(--gray-color);
-  background: #f9f9f9;
-}
-
-.checkbox {
-  width: 20px;
-  height: 20px;
-  margin-right: 12px;
-  cursor: pointer;
-  accent-color: var(--primary-color);
-  flex-shrink: 0;
-}
-
-.checkbox-text {
-  font-size: 16px;
-  color: var(--dark-color);
-  user-select: none;
-}
-
-/* Активное состояние чекбокса */
-.checkbox-label:has(.checkbox:checked) {
-  border-color: var(--primary-color);
-  background: rgba(68, 232, 88, 0.05);
-}
-
-/* Кнопка отправки */
-.team-form .btn-primary {
+  flex-direction: row;
+  gap: 7px;
+  justify-content: center;
   margin-top: 10px;
-  padding: 14px 28px;
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
+  width: 100%;
 }
 
-.team-form .btn-primary:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  .team-form {
-    max-width: 100%;
-    padding: 15px;
-  }
-  
-  .input-field,
-  .checkbox-label {
-    font-size: 14px;
-    padding: 12px 14px;
-  }
-  
-  .checkbox {
-    width: 18px;
-    height: 18px;
-  }
+.wishlist-add-buttons button {
+  flex: 1;
+  padding: 12px 28px;
 }
 
 /* ========================================
-   СТРАНИЦА: ИГРА (.overlay_game)
+   РЕДАКТИРОВАНИЕ ТОВАРА
    ======================================== */
+
+.overlay_wishlist_red {
+  min-height: 100vh;
+  background-image: url('/bg_registry.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+}
+
+.card_wishlist_red {
+  background: white;
+  padding: 40px 50px;
+  border-radius: var(--border-radius);
+  max-width: 700px;
+  width: 100%;
+  color: var(--dark-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.card_wishlist_red h1 {
+  text-align: left;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: var(--dark-color);
+}
+
+.wishlist-red-form {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Кнопки редактирования — В СТРОКУ */
+.wishlist-red-buttons {
+  display: flex;
+  flex-direction: row ;
+  gap: 7px;
+  justify-content: center;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.wishlist-red-buttons button {
+  flex: 1;
+  padding: 12px 28px;
+}
+
+/* ========================================
+   ИГРА
+   ======================================== */
+
 .overlay_game {
   min-height: 100vh;
   background-image: url('/game.png');
@@ -844,14 +725,12 @@ input:focus {
   z-index: 1;
 }
 
-/* Заголовки */
 .game-title {
   text-align: center;
   font-size: 24px;
   font-weight: 750;
   color: var(--dark-color);
   margin: 0 0 10px 0;
-  /* text-transform: uppercase; */
 }
 
 .team-name {
@@ -860,10 +739,8 @@ input:focus {
   font-weight: 700;
   color: var(--primary-color);
   margin: 0 0 20px 0;
-  /* text-transform: uppercase; */
 }
 
-/* Информация об игре */
 .game-info {
   text-align: center;
   margin-bottom: 30px;
@@ -876,7 +753,6 @@ input:focus {
   margin: 5px 0;
 }
 
-/* Сетка статусов */
 .game-status-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -913,7 +789,6 @@ input:focus {
   color: var(--primary-color);
 }
 
-/* Сетка кнопок */
 .game-buttons-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -924,24 +799,49 @@ input:focus {
 .buttons-column {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 7px;
 }
 
-/* Футер с кнопкой выхода */
+.btn-game {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 14px;
+}
+
+/* Заблокированная кнопка секретный чат */
+.btn-game:disabled,
+.btn-game[disabled] {
+  background: #f5f5f5;
+  border-color: #ddd;
+  color: var(--gray-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-game:disabled:hover,
+.btn-game[disabled]:hover {
+  transform: none;
+  background: #f5f5f5;
+  color: var(--gray-color);
+}
+
 .game-footer {
   text-align: center;
   padding-top: 20px;
   border-top: 1px solid #eee;
 }
 
+.btn-leave {
+  width: 100%;
+  padding: 12px 28px;
+}
+
 /* ========================================
-   СТРАНИЦА: ПИСЬМО САНТЕ
+   ПИСЬМО САНТЕ
    ======================================== */
 
 .letter-page {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
   background-image: url('/letter.png');
   background-size: cover;
   background-repeat: no-repeat;
@@ -952,26 +852,19 @@ input:focus {
   padding: 50px;
 }
 
-/* Само письмо */
 .letter-card {
   position: relative;
-  z-index: 1;
   background: #f5f0e6;
-  /* Эффект мятой бумаги */
   background-image: url('/paper.png');
   padding: 60px 80px;
   border-radius: 14px;
   max-width: 1100px;
   width: 100%;
-  box-shadow: 
-    0 10px 40px rgba(0,0,0,0.15),
-    inset 0 0 60px rgba(139, 90, 43, 0.1);
-  font-family: 'Caveat', cursive;
-  color: var(--dark-color);
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  font-family: 'Makan Hati Cyrillic', sans-serif;
+  color: var(--dark-color);
 }
 
-/* Кнопка закрытия */
 .letter-close {
   position: absolute;
   top: 15px;
@@ -997,12 +890,6 @@ input:focus {
   transform: rotate(90deg);
 }
 
-@keyframes twinkle {
-  0%, 100% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.1); }
-}
-
-/* Шапка письма */
 .letter-header {
   text-align: right;
   margin-bottom: 7px;
@@ -1012,14 +899,13 @@ input:focus {
 
 .letter-from,
 .letter-to {
-  margin: 0px 0;
+  margin: 0 0 7px 0;
   font-size: 22px;
   font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
 .letter-from .label,
 .letter-to .label {
-  color: var(--dark-color);
   margin-right: 5px;
   font-size: 22px;
   font-family: 'Makan Hati Cyrillic', sans-serif;
@@ -1041,7 +927,6 @@ input:focus {
   font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
-/* Тело письма */
 .letter-body {
   position: relative;
   z-index: 1;
@@ -1077,20 +962,8 @@ input:focus {
   font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
-/* Пунктирная рамка */
-.letter-border {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-  border: 2px dashed rgba(139, 90, 43, 0.3);
-  border-radius: 4px;
-  pointer-events: none;
-}
-
 /* ========================================
-   СТРАНИЦА: СЕКРЕТНЫЙ ЧАТ
+   ЧАТ
    ======================================== */
 
 .chat-page {
@@ -1100,25 +973,17 @@ input:focus {
   background-repeat: no-repeat;
   background-position: center 70%;
   padding: 40px;
-  position: relative;
+  display: flex;           /* ← добавлено */
+  align-items: center;     /* ← добавлено */
+  justify-content: center; /* ← добавлено */
+  box-sizing: border-box;  /* ← добавлено */
 }
 
-@keyframes fall {
-  to {
-    transform: translateY(100vh) rotate(360deg);
-  }
-}
-
-@keyframes wave {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-10deg); }
-  75% { transform: rotate(10deg); }
-}
-
-/* Контейнер чата */
 .chat-container {
   max-width: 900px;
-  max-height: 600px;
+  width: 100%;             /* ← изменено с max-width */
+  height: 600px;           /* ← фиксированная высота на ПК */
+  max-height: calc(100vh - 80px); /* ← ограничение по высоте экрана */
   margin: 0 auto;
   background: white;
   border-radius: 20px;
@@ -1127,6 +992,7 @@ input:focus {
   flex-direction: column;
   position: relative;
   z-index: 1;
+  overflow: hidden;        /* ← добавлено */
 }
 
 .chat-container .btn-secondary {
@@ -1135,103 +1001,9 @@ input:focus {
   right: 20px;
   z-index: 10;
   padding: 10px 24px;
+  width: auto;
 }
 
-/* Заголовок */
-.chat-header {
-  text-align: center;
-  padding: 30px 20px 20px;
-  border-bottom: 2px solid #ecf0f1;
-}
-
-.chat-title {
-  font-size: 28px;
-  color: var(--dark-color);
-  margin: 0 0 10px 0;
-  font-weight: 700;
-}
-
-.chat-team {
-  font-size: 20px;
-  color: var(--primary-color);
-  margin: 0;
-  font-weight: 600;
-}
-
-/* Область сообщений */
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.chat-messages::-webkit-scrollbar {
-  width: 8px;
-}
-
-.chat-messages::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 4px;
-}
-
-/* Сообщения */
-.message {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  animation: messageSlide 0.3s ease-out;
-}
-
-/* === ВКЛАДКИ ЧАТА === */
-.chat-tabs {
-  display: flex;
-  gap: 0;
-  padding: 10px 10px 0;
-  background: #f8f9fa;
-  border-radius: 20px 20px 0 0;
-  border-bottom: 2px solid #ecf0f1;
-}
-
-.chat-tab {
-  flex: 1;
-  padding: 12px 16px;
-  background: transparent;
-  border: none;
-  border-radius: 12px 12px 0 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--gray-color);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.chat-tab:hover {
-  background: rgba(68, 232, 88, 0.1);
-  color: var(--dark-color);
-}
-
-.chat-tab.active {
-  background: var(--primary-color);
-  color: white;
-}
-
-.chat-tab.active:hover {
-  background: var(--primary-hover);
-}
-
-/* Обновляем заголовок под вкладки */
 .chat-header {
   text-align: center;
   padding: 15px 20px 20px;
@@ -1252,7 +1024,6 @@ input:focus {
   font-weight: 600;
 }
 
-/* ← НОВОЕ: Имя собеседника */
 .chat-partner {
   font-size: 13px;
   color: var(--gray-color);
@@ -1260,35 +1031,50 @@ input:focus {
   font-style: italic;
 }
 
-/* Адаптивность для вкладок */
-@media (max-width: 768px) {
-  .chat-tabs {
-    padding: 8px 8px 0;
-  }
-  
-  .chat-tab {
-    font-size: 12px;
-    padding: 10px 8px;
-  }
-  
-  .chat-title {
-    font-size: 16px;
-  }
-  
-  .chat-team {
-    font-size: 14px;
-  }
+/* Вкладки чата */
+.chat-tabs {
+  display: flex;
+  gap: 7px;
+  padding: 10px 10px 0;
+  background: #f8f9fa;
+  border-radius: 20px 20px 0 0;
+  border-bottom: 2px solid #ecf0f1;
 }
 
-@keyframes messageSlide {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.chat-tab {
+  flex: 1;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 12px 12px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-color);
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.chat-tab.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Сообщения */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  animation: messageSlide 0.3s ease-out;
 }
 
 .message-them {
@@ -1320,7 +1106,6 @@ input:focus {
   max-width: 70%;
   padding: 12px 16px;
   border-radius: 18px;
-  position: relative;
 }
 
 .message-them .message-bubble {
@@ -1348,10 +1133,10 @@ input:focus {
   text-align: right;
 }
 
-/* Форма ввода */
+/* Ввод сообщения */
 .chat-input-form {
   display: flex;
-  gap: 10px;
+  gap: 7px;
   padding: 20px;
   border-top: 2px solid #ecf0f1;
   background: #fafafa;
@@ -1365,16 +1150,17 @@ input:focus {
   border-radius: 25px;
   font-size: 15px;
   outline: none;
-  transition: border-color 0.3s;
 }
 
 .chat-input:focus {
   border-color: var(--primary-color);
 }
 
+/* Кнопка отправки — РОВНЫЙ КРУГ */
 .chat-send-btn {
   width: 50px;
   height: 50px;
+  padding: 0;
   border: none;
   background: var(--primary-color);
   color: white;
@@ -1385,6 +1171,8 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
 }
 
 .chat-send-btn:hover {
@@ -1392,90 +1180,92 @@ input:focus {
   transform: scale(1.1);
 }
 
-.chat-send-btn:active {
-  transform: scale(0.95);
+@keyframes messageSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-  .chat-container {
-    height: calc(100vh - 20px);
-    border-radius: 15px;
-  }
-  
-  .chat-title {
-    font-size: 20px;
-  }
-  
-  .chat-team {
-    font-size: 16px;
-  }
-  
-  .message-bubble {
-    max-width: 85%;
-  }
-  
-  .santa-decoration {
-    font-size: 60px;
-  }
-  
-  .chat-back-btn {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 14px;
-  }
+/* ========================================
+   АДАПТИВНОСТЬ
+   ======================================== */
 
+@media (max-width: 768px) {
+  .card1,
+  .card_profile,
+  .card_profile_red,
+  .card_wishlist,
+  .card_wishlist_add,
+  .card_wishlist_red,
+  .card_game {
+    padding: 25px;
+  }
+  
+  .profile-content,
+  .wishlist-content,
+  .game-status-grid,
+  .game-buttons-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  /* Кнопки в строку на мобильных — в столбик */
+  .card_profile_red .button-group,
+  .wishlist-add-buttons,
+  .wishlist-red-buttons {
+    flex-direction: column;
+  }
+  
+  .card1 h1 {
+    font-size: 24px;
+  }
+  
+  .card_profile h1,
+  .card_profile_red h1,
+  .card_wishlist h1,
+  .card_wishlist_add h1,
+  .card_wishlist_red h1 {
+    font-size: 24px;
+  }
+  
+  /* Картинка вишлиста — мобильная версия */
+  .avatar-preview {
+    max-width: 200px;
+    height: 160px;
+    margin: 30px auto 0 auto;
+  }
+  
   .letter-card {
     padding: 40px 30px;
   }
   
-  .letter-decoration {
-    font-size: 24px;
-  }
-  
-  .letter-decoration.star {
-    top: 20px;
-    left: 20px;
-  }
-  
-  .letter-decoration.gingerbread {
-    top: 25px;
-    left: 60px;
-  }
-  
-  .letter-header {
-    text-align: center;
-    padding-right: 0;
-  }
-  
-  .greeting {
-    font-size: 18px;
-    text-align: center;
-  }
-  
-  .letter-text {
-    font-size: 15px;
-    text-align: justify;
-  }
-  
-  .wishlist-button {
-    display: block;
-    text-align: center;
-    margin: 20px auto;
-  }
-  
+  .letter-from,
+  .letter-to,
+  .letter-date,
+  .greeting,
+  .letter-text,
+  .highlight,
   .closing {
-    text-align: center;
+    font-size: 18px;
   }
   
-  .gifts-left,
-  .gifts-right {
-    display: none; /* Скрываем подарки на мобильных */
+  .chat-container {
+    height: 100vh;         /* ← на всю высоту экрана */
+    max-height: 100vh;     /* ← убираем ограничение */
+    border-radius: 0;      /* ← убираем скругление на мобильных */
+    max-width: 100%;       /* ← на всю ширину */
   }
-
-  .card_game {
-    padding: 30px 25px;
+  
+  .chat-container .btn-secondary {
+    position: static;
+    margin: 10px;
+    width: auto;
+    align-self: flex-end;
   }
   
   .game-title {
@@ -1486,97 +1276,50 @@ input:focus {
     font-size: 24px;
   }
   
-  .info-text {
-    font-size: 14px;
-  }
-  
-  .game-status-grid,
   .game-buttons-grid {
     grid-template-columns: 1fr;
-    gap: 15px;
+    gap: 7px;
   }
   
-  .status-box {
-    padding: 14px 16px;
+  .buttons-column {
+    gap: 7px;
   }
   
-  .status-value {
-    font-size: 16px;
+  .overlay_wishlist,
+  .overlay_wishlist_add,
+  .overlay_wishlist_red {
+    padding: 20px;
   }
   
-  .btn-game {
-    padding: 12px 16px;
-    font-size: 14px;
+  .overlay_game {
+    padding: 20px;
   }
   
-  .btn-leave {
-    width: 100%;
-    padding: 14px;
-  }
-
-  /* Регистрация */
-  .card1 {
-    padding: 30px 25px;
-    max-width: 90%;
+  .letter-page {
+    padding: 20px;
   }
   
-  .card1 h1 {
-    font-size: 24px;
+  .chat-page {
+    padding: 10px;
+    align-items: stretch;  /* ← растягиваем по высоте */
+    justify-content: stretch;
   }
   
-  /* Профиль */
-  .card_profile {
-    padding: 25px;
+  .chat-tabs {
+    gap: 7px;
   }
   
-  .profile-content {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .chat-input-form {
+    gap: 7px;
   }
   
-  .personal-data button {
-    width: 100%;
-  }
-  
-  /* Редактирование профиля */
-  .card_profile_red {
-    padding: 25px;
-  }
-  
-  .card_profile_red .form-group {
-    max-width: 100%;
-  }
-  
-  .card_profile_red .button-group {
-    flex-direction: column;
-  }
-  
-  .card_profile_red button {
-    width: 100%;
-    padding: 12px;
-  }
-  
-  /* Вишлист */
-  .card_wishlist {
-    padding: 25px;
-  }
-  
-  .wishlist-content {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-  
+  /* Пагинация на мобильных */
   .arrows-container {
-    flex-direction: column;
+    gap: 10px;
   }
   
   .arrow {
-    width: 100%;
-    height: 40px;
-  }
-  
-  .avatar-preview {
-    width: 160px;
-    height: 120px;
+    width: 36px;
+    height: 36px;
   }
 }

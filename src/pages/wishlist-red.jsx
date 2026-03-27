@@ -153,7 +153,7 @@ function WishlistRed() {
                     </div>
                     
                     {/* ТОЛЬКО ТРИ КНОПКИ СНИЗУ */}
-                    <div className="button-group">
+                    <div className="wishlist-red-buttons">
                         <button type="submit" className="btn-primary">
                             Сохранить
                         </button>

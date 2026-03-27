@@ -116,7 +116,7 @@ function SecretChat() {
               </div>
 
               {msg.sender === 'me' && (
-                <div className="message-avatar me">👤</div>
+                <div className="message-avatar me"></div>
               )}
             </div>
           ))}

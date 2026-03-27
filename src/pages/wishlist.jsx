@@ -15,9 +15,15 @@ function Wishlist() {
   const handleGoWishlist_red = () => {
     navigate('/wishlist-red'); 
   };
-  const handleGoBack = () => {
-    navigate(-1);  
-  };
+ const handleGoBack = () => {
+  // Если есть куда возвращаться — идём назад
+  if (window.history.length > 2) {
+    navigate(-1);
+  } else {
+    // Иначе — явно на Главную
+    navigate('/', { replace: true });
+  }
+};
 
   return (
     <div className="overlay_wishlist">
@@ -30,7 +36,7 @@ function Wishlist() {
             <h1>Название</h1>
             <form>
               <div className="input-data">
-                <span className="value">000 Р</span>
+                <span className="value">100 Р</span>
                 </div>
 
                 <div className="input-data">
@@ -67,7 +73,7 @@ function Wishlist() {
             </svg>
           </button>
 
-          <h3 >1 из N</h3>
+          <h3 >1 из 1</h3>
 
           <button type="button" className="arrow">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

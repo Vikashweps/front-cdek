@@ -69,65 +69,76 @@ function Home() {
 
   return (
     <div className="app">
-      
       {/* ========== HEADER ========== */}
-      <header className="header">
-        <nav>
-           {/* Бургер — ПЕРВЫЙ, чтобы был слева */}
-    <button 
-      className={`burger-menu ${isMobileMenuOpen ? 'active' : ''}`}
-      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-      aria-label="Меню"
-    >
-      <span></span><span></span><span></span>
-    </button>
+        <header className="header">
+          <nav>
+            {/* Бургер */}
+            <button 
+              className={`burger-menu ${isMobileMenuOpen ? 'active' : ''}`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Меню"
+            >
+              <span></span><span></span><span></span>
+            </button>
 
-          {/* Левые ссылки (ПК) */}
-          <div className="header-left">
-            <a href="#profile" onClick={handleGoProfile}>Профиль</a>
-            <a href="#wishlist" onClick={handleGoWishlist}>Вишлист</a>
-          </div>
+            {/* Левые ссылки (ПК) — ИСПРАВЛЕНО: нет href! */}
+            <div className="header-left">
+              <a href="#" onClick={(e) => { e.preventDefault(); handleGoProfile(); }}>Профиль</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); handleGoWishlist(); }}>Вишлист</a>
+            </div>
 
-          {/* Логотип — центр */}
-          <a href="#" className="logo" onClick={(e) => { 
+            {/* Логотип */}
+            <a href="#" className="logo" onClick={(e) => { 
+              e.preventDefault(); 
+              window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            }}>
+              <img src="/sdek-logo.png" alt="СДЭК" className="logo-img"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.closest('.logo, .footer-logo');
+                    const fallback = parent?.querySelector('.logo-fallback');
+                    if (fallback) fallback.style.display = 'inline-block';
+                  }} 
+              />
+              <span className="logo-fallback">СДЭК</span>
+            </a>
+
+            {/* Правые ссылки (ПК) — ОСТАВЛЯЕМ: это скролл, не навигация */}
+            <div className="header-right">
+              <a href="#rules" onClick={() => scrollToSection('rules')}>Правила</a>
+              <a href="#faq" onClick={() => scrollToSection('faq')}>Вопросы</a>
+            </div>
+          </nav>
+</header>
+
+      {/* ========== МОБИЛЬНОЕ МЕНЮ — ИСПРАВЛЕНО ========== */}
+        {isMobileMenuOpen && (
+          <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />
+        )}
+
+        <div className={`mobile-nav ${isMobileMenuOpen ? 'active' : ''}`}>
+          {/* Навигация (не скролл) — e.preventDefault() обязателен! */}
+          <a href="#" onClick={(e) => { 
             e.preventDefault(); 
-            window.scrollTo({ top: 0, behavior: 'smooth' }); 
-          }}>
-            <img 
-              src="/sdek-logo.png" 
-              alt="СДЭК" 
-              className="logo-img"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                const parent = e.currentTarget.closest('.logo, .footer-logo');
-                const fallback = parent?.querySelector('.logo-fallback');
-                if (fallback) fallback.style.display = 'inline-block';
-              }} 
-            />
-            <span className="logo-fallback">СДЭК</span>
-          </a>
-
-          {/* Правые ссылки (ПК) */}
-          <div className="header-right">
-            <a href="#rules" onClick={() => scrollToSection('rules')}>Правила</a>
-            <a href="#faq" onClick={() => scrollToSection('faq')}>Вопросы</a>
-          </div>
-        </nav>
-      </header>
-
-      {/* ========== МОБИЛЬНОЕ МЕНЮ (ЭТОГО НЕ ХВАТАЛО!) ========== */}
-      
-      {/* Всплывающее меню — компактное, под шапкой */}
-      {isMobileMenuOpen && (
-        <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />
-      )}
-
-      <div className={`mobile-nav ${isMobileMenuOpen ? 'active' : ''}`}>
-        <a href="#profile" onClick={() => handleMobileNavClick(handleGoProfile)}>Профиль</a>
-        <a href="#wishlist" onClick={() => handleMobileNavClick(handleGoWishlist)}>Вишлист</a>
-        <a href="#rules" onClick={() => handleMobileNavClick(() => scrollToSection('rules'))}>Правила</a>
-        <a href="#faq" onClick={() => handleMobileNavClick(() => scrollToSection('faq'))}>Вопросы</a>
-      </div>
+            handleMobileNavClick(handleGoProfile); 
+          }}>Профиль</a>
+          
+          <a href="#" onClick={(e) => { 
+            e.preventDefault(); 
+            handleMobileNavClick(handleGoWishlist); 
+          }}>Вишлист</a>
+          
+          {/* Скролл-ссылки — можно оставить href, но тоже лучше preventDefault */}
+          <a href="#" onClick={(e) => { 
+            e.preventDefault(); 
+            handleMobileNavClick(() => scrollToSection('rules')); 
+          }}>Правила</a>
+          
+          <a href="#" onClick={(e) => { 
+            e.preventDefault(); 
+            handleMobileNavClick(() => scrollToSection('faq')); 
+          }}>Вопросы</a>
+        </div>
 
       {/* ========== HERO ========== */}
       <section className="hero">

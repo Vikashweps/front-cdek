@@ -78,7 +78,7 @@ return (
           <div className="buttons-column">
             <button 
             type="button" 
-            className="btn-secondary"  
+            className="btn-game btn-secondary"  
             onClick={handleSecretChat}
             disabled={!gameData.isChatAvailable}  
             >
@@ -87,7 +87,7 @@ return (
 
             <button 
             type="button" 
-            className="btn-primary"
+            className="btn-game btn-primary"
             onClick={handleDrawResult}
             disabled={!gameData.isDrawDone}
             >
