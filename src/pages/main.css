@@ -21,7 +21,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Roboto, sans-serif;
+  font-family: 'PT Sans', sans-serif;
 }
 
 body {
@@ -63,7 +63,7 @@ button:hover {
 /* Первичная кнопка (зелёная) */
 .btn-primary {
   background-color: var(--primary-color);
-  color: white;
+  color: #1E1E1E;
 }
 
 .btn-primary:hover
