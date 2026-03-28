@@ -1094,9 +1094,211 @@ input:focus {
 }
 
 /* ========================================
-   АДАПТИВНОСТЬ — добавить в @media (max-width: 768px)
+   СТРАНИЦА: РЕДАКТИРОВАНИЕ ИГРЫ
    ======================================== */
 
+/* Карточка редактирования */
+.card_game-edit {
+  padding: 30px 40px;
+  max-width: 900px; /* Шире для двух колонок */
+}
+
+.card_game-edit .game-title {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.card_game-edit .team-name {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+/* Сетка двух колонок */
+.edit-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+  align-items: start;
+}
+
+/* Общие стили колонок */
+.edit-column {
+  background: #f8f9fa;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  border: 1px solid #eee;
+}
+
+.edit-column h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: var(--dark-color);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+/* === ЛЕВАЯ КОЛОНКА: Настройки === */
+.edit-settings .form-group {
+  margin-bottom: 15px;
+}
+
+.edit-settings .form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 6px;
+}
+
+.edit-settings input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.edit-settings input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* Две даты в ряд */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* === ПРАВАЯ КОЛОНКА: Участники === */
+.participants-header {
+  margin-bottom: 15px;
+}
+
+.participants-header h3 {
+  margin: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.participants-hint {
+  font-size: 12px;
+  color: var(--gray-color);
+  font-style: italic;
+}
+
+/* Скроллируемый список */
+.participants-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 5px;
+}
+
+.participants-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.participants-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.participants-scroll::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 3px;
+}
+
+/* Элемент участника */
+.participant-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  transition: all 0.2s;
+}
+
+.participant-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(68, 232, 88, 0.1);
+}
+
+.participant-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.participant-name {
+  font-weight: 600;
+  color: var(--dark-color);
+  font-size: 15px;
+}
+
+.participant-email {
+  font-size: 12px;
+  color: var(--gray-color);
+}
+
+
+/* Пустой список */
+.empty-participants {
+  text-align: center;
+  color: var(--gray-color);
+  font-size: 14px;
+  padding: 20px;
+}
+
+/* Футер с кнопками */
+.edit-footer {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.edit-footer .btn-primary,
+.edit-footer .btn-secondary {
+  min-width: 150px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .card_game-edit {
+    padding: 25px;
+    max-width: 100%;
+  }
+  
+  .edit-content-grid {
+    grid-template-columns: 1fr; /* Одна колонка на мобильных */
+    gap: 20px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .edit-footer {
+    flex-direction: column;
+  }
+  
+  .edit-footer .btn-primary,
+  .edit-footer .btn-secondary {
+    width: 100%;
+  }
+  
+  .participants-scroll {
+    max-height: 250px;
+  }
+}
 
 /* ========================================
    ПИСЬМО САНТЕ
