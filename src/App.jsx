@@ -9,7 +9,6 @@ import Wishlist_add from './pages/wishlist-add';
 import Wishlist_red from './pages/wishlist-red';
 import Wishlist_Santa from './pages/wishlist-santa';
 import Game from './pages/game';
-import Game2 from './pages/game2';
 import Game_add from './pages/game-add';
 import Game_add_link from './pages/game-add-link';
 import Letter from './pages/letter';
@@ -28,7 +27,6 @@ function App() {
         <Route path="/wishlist-red" element={<Wishlist_red />} />
         <Route path="/profile-red" element={<Profile_red />} />
         <Route path="/game" element={<Game />} />
-        <Route path="/game2" element={<Game2 />} />
         <Route path="/game-add" element={<Game_add />} />
         <Route path="/game-add-link" element={<Game_add_link />} />
         <Route path="/game-letter" element={<Letter />} />

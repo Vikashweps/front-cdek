@@ -84,6 +84,21 @@ button:hover {
   color: white;
 }
 
+/* Вторичная кнопка - отключённое состояние */
+.btn-secondary:disabled {
+  background: #f5f5f5;
+  border-color: #ddd;
+  color: var(--gray-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-secondary:disabled:hover {
+  background: #f5f5f5;
+  color: var(--gray-color);
+  transform: none; /* Убираем анимацию */
+}
+
 input {
   padding: 12px 15px;
   border: 1.5px solid #ddd;
@@ -587,6 +602,66 @@ input:focus {
   width: 20px;
   height: 20px;
 }
+/* === ПУСТОЙ ВИШЛИСТ === */
+.wishlist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  text-align: center;
+  gap: 20px;
+}
+
+.empty-icon {
+  font-size: 80px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.empty-title {
+  font-size: 24px;
+  color: var(--dark-color);
+  margin: 0;
+  font-weight: 700;
+}
+
+.empty-text {
+  font-size: 16px;
+  color: var(--gray-color);
+  margin: 0;
+  max-width: 350px;
+  line-height: 1.5;
+}
+
+.wishlist-empty .btn-primary,
+.wishlist-empty .btn-secondary {
+  min-width: 200px;
+  margin: 5px 0;
+}
+
+/* Адаптивность для пустого состояния */
+@media (max-width: 768px) {
+  .wishlist-empty {
+    padding: 40px 20px;
+  }
+  
+  .empty-icon {
+    font-size: 60px;
+  }
+  
+  .empty-title {
+    font-size: 20px;
+  }
+  
+  .empty-text {
+    font-size: 14px;
+  }
+}
 
 /* ========================================
    ДОБАВЛЕНИЕ ТОВАРА
@@ -723,6 +798,43 @@ input:focus {
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   position: relative;
   z-index: 1;
+}
+/* === КНОПКА РЕДАКТИРОВАНИЯ ИГРЫ (правый верхний угол) === */
+.btn-edit-game {
+  position: absolute;    /* ← Позиционируем относительно .card_game */
+  top: 20px;             /* ← Отступ сверху */
+  right: 20px;           /* ← Отступ справа */
+  
+  background: transparent;
+  border: 1px solid var(--gray-color);
+  color: var(--gray-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;           /* ← Поверх остальных элементов */
+}
+
+.btn-edit-game:hover {
+  background: var(--dark-color);
+  border-color: var(--dark-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .btn-edit-game {
+    top: 15px;
+    right: 15px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 }
 
 .game-title {

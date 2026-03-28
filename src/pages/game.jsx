@@ -4,15 +4,18 @@ import './main.css';
 
 function Game() {
   const navigate = useNavigate();
+  const isDrawDone = true; // Поменяйте на `true`, чтобы показать состояние после жеребьёвки
+  const isOrganizer = true; 
 
   const [gameData] = useState({
     teamName: 'КОМАНДА1',
-    period: '10.12.26 ',
+    period: '10.12.26',
     drawDate: '14.12.26',
-    stage: 'Добавление участников',
+    stage: isDrawDone ? 'Дарение подарков' : 'Добавление участников',
     participantsCount: 10,
-    isDrawDone: false,
-    isChatAvailable: false
+    isOrganizer: isOrganizer,
+    isDrawDone: isDrawDone,
+    isChatAvailable: isDrawDone
   });
 
   const handleGoWishlist = () => {
@@ -21,6 +24,9 @@ function Game() {
 
   const handleGoProfile = () => {
     navigate('/profile'); 
+  };
+  const handleGoEditGame = () => {
+    navigate('/game-edit'); 
   };
 
   const handleLeaveGame = () => {
@@ -45,7 +51,7 @@ function Game() {
     navigate('/game-chat');
   };
 
-return (
+  return (
     <div className="overlay_game">
       <div className="card_game">
         {/* Заголовок */}
@@ -53,6 +59,18 @@ return (
         
         {/* Название команды */}
         <h1 className="team-name">Команда "{gameData.teamName}"</h1>
+
+         {/* ← НОВОЕ: Кнопка редактирования (видна только организатору) */}
+        {isOrganizer && (
+          <button 
+            type="button" 
+            className="btn-edit-game"
+            onClick={handleGoEditGame}
+            title="Настройки игры"
+          >
+            Редактировать
+          </button>
+        )}
 
         {/* Информация об игре */}
         <div className="game-info">
@@ -64,6 +82,7 @@ return (
         <div className="game-status-grid">
           <div className="status-box">
             <span className="status-label">Этап игры:</span>
+            {/* ← Динамический текст этапа */}
             <span className="status-value">{gameData.stage}</span>
           </div>
 
@@ -72,26 +91,26 @@ return (
             <span className="status-value">{gameData.participantsCount}</span>
           </div>
         </div>
-                  
+
         {/* Кнопки - две колонки */}
         <div className="game-buttons-grid">
           <div className="buttons-column">
             <button 
-            type="button" 
-            className="btn-game btn-secondary"  
-            onClick={handleSecretChat}
-            disabled={!gameData.isChatAvailable}  
+              type="button" 
+              className="btn-primary"  
+              onClick={handleSecretChat}
+              disabled={!gameData.isDrawDone}
             >
-            Секретный чат
+              Секретный чат
             </button>
 
             <button 
-            type="button" 
-            className="btn-game btn-primary"
-            onClick={handleDrawResult}
-            disabled={!gameData.isDrawDone}
+              type="button" 
+              className="btn-primary"
+              onClick={handleDrawResult}
+              disabled={!gameData.isDrawDone}
             >
-            Результат жеребьёвки
+              Результат жеребьёвки
             </button>
           </div>
 
@@ -114,12 +133,13 @@ return (
           </div>
         </div>
 
+        {/* Футер с кнопкой выхода */}
         <div className="game-footer">
           <button 
             type="button" 
             className="btn-secondary"
             onClick={handleLeaveGame}
-            disabled={gameData.isDrawDone}
+            disabled={gameData.isDrawDone}  
           >
             Выйти из игры
           </button>
