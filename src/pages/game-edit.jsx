@@ -8,8 +8,6 @@ function Game_edit() {
   const [formData, setFormData] = useState({
     teamName: 'КОМАНДА1',
     drawDate: '2026-12-14',
-    periodStart: '2026-12-10',
-    periodEnd: '2026-12-28'
   });
 
   const [participants, setParticipants] = useState([
@@ -46,10 +44,34 @@ function Game_edit() {
     navigate('/game');
   };
 
-  // Переход к добавлению участника
-  const handleAddParticipant = () => {
-    navigate('/game-add-participant'); // Замените на ваш маршрут
-  };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
+
+    // Ссылка для приглашения (в реальном приложении — с сервера)
+    const inviteLink = `${window.location.origin}/join/TEAM123`;
+
+    // Открыть окно
+    const handleAddParticipant = () => {
+    setIsModalOpen(true);
+    setIsCopied(false);
+    };
+
+    // Закрыть окно
+    const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setIsCopied(false);
+    };
+
+    // Копировать ссылку
+    const handleCopyLink = async () => {
+    try {
+        await navigator.clipboard.writeText(inviteLink);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+        alert('Не удалось скопировать');
+    }
+    };
 
   return (
     <div className="overlay_game">
@@ -84,27 +106,6 @@ function Game_edit() {
                 value={formData.drawDate}
                 onChange={handleChange}
               />
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>Начало периода</label>
-                <input
-                  type="date"
-                  name="periodStart"
-                  value={formData.periodStart}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Конец периода</label>
-                <input
-                  type="date"
-                  name="periodEnd"
-                  value={formData.periodEnd}
-                  onChange={handleChange}
-                />
-              </div>
             </div>
 
             {/* Ссылка на добавление участников */}
@@ -169,6 +170,32 @@ function Game_edit() {
           
         </div>
       </div>
+      {/* Модальное окно со ссылкой */}
+{isModalOpen && (
+  <div className="modal-overlay" onClick={handleCloseModal}>
+    <div className="modal-small" onClick={(e) => e.stopPropagation()}>
+      <button className="modal-close" onClick={handleCloseModal}>×</button>
+      
+      <p className="modal-label">Ссылка для приглашения:</p>
+      
+      <div className="link-row">
+        <input 
+          type="text" 
+          className="link-input" 
+          value={inviteLink} 
+          readOnly 
+        />
+        <button 
+          type="button" 
+          className="btn-primary"
+          onClick={handleCopyLink}
+        >
+          {isCopied ? '✓' : 'Копировать'}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }
