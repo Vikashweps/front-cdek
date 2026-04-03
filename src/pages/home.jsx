@@ -162,6 +162,11 @@ function Home() {
 
       {/* ========== RULES ========== */}
       <section className="rules" id="rules">
+        <img 
+          src="/cookie.png" 
+          alt="Печенье" 
+          className="decoration cookie"
+        />
         <h2>ПРАВИЛА ИГРЫ</h2>
         <ul>
           {rulesData.map((rule, index) => (
@@ -173,6 +178,12 @@ function Home() {
         </ul>
         <button onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
+
+      <img 
+        src="/garland.png" 
+        alt="Гирлянда" 
+        className="decoration garland"
+      />
 
       {/* ========== FAQ ========== */}
       <section className="faq" id="faq">
@@ -192,6 +203,12 @@ function Home() {
 
       {/* ========== FOOTER ========== */}
       <footer className="footer">
+
+        <img 
+          src="/santa.png" 
+          alt="Санта" 
+          className="decoration santa"
+        />
         <div className="footer-content">
           <div className="footer-section">
             <h4>Контакты</h4>
