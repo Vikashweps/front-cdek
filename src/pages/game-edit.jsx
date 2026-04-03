@@ -2,6 +2,75 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main.css';
 
+// === ФУНКЦИИ ВАЛИДАЦИИ ===
+
+// Валидация названия команды
+const validateTeamName = (name) => {
+  const errors = [];
+  const trimmed = name.trim();
+  
+  // Проверка: не пустое
+  if (!trimmed) {
+    errors.push('Название команды обязательно');
+    return errors;
+  }
+  
+  // Проверка: только разрешённые символы (кириллица, латиница, цифры, пробел, - , . ( ) /)
+  const validPattern = /^[а-яА-ЯёЁa-zA-Z0-9\s\-\,\.\(\)\/]+$/;
+  if (!validPattern.test(trimmed)) {
+    errors.push('Разрешены только буквы, цифры, пробел и символы: - , . ( ) /');
+  }
+  
+  // Проверка: длина (3–150 символов)
+  if (trimmed.length < 3) {
+    errors.push('Минимальная длина названия — 3 символа');
+  }
+  if (trimmed.length > 150) {
+    errors.push('Максимальная длина названия — 150 символов');
+  }
+  
+  // Проверка: нет пробелов по краям
+  if (trimmed.startsWith(' ') || trimmed.endsWith(' ')) {
+    errors.push('Название не должно начинаться или заканчиваться пробелом');
+  }
+  
+  return errors;
+};
+
+// Валидация даты жеребьёвки
+const validateDrawDate = (dateString) => {
+  const errors = [];
+  
+  if (!dateString) {
+    errors.push('Дата жеребьёвки обязательна');
+    return errors;
+  }
+  
+  const date = new Date(dateString);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Сбрасываем время для корректного сравнения
+  
+  // Проверка: валидная дата
+  if (isNaN(date.getTime())) {
+    errors.push('Введите корректную дату');
+    return errors;
+  }
+  
+  // Проверка: не в прошлом
+  if (date < today) {
+    errors.push('Дата жеребьёвки не может быть в прошлом');
+  }
+  
+  // Проверка: разумный максимум (не дальше 5 лет)
+  const maxDate = new Date();
+  maxDate.setFullYear(maxDate.getFullYear() + 5);
+  if (date > maxDate) {
+    errors.push('Дата жеребьёвки не может быть дальше 5 лет');
+  }
+  
+  return errors;
+};
+
 function Game_edit() {
   const navigate = useNavigate();
 
@@ -19,9 +88,43 @@ function Game_edit() {
     { id: 6, name: 'Алексей Морозов', email: 'alexey@example.com' },
   ]);
 
+  // ← НОВОЕ: Состояния для ошибок и "затронутых" полей
+  const [errors, setErrors] = useState({ teamName: [], drawDate: [] });
+  const [touched, setTouched] = useState({ teamName: false, drawDate: false });
+
   // Обработчики изменений полей
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    
+    // Если поле уже было затронуто — валидируем сразу
+    if (touched[name]) {
+      if (name === 'teamName') {
+        setErrors(prev => ({ ...prev, teamName: validateTeamName(value) }));
+      } else if (name === 'drawDate') {
+        setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value) }));
+      }
+    }
+  };
+
+  // ← НОВОЕ: Обработчик потери фокуса (валидация при уходе с поля)
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    
+    if (name === 'teamName') {
+      setErrors(prev => ({ ...prev, teamName: validateTeamName(value) }));
+    } else if (name === 'drawDate') {
+      setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value) }));
+    }
+  };
+
+  // ← НОВОЕ: Проверка всей формы перед сохранением
+  const isFormValid = () => {
+    const nameErrors = validateTeamName(formData.teamName);
+    const dateErrors = validateDrawDate(formData.drawDate);
+    setErrors({ teamName: nameErrors, drawDate: dateErrors });
+    return nameErrors.length === 0 && dateErrors.length === 0;
   };
 
   // Удаление участника
@@ -33,9 +136,15 @@ function Game_edit() {
 
   // Сохранение изменений
   const handleSave = () => {
+    // ← НОВОЕ: Валидируем перед сохранением
+    if (!isFormValid()) {
+      setTouched({ teamName: true, drawDate: true }); // Показать все ошибки
+      return;
+    }
+    
     console.log('Сохраняем изменения:', formData);
     console.log('Участники:', participants);
-    alert('Изменения сохранены!');
+    alert('✅ Изменения сохранены!');
     navigate('/game');
   };
 
@@ -44,34 +153,30 @@ function Game_edit() {
     navigate('/game');
   };
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isCopied, setIsCopied] = useState(false);
+  // Модальное окно
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const inviteLink = `${window.location.origin}/join/TEAM123`;
 
-    // Ссылка для приглашения (в реальном приложении — с сервера)
-    const inviteLink = `${window.location.origin}/join/TEAM123`;
-
-    // Открыть окно
-    const handleAddParticipant = () => {
+  const handleAddParticipant = () => {
     setIsModalOpen(true);
     setIsCopied(false);
-    };
+  };
 
-    // Закрыть окно
-    const handleCloseModal = () => {
+  const handleCloseModal = () => {
     setIsModalOpen(false);
     setIsCopied(false);
-    };
+  };
 
-    // Копировать ссылку
-    const handleCopyLink = async () => {
+  const handleCopyLink = async () => {
     try {
-        await navigator.clipboard.writeText(inviteLink);
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000);
+      await navigator.clipboard.writeText(inviteLink);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
-        alert('Не удалось скопировать');
+      alert('Не удалось скопировать');
     }
-    };
+  };
 
   return (
     <div className="overlay_game">
@@ -87,6 +192,7 @@ function Game_edit() {
           <div className="edit-column edit-settings">
             <h3>Настройки игры</h3>
             
+            {/* Поле названия команды */}
             <div className="form-group">
               <label>Название команды *</label>
               <input
@@ -94,10 +200,22 @@ function Game_edit() {
                 name="teamName"
                 value={formData.teamName}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Введите название"
+                // ← Визуальная индикация ошибки
+                className={errors.teamName.length > 0 && touched.teamName ? 'input-error' : ''}
               />
+              {/* ← Сообщения об ошибках */}
+              {errors.teamName.length > 0 && touched.teamName && (
+                <ul className="error-list">
+                  {errors.teamName.map((err, i) => (
+                    <li key={i} className="error-item">• {err}</li>
+                  ))}
+                </ul>
+              )}
             </div>
 
+            {/* Поле даты жеребьёвки */}
             <div className="form-group">
               <label>Дата жеребьёвки *</label>
               <input
@@ -105,7 +223,20 @@ function Game_edit() {
                 name="drawDate"
                 value={formData.drawDate}
                 onChange={handleChange}
+                onBlur={handleBlur}
+                // ← Визуальная индикация ошибки
+                className={errors.drawDate.length > 0 && touched.drawDate ? 'input-error' : ''}
+                // ← Минимальная дата — сегодня
+                min={new Date().toISOString().split('T')[0]}
               />
+              {/* ← Сообщения об ошибках */}
+              {errors.drawDate.length > 0 && touched.drawDate && (
+                <ul className="error-list">
+                  {errors.drawDate.map((err, i) => (
+                    <li key={i} className="error-item">• {err}</li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             {/* Ссылка на добавление участников */}
@@ -138,7 +269,7 @@ function Game_edit() {
                     </div>
                     <button
                       type="button"
-                      className="btn-secondary"
+                      className="btn-remove"
                       onClick={() => handleRemoveParticipant(participant.id)}
                       title="Удалить участника"
                     >
@@ -153,7 +284,7 @@ function Game_edit() {
 
         {/* Кнопки сохранения */}
         <div className="edit-footer">
-            <button 
+          <button 
             type="button" 
             className="btn-primary"
             onClick={handleSave}
@@ -167,35 +298,33 @@ function Game_edit() {
           >
             Отмена
           </button>
-          
         </div>
       </div>
+
       {/* Модальное окно со ссылкой */}
-{isModalOpen && (
-  <div className="modal-overlay" onClick={handleCloseModal}>
-    <div className="modal-small" onClick={(e) => e.stopPropagation()}>
-      <button className="modal-close" onClick={handleCloseModal}>×</button>
-      
-      <p className="modal-label">Ссылка для приглашения:</p>
-      
-      <div className="link-row">
-        <input 
-          type="text" 
-          className="link-input" 
-          value={inviteLink} 
-          readOnly 
-        />
-        <button 
-          type="button" 
-          className="btn-primary"
-          onClick={handleCopyLink}
-        >
-          {isCopied ? '✓' : 'Копировать'}
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div className="modal-small" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={handleCloseModal}>×</button>
+            <p className="modal-label">Ссылка для приглашения:</p>
+            <div className="link-row">
+              <input 
+                type="text" 
+                className="link-input" 
+                value={inviteLink} 
+                readOnly 
+              />
+              <button 
+                type="button" 
+                className="btn-primary"
+                onClick={handleCopyLink}
+              >
+                {isCopied ? '✓' : 'Копировать'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

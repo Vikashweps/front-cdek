@@ -1330,6 +1330,52 @@ input:focus {
   background: #f9f9f9;
 }
 
+/* === ВАЛИДАЦИЯ ФОРМЫ === */
+
+/* Красная рамка у поля с ошибкой */
+.input-error {
+  border-color: #e74c3c !important;
+  background: #fff5f5;
+}
+
+.input-error:focus {
+  border-color: #c0392b !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+/* Список ошибок */
+.error-list {
+  list-style: none;
+  margin: 8px 0 0 0;
+  padding: 0;
+}
+
+.error-item {
+  font-size: 12px;
+  color: #e74c3c;
+  margin: 3px 0;
+  line-height: 1.4;
+}
+
+/* Подсказка о формате (опционально) */
+.form-hint {
+  font-size: 11px;
+  color: var(--gray-color);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Анимация появления ошибки */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.input-error {
+  animation: shake 0.3s ease-in-out;
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
   .card_game-edit {
