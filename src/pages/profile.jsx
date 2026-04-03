@@ -29,9 +29,7 @@ function Profile() {
       <div className="card_profile">
         <h1>МОЙ ПРОФИЛЬ</h1>
 
-        {/* Контейнер для двух колонок */}
         <div className="profile-content">
-          
           <div className="column personal-data">
             <h3 >ЛИЧНЫЕ ДАННЫЕ</h3>
             <form>
@@ -60,8 +58,6 @@ function Profile() {
 
           <div className="column games-list">
             <h3>МОИ ИГРЫ</h3>
-            
-            {/* Контейнер со скроллом для кнопок команд */}
             <div className="games-scroll-container">
               <button type="button" className="game-item" onClick={handleGoGame}>Команда 1 </button>
               <button type="button" className="game-item" onClick={handleGoGame}>Команда 2</button>
@@ -76,7 +72,6 @@ function Profile() {
                 Создать новую игру
             </button>
           </div>
-
         </div>
       </div>
     </div>

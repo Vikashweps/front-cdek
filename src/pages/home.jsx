@@ -48,7 +48,7 @@ function Home() {
 
   const faqData = [
     { question: "Как долго длится игра?", answer: "Стандартно: 2–3 недели (от заполнения вишлистов до доставки). Даты задаёт организатор при создании." },
-    { question: "Что будет, если участник не заполнил вишлист?", answer: "Вишлист может оставаться пустым по завершению жеребьевки. В таком случае Тайный Санта увидит пустой список и сможет выбрать подарок самостоятельно." },
+    { question: "Что, если участник не заполнил вишлист?", answer: "Вишлист может оставаться пустым по завершению жеребьевки. В таком случае Тайный Санта увидит пустой список и сможет выбрать подарок самостоятельно." },
     { question: "Когда я узнаю, кому дарить подарок?", answer: "В день жеребьёвки (дата задаётся при создании игры). Вы получите уведомление на почту с именем получателя и его вишлистом." },
     { question: "Могу ли я вытянуть самого себя?", answer: "Нет. Система гарантирует, что вы никогда не будете дарить подарок себе." }
   ];
@@ -69,7 +69,7 @@ function Home() {
 
   return (
     <div className="app">
-      {/* ========== HEADER ========== */}
+      {/*  HEADER  */}
         <header className="header">
           <nav>
             {/* Бургер */}
@@ -80,14 +80,11 @@ function Home() {
             >
               <span></span><span></span><span></span>
             </button>
-
-            {/* Левые ссылки (ПК) — ИСПРАВЛЕНО: нет href! */}
             <div className="header-left">
               <a href="#" onClick={(e) => { e.preventDefault(); handleGoProfile(); }}>Профиль</a>
               <a href="#" onClick={(e) => { e.preventDefault(); handleGoWishlist(); }}>Вишлист</a>
             </div>
 
-            {/* Логотип */}
             <a href="#" className="logo" onClick={(e) => { 
               e.preventDefault(); 
               window.scrollTo({ top: 0, behavior: 'smooth' }); 
@@ -103,7 +100,6 @@ function Home() {
               <span className="logo-fallback">СДЭК</span>
             </a>
 
-            {/* Правые ссылки (ПК) — ОСТАВЛЯЕМ: это скролл, не навигация */}
             <div className="header-right">
               <a href="#rules" onClick={() => scrollToSection('rules')}>Правила</a>
               <a href="#faq" onClick={() => scrollToSection('faq')}>Вопросы</a>
@@ -111,13 +107,13 @@ function Home() {
           </nav>
 </header>
 
-      {/* ========== МОБИЛЬНОЕ МЕНЮ — ИСПРАВЛЕНО ========== */}
+      {/*  МОБИЛЬНОЕ МЕНЮ  */}
         {isMobileMenuOpen && (
           <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />
         )}
 
         <div className={`mobile-nav ${isMobileMenuOpen ? 'active' : ''}`}>
-          {/* Навигация (не скролл) — e.preventDefault() обязателен! */}
+      
           <a href="#" onClick={(e) => { 
             e.preventDefault(); 
             handleMobileNavClick(handleGoProfile); 
@@ -128,7 +124,7 @@ function Home() {
             handleMobileNavClick(handleGoWishlist); 
           }}>Вишлист</a>
           
-          {/* Скролл-ссылки — можно оставить href, но тоже лучше preventDefault */}
+
           <a href="#" onClick={(e) => { 
             e.preventDefault(); 
             handleMobileNavClick(() => scrollToSection('rules')); 
@@ -140,14 +136,14 @@ function Home() {
           }}>Вопросы</a>
         </div>
 
-      {/* ========== HERO ========== */}
+      {/*  HERO  */}
       <section className="hero">
         <h1>ТАЙНЫЙ САНТА</h1>
         <p>Один клик — и вы в игре. Один конверт — и вы узнаёте, чью жизнь сделаете чуточку ярче этим Новым годом!</p>
         <button onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
-      {/* ========== ADVANTAGES ========== */}
+      {/*  ADVANTAGES  */}
       <section className="advantages">
         <div className="cards">
           {advantagesData.map((item, index) => (
@@ -160,7 +156,7 @@ function Home() {
         </div>
       </section>
 
-      {/* ========== RULES ========== */}
+      {/*  RULES  */}
       <section className="rules" id="rules">
         <img 
           src="/cookie.png" 
@@ -185,7 +181,7 @@ function Home() {
         className="decoration garland"
       />
 
-      {/* ========== FAQ ========== */}
+      {/*  FAQ  */}
       <section className="faq" id="faq">
         <h2>ЧАСТЫЕ ВОПРОСЫ</h2>
         <div className="faq-list">
@@ -201,7 +197,7 @@ function Home() {
         <button className="footer-button" onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
-      {/* ========== FOOTER ========== */}
+      {/*  FOOTER  */}
       <footer className="footer">
 
         <img 

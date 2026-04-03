@@ -57,7 +57,7 @@ function SecretChat() {
     navigate(-1);
   };
 
-  //Данные для отображения в заголовке
+  // Данные для отображения в заголовке
   const chatData = {
     recipient: {
       title: 'Секретный чат с Имя',
@@ -72,22 +72,22 @@ function SecretChat() {
   return (
     <div className="chat-page">
       <div className="chat-container">
-        <button className="btn-secondary" onClick={handleGoBack}>
+      <button className="btn-secondary" onClick={handleGoBack}>
           Назад
-        </button>
-
+          </button>
+        
         <div className="chat-tabs">
           <button
             className={`chat-tab ${activeTab === 'recipient' ? 'active' : ''}`}
             onClick={() => setActiveTab('recipient')}
           >
-            🎁 Тому, кому дарю
+            <i className="ti ti-gift" style={{ fontSize: '24px', color: '#000000' }}></i> Тому, кому дарю
           </button>
           <button
             className={`chat-tab ${activeTab === 'sender' ? 'active' : ''}`}
             onClick={() => setActiveTab('sender')}
           >
-            🎅 Кто дарит мне
+            <i className="ti ti-christmas-tree" style={{ fontSize: '24px', color: '#000000' }}></i> Кто дарит мне
           </button>
         </div>
 
@@ -106,7 +106,11 @@ function SecretChat() {
             >
               {msg.sender === 'them' && (
                 <div className="message-avatar">
-                  {activeTab === 'recipient' ? '🎁' : '🎅'}
+                  {activeTab === 'recipient' ? (
+                    <i className="ti ti-gift" style={{ fontSize: '24px', color: '#44E858' }}></i>
+                  ) : (
+                    <i className="ti ti-christmas-tree" style={{ fontSize: '24px', color: '#44E858' }}></i>
+                  )}
                 </div>
               )}
               

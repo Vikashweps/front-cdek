@@ -6,14 +6,18 @@
   --dark-color: #1E1E1E;
   --gray-color: #757575;
   --border-radius: 14px;
+  --spacing: 7px;
+  --spacing-2: calc(var(--spacing) * 2);
+  --spacing-3: calc(var(--spacing) * 3);
+  --spacing-4: calc(var(--spacing) * 4);
+  --spacing-5: calc(var(--spacing) * 5);
+  --spacing-6: calc(var(--spacing) * 6);
+  --spacing-8: calc(var(--spacing) * 8);
 }
 
 @font-face {
-    font-family: 'Makan Hati Cyrillic'; 
-    src: url('../fonts/MakanHatiCyrillic.otf') format('otf'); 
-    font-weight: normal; 
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Makan Hati Cyrillic'; 
+  src: url('../fonts/MakanHatiCyrillic.otf') format('otf');
 }
 
 * {
@@ -23,20 +27,12 @@
   font-family: 'PT Sans', sans-serif;
 }
 
-body {
-  margin: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-[id] {
-  scroll-margin-top: 80px;
-}
+body { margin: 0; }
+html { scroll-behavior: smooth; }
+[id] { scroll-margin-top: 80px; }
 
 /* ========================================
-   КОМПОНЕНТЫ
+   БАЗОВЫЕ КОМПОНЕНТЫ
    ======================================== */
 
 button {
@@ -51,40 +47,15 @@ button {
   align-items: center;
   justify-content: center;
 }
-
-button:hover {
-  transform: translateY(-2px);
-}
+button:hover { transform: translateY(-2px); }
 
 .btn-primary {
   background-color: var(--primary-color);
   color: #1E1E1E;
 }
+.btn-primary:hover { background: var(--primary-hover); }
 
-.btn-primary:hover {
-  background: var(--primary-hover);
-}
-
-.btn-primary:disabled {
-  background: #f5f5f5;
-  border-color: #ddd;
-  color: var(--gray-color);
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.btn-secondary {
-  background-color: #ffffff;
-  color: var(--dark-color);
-  border: 1px solid var(--primary-color);
-}
-
-.btn-secondary:hover {
-  background: var(--primary-color);
-  color: white;
-}
-
-/* Вторичная кнопка - отключённое состояние */
+.btn-primary:disabled,
 .btn-secondary:disabled {
   background: #f5f5f5;
   border-color: #ddd;
@@ -92,11 +63,21 @@ button:hover {
   cursor: not-allowed;
   opacity: 0.7;
 }
-
+.btn-primary:disabled:hover,
 .btn-secondary:disabled:hover {
+  transform: none;
   background: #f5f5f5;
   color: var(--gray-color);
-  transform: none; /* Убираем анимацию */
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--dark-color);
+  border: 1px solid var(--primary-color);
+}
+.btn-secondary:hover {
+  background: var(--primary-color);
+  color: white;
 }
 
 input {
@@ -107,7 +88,6 @@ input {
   transition: border-color 0.3s;
   width: 100%;
 }
-
 input:focus {
   outline: none;
   border-color: var(--primary-color);
@@ -116,10 +96,9 @@ input:focus {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  margin-bottom: 7px;
+  gap: var(--spacing);
+  margin-bottom: var(--spacing);
 }
-
 .form-group label {
   font-size: 14px;
   color: var(--dark-color);
@@ -129,17 +108,19 @@ input:focus {
 .button-group {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: var(--spacing);
   justify-content: center;
-  margin-top: 7px;
+  margin-top: var(--spacing);
   width: 100%;
 }
 
 /* ========================================
-   РЕГИСТРАЦИЯ
+   ОБЩИЕ ОВЕРЛЕИ
    ======================================== */
 
-.overlay1 {
+.overlay1, .overlay_profile, .overlay_profile_red,
+.overlay_wishlist, .overlay_wishlist_add, .overlay_wishlist_red,
+.overlay_game, .overlay_game_add {
   min-height: 100vh;
   background-image: url('/bg_registry.png');
   background-size: cover;
@@ -148,67 +129,285 @@ input:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 60px;
 }
 
-.card1 {
-  background: #fbfbfb;
-  padding: 50px 60px;
+.overlay_game { background-image: url('/game.png'); }
+
+/* ========================================
+   ОБЩИЕ КАРТОЧКИ
+   ======================================== */
+
+.card1, .card_profile, .card_profile_red,
+.card_wishlist, .card_wishlist_add, .card_wishlist_red,
+.card_game, .card_game_add, .card_game-edit {
+  background: white;
   border-radius: var(--border-radius);
   width: 100%;
-  max-width: 500px;
-  text-align: center;
+  color: var(--dark-color);
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
-.card1 h1 {
-  margin-bottom: 30px;
+.card1 { max-width: 500px; text-align: center; background: #fbfbfb; padding: 50px 60px; }
+.card_profile { max-width: 900px; padding: 30px; }
+.card_profile_red { max-width: 600px; padding: 40px 50px; }
+.card_wishlist { max-width: 700px; padding: 40px 50px; }
+.card_wishlist_add, .card_wishlist_red { max-width: 700px; padding: 40px 50px; }
+.card_game { max-width: 700px; padding: 40px 50px; position: relative; z-index: 1; }
+.card_game_add { max-width: 500px; padding: 50px 60px; background: #fbfbfb; text-align: center; }
+.card_game-edit { padding: 30px 40px; max-width: 900px; }
+
+/* ========================================
+   ОБЩИЕ ЗАГОЛОВКИ
+   ======================================== */
+
+.card1 h1, .card_profile h1, .card_profile_red h1,
+.card_wishlist h1, .card_wishlist_add h1, .card_wishlist_red h1,
+.card_game h1, .card_game_add h1, .card_game-edit h1 {
+  text-align: center;
+  margin-bottom: 28px;
   font-size: 28px;
   color: var(--dark-color);
 }
+.card_wishlist_add h1, .card_wishlist_red h1 { text-align: left; }
+.card_game_add h1 { margin-bottom: 30px; }
+.card_profile h3 {
+  margin: 0 0 15px 0;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  text-align: center;
+}
 
-.card1 form {
+/* ========================================
+   ОБЩИЕ ФОРМЫ
+   ======================================== */
+
+.card1 form, .card_profile form, .card_profile_red form,
+.registration-end-form, .wishlist-add-form, .wishlist-red-form,
+.game-add-form {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: var(--spacing);
 }
 
-.card1 .primary1 {
-  background: var(--primary-color);
-  color: white;
-  border: 1px solid var(--primary-color);
+/* ========================================
+   ПРОФИЛЬ
+   ======================================== */
+
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+.personal-data form { display: flex; flex-direction: column; gap: var(--spacing); }
+.input-readonly {
+  padding: 12px;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  margin-bottom: var(--spacing);
+}
+.input-readonly .value { font-weight: 500; }
+.personal-data button {
   width: 100%;
+  padding: 14px;
+  justify-content: center;
 }
-
-.card1 .secondary1 {
+.games-list { display: flex; flex-direction: column; gap: var(--spacing); }
+.games-list > .btn-secondary, .game-item {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+.games-scroll-container {
+  max-height: 215px;
+  overflow-y: auto;
+  padding: var(--spacing);
+  background: #f9f9f9;
+  border-radius: var(--border-radius);
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+}
+.game-item {
+  text-align: left;
   background: white;
-  border: 1px solid var(--primary-color);
-  color: var(--primary-color);
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.game-item:hover { border-color: var(--primary-color); color: var(--primary-color); }
+.games-scroll-container::-webkit-scrollbar { width: var(--spacing); }
+.games-scroll-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: var(--spacing-2); }
+.games-scroll-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: var(--spacing-2); }
+
+/* ========================================
+   РЕДАКТИРОВАНИЕ ПРОФИЛЯ
+   ======================================== */
+
+.card_profile_red .form-group {
   width: 100%;
+  max-width: 350px;
+  margin: 0 auto var(--spacing) auto;
 }
-
-.card1 .secondary1:hover {
-  background: var(--primary-color);
-  color: white;
+.card_profile_red .button-group {
+  margin-top: 10px;
+  flex-direction: row;
+  gap: var(--spacing);
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: auto;
 }
+.card_profile_red button { flex: 1; padding: 12px 48px; }
 
-.card1 .agreement1 {
-  margin-top: 25px;
-  font-size: 12px;
+/* ========================================
+   ВИШЛИСТ
+   ======================================== */
+
+.wishlist-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: var(--spacing-3);
+}
+.card_wishlist .staff-data form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+}
+.card_wishlist .staff-data button {
+  width: 100%;
+  margin-top: var(--spacing);
+  padding: 12px 20px;
+}
+.input-data {
+  padding: 12px 15px;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  margin-bottom: var(--spacing);
+}
+.input-data .value { font-weight: 600; }
+.upload-area {
+  border: 2px dashed var(--gray-color);
+  border-radius: var(--border-radius);
+  padding: 28px 14px;
+  text-align: center;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--spacing);
+}
+.upload-area:hover { border-color: var(--primary-color); background: #f1f8f4; }
+.avatar-preview {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  margin: 52px auto 0;
+  border: 3px solid #ecf0f1;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.arrows-container {
+  display: flex;
+  gap: var(--spacing-2);
+  justify-content: center;
+  margin: var(--spacing-3) 0 var(--spacing) 0;
+}
+.arrow {
+  width: 40px;
+  height: 40px;
+  padding: 0 !important;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.arrow:hover { background: var(--primary-color); border-color: var(--primary-color); color: white; }
+
+/* ========================================
+   ПУСТОЙ ВИШЛИСТ
+   ======================================== */
+
+.wishlist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  text-align: center;
+  gap: var(--spacing);
+}
+.empty-icon { font-size: 10px; animation: bounce 2s ease-in-out infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.empty-title { font-size: 24px; font-weight: 700; }
+.empty-text {
+  font-size: 16px;
   color: var(--gray-color);
+  margin: 0 0 10px;
+  max-width: 350px;
+  line-height: 1.5;
+}
+.wishlist-empty .btn-primary,
+.wishlist-empty .btn-secondary {
+  min-width: 200px;
+  margin: 0;
+  padding: 12px 28px;
 }
 
-/* Вкладки авторизации */
+/* ========================================
+   ДОБАВЛЕНИЕ / РЕДАКТИРОВАНИЕ ТОВАРА
+   ======================================== */
 
+.wishlist-add-buttons, .wishlist-red-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing);
+  justify-content: center;
+  margin-top: 10px;
+}
+.wishlist-add-buttons button, .wishlist-red-buttons button {
+  flex: 1;
+  padding: 12px 28px;
+}
+
+/* ========================================
+   РЕГИСТРАЦИЯ / АВТОРИЗАЦИЯ
+   ======================================== */
+
+.card1 .primary1 { background: var(--primary-color); color: white; border: 1px solid var(--primary-color); width: 100%; }
+.card1 .secondary1 { background: white; border: 1px solid var(--primary-color); color: var(--primary-color); width: 100%; }
+.card1 .secondary1:hover { background: var(--primary-color); color: white; }
+.card1 .agreement1 { margin-top: 25px; font-size: 12px; color: var(--gray-color); }
 .auth-tabs {
   display: flex;
-  gap: 7px;
+  gap: var(--spacing);
   margin-bottom: 25px;
   background: #f0f0f0;
   border-radius: 12px;
   padding: 4px;
 }
-
 .auth-tab {
   flex: 1;
   padding: 12px 16px;
@@ -219,557 +418,94 @@ input:focus {
   font-weight: 600;
   color: var(--gray-color);
   cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
 }
-
-.auth-tab.active {
-  background: var(--primary-color);
-  color: white;
-  box-shadow: 0 2px 8px rgba(68, 232, 88, 0.3);
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.auth-form input {
-  padding: 14px 16px;
-  border: 2px solid #ddd;
-  font-size: 15px;
-}
-
-.btn-link {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  font-size: 14px;
-  cursor: pointer;
-  padding: 5px;
-  width: auto;
-}
-
-.btn-link:hover {
-  text-decoration: underline;
-}
+.auth-tab.active { background: var(--primary-color); color: white; box-shadow: 0 2px 8px rgba(68,232,88,0.3); }
+.auth-form { display: flex; flex-direction: column; gap: var(--spacing); }
+.auth-form input { padding: 14px 16px; border: 1.5px solid #ddd; font-size: 15px; }
+.btn-link { background: none; border: none; color: var(--primary-color); font-size: 14px; cursor: pointer; padding: 5px; width: auto; }
+.btn-link:hover { text-decoration: underline; }
 
 /* ========================================
-   ПРОФИЛЬ
+   ЗАВЕРШЕНИЕ РЕГИСТРАЦИИ
    ======================================== */
 
-.overlay_profile {
-  min-height: 100vh;
-  background-image: url('/bg_registry.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.card_profile {
-  background: white;
-  padding: 30px;
-  border-radius: var(--border-radius);
-  max-width: 900px;
-  width: 90%;
-  color: var(--dark-color);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-}
-
-.card_profile h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: var(--dark-color);
-}
-
-.card_profile h3 {
-  margin: 0 0 15px 0;
-  color: var(--dark-color);
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-  text-align: center;
-}
-
-.profile-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
-  align-items: start;
-}
-
-.personal-data form {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.input-readonly {
-  padding: 12px;
-  background: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: var(--border-radius);
-  color: var(--dark-color);
-  font-size: 16px;
-  margin-bottom: 7px;
-}
-
-.input-readonly .value {
+.registration-end-form h3 {
+  font-size: 18px;
   font-weight: 500;
+  margin: 0 0 var(--spacing) 0;
+  text-align: center;
 }
-
-.personal-data button {
+.registration-end-form .btn-primary,
+.registration-end-form .btn-secondary {
   width: 100%;
-  padding: 14px;
-  margin-top: 0;
-  justify-content: center;
-}
-
-.games-list {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  height: 100%;
-}
-
-.games-list > .btn-secondary {
-  margin-top: 10px;
-  width: 100%;
-  justify-content: center;
-}
-
-.games-scroll-container {
-  max-height: 245px;
-  overflow-y: auto;
-  padding: 10px;
-  background: #f9f9f9;
-  border-radius: var(--border-radius);
-  border: 1px solid #eee;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.game-item {
-  width: 100%;
-  padding: 12px;
-  text-align: left;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: var(--border-radius);
-  color: var(--dark-color);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.game-item:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
-}
-
-/* Скроллбар */
-.games-scroll-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.games-scroll-container::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.games-scroll-container::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
+  padding: 14px 20px;
 }
 
 /* ========================================
-   РЕДАКТИРОВАНИЕ ПРОФИЛЯ
+   СОЗДАНИЕ ИГРЫ (Game_add)
    ======================================== */
 
-.overlay_profile_red {
-  min-height: 100vh;
-  background-image: url('/bg_registry.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.card_profile_red {
-  background: white;
-  padding: 40px 50px;
-  border-radius: var(--border-radius);
-  max-width: 600px;
+.game-add-form .form-group {
   width: 100%;
-  color: var(--dark-color);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-}
-
-.card_profile_red h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: var(--dark-color);
-}
-
-.card_profile_red form {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.card_profile_red .form-group {
-  width: 100%;
-  max-width: 350px;
-  margin: 0 auto 7px auto;
-}
-
-/* Кнопки редактирования профиля — В СТРОКУ */
-.card_profile_red .button-group {
-  margin-top: 10px;
-  flex-direction: row;
-  gap: 7px;
-  max-width: 350px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.card_profile_red button {
-  flex: 1;
-  padding: 12px 48px;
-}
-
-/* ========================================
-   ВИШЛИСТ
-   ======================================== */
-
-.overlay_wishlist {
-  min-height: 100vh;
-  background-image: url('/bg_registry.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px;
-}
-
-.card_wishlist {
-  background: white;
-  padding: 40px 50px;
-  border-radius: var(--border-radius);
-  max-width: 700px;
-  width: 100%;
-  color: var(--dark-color);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-}
-
-.card_wishlist h1 {
-  text-align: left;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: var(--dark-color);
-}
-
-.wishlist-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: start;
-  margin-bottom: 20px;
-}
-
-.card_wishlist .staff-data form {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  width: 100%;
-}
-
-.card_wishlist .staff-data button {
-  width: 100%;
-  justify-content: center;
-}
-
-.input-data {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 12px 15px;
-  background: #f8f9fa;
-  border: 1px solid #eee;
-  border-radius: var(--border-radius);
-  color: var(--dark-color);
-  font-size: 14px;
-  width: 100%;
-  margin-bottom: 7px;
-}
-
-.input-data .value {
-  font-weight: 600;
-}
-
-.upload-area {
-  border: 2px dashed var(--gray-color);
-  border-radius: var(--border-radius);
-  padding: 40px 20px;
-  text-align: center;
-  background: #f8f9fa;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 7px;
-}
-
-.upload-area:hover {
-  border-color: var(--primary-color);
-  background: #f1f8f4;
-}
-
-.upload-text {
-  color: var(--dark-color);
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.upload-hint {
-  color: var(--gray-color);
-  font-size: 12px;
-}
-
-/* Картинка вишлиста — ПК версия */
-.avatar-preview {
-  width: 100%;
-  max-width: 300px;
-  height: 250px;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  margin: 60px auto 0 auto;
-  border: 4px solid #ecf0f1;
-  background: #f5f5f5;
-}
-
-.avatar-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Пагинация стрелки */
-.arrows-container {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.arrow {
-  width: 40px;
-  height: 40px;
-  padding: 0 !important;
   margin: 0;
+  text-align: left;
+}
+
+.game-add-form input[type="text"],
+.game-add-form .date-input {
+  padding: 14px 16px;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 15px;
+  width: 100%;
+  box-sizing: border-box;
   background: white;
-  border: 1px solid #ddd;
-  border-radius: 50px;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
 }
-
-.arrow:hover {
-  background: var(--primary-color);
+.game-add-form input[type="text"]:focus,
+.game-add-form .date-input:focus {
+  outline: none;
   border-color: var(--primary-color);
-  color: white;
 }
-
-.arrow svg {
-  display: block;
+.date-group { position: relative; width: 100%; }
+.date-placeholder {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-color);
+  pointer-events: none;
+  font-size: 15px;
+  z-index: 1;
+}
+.date-input:not([value=""]) + .date-placeholder,
+.date-input:valid + .date-placeholder { display: none; }
+.checkbox-group { margin-top: 0; }
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  width: 100%;
+  justify-content: flex-start;
+}
+.checkbox {
   width: 20px;
   height: 20px;
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+  flex-shrink: 0;
 }
-/* === ПУСТОЙ ВИШЛИСТ === */
-.wishlist-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 40px;
-  text-align: center;
-  gap: 20px;
-}
-
-.empty-icon {
-  font-size: 80px;
-  animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.empty-title {
-  font-size: 24px;
-  color: var(--dark-color);
-  margin: 0;
-  font-weight: 700;
-}
-
-.empty-text {
-  font-size: 16px;
-  color: var(--gray-color);
-  margin: 0;
-  max-width: 350px;
-  line-height: 1.5;
-}
-
-.wishlist-empty .btn-primary,
-.wishlist-empty .btn-secondary {
-  min-width: 200px;
-  margin: 5px 0;
-}
-
-/* Адаптивность для пустого состояния */
-@media (max-width: 768px) {
-  .wishlist-empty {
-    padding: 40px 20px;
-  }
-  
-  .empty-icon {
-    font-size: 60px;
-  }
-  
-  .empty-title {
-    font-size: 20px;
-  }
-  
-  .empty-text {
-    font-size: 14px;
-  }
-}
-
-/* ========================================
-   ДОБАВЛЕНИЕ ТОВАРА
-   ======================================== */
-
-.overlay_wishlist_add {
-  min-height: 100vh;
-  background-image: url('/bg_registry.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px;
-}
-
-.card_wishlist_add {
-  background: white;
-  padding: 40px 50px;
-  border-radius: var(--border-radius);
-  max-width: 700px;
-  width: 100%;
-  color: var(--dark-color);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-}
-
-.card_wishlist_add h1 {
-  text-align: left;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: var(--dark-color);
-}
-
-.wishlist-add-form {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-/* Кнопки добавления — В СТРОКУ */
-.wishlist-add-buttons {
+.checkbox-text { font-size: 15px; user-select: none; }
+.game-add-buttons {
   display: flex;
   flex-direction: row;
-  gap: 7px;
+  gap: var(--spacing);
   justify-content: center;
   margin-top: 10px;
   width: 100%;
 }
-
-.wishlist-add-buttons button {
-  flex: 1;
-  padding: 12px 28px;
-}
-
-/* ========================================
-   РЕДАКТИРОВАНИЕ ТОВАРА
-   ======================================== */
-
-.overlay_wishlist_red {
-  min-height: 100vh;
-  background-image: url('/bg_registry.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px;
-}
-
-.card_wishlist_red {
-  background: white;
-  padding: 40px 50px;
-  border-radius: var(--border-radius);
-  max-width: 700px;
-  width: 100%;
-  color: var(--dark-color);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-}
-
-.card_wishlist_red h1 {
-  text-align: left;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: var(--dark-color);
-}
-
-.wishlist-red-form {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-/* Кнопки редактирования — В СТРОКУ */
-.wishlist-red-buttons {
-  display: flex;
-  flex-direction: row ;
-  gap: 7px;
-  justify-content: center;
-  margin-top: 10px;
-  width: 100%;
-}
-
-.wishlist-red-buttons button {
-  flex: 1;
-  padding: 12px 28px;
-}
+.game-add-buttons button { flex: 1; padding: 12px 28px; }
 
 /* ========================================
    ИГРА
@@ -948,152 +684,6 @@ input:focus {
   padding: 12px 28px;
 }
 /* ========================================
-   СОЗДАНИЕ ИГРЫ (Game_add)
-   ======================================== */
-
-.overlay_game_add {
-  min-height: 100vh;
-  background-image: url('/bg_registry.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.card_game_add {
-  background: white;
-  padding: 40px 50px;
-  border-radius: var(--border-radius);
-  max-width: 600px;
-  width: 100%;
-  color: var(--dark-color);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-}
-
-.card_game_add h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 28px;
-  color: var(--dark-color);
-}
-
-.game-add-form {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.game-add-form .form-group {
-  width: 100%;
-  max-width: 350px;
-  margin: 0 auto 7px auto;
-}
-
-/* Поле ввода названия команды */
-.game-add-form input[type="text"] {
-  padding: 14px 16px;
-  border: 2px solid #ddd;
-  border-radius: var(--border-radius);
-  font-size: 15px;
-  width: 100%;
-}
-
-.game-add-form input[type="text"]:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-/* Поле даты с ограничением */
-.date-group {
-  position: relative;
-  width: 100%;
-}
-
-.date-input {
-  padding: 14px 16px;
-  border: 2px solid #ddd;
-  border-radius: var(--border-radius);
-  font-size: 15px;
-  width: 100%;
-  cursor: pointer;
-  position: relative;
-  z-index: 2;
-  background: white;
-}
-
-.date-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-/* Placeholder для даты */
-.date-placeholder {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--gray-color);
-  pointer-events: none;
-  font-size: 15px;
-  z-index: 1;
-}
-
-/* Скрываем placeholder когда есть значение */
-.date-input:not([value=""]) + .date-placeholder,
-.date-input:valid + .date-placeholder {
-  display: none;
-}
-
-/* Чекбокс */
-.checkbox-group {
-  margin-top: 5px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 10px 0;
-  width: 100%;
-}
-
-.checkbox {
-  width: 20px;
-  height: 20px;
-  margin-right: 12px;
-  cursor: pointer;
-  accent-color: var(--primary-color);
-  flex-shrink: 0;
-}
-
-.checkbox-text {
-  font-size: 15px;
-  color: var(--dark-color);
-  user-select: none;
-}
-
-/* Кнопки создания игры — в строку */
-.game-add-buttons {
-  display: flex;
-  flex-direction: row;
-  gap: 7px;
-  justify-content: center;
-  margin-top: 15px;
-  width: 100%;
-  max-width: 350px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.game-add-buttons button {
-  flex: 1;
-  padding: 12px 28px;
-}
-
-/* ========================================
    СТРАНИЦА: РЕДАКТИРОВАНИЕ ИГРЫ
    ======================================== */
 
@@ -1191,7 +781,7 @@ input:focus {
 
 /* Скроллируемый список */
 .participants-scroll {
-  max-height: 300px;
+  max-height: 220px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -1407,6 +997,55 @@ input:focus {
 }
 
 /* ========================================
+   МОДАЛЬНОЕ ОКНО
+   ======================================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-small {
+  background: white;
+  padding: 20px 25px;
+  border-radius: 12px;
+  min-width: 320px;
+  max-width: 90%;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+.modal-close:hover { color: #333; }
+.modal-label { margin: 0 0 12px; font-size: 14px; font-weight: 500; }
+.link-row { display: flex; gap: 8px; }
+.link-input { flex: 1; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; background: #f9f9f9; }
+
+/* ========================================
+   ВАЛИДАЦИЯ ФОРМЫ
+   ======================================== */
+
+.input-error { border-color: #e74c3c !important; background: #fff5f5; animation: shake 0.3s ease-in-out; }
+.input-error:focus { border-color: #c0392b !important; box-shadow: 0 0 0 3px rgba(231,76,60,0.1); }
+.error-list { list-style: none; margin: 8px 0 0; padding: 0; }
+.error-item { font-size: 12px; color: #e74c3c; margin: 3px 0; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+/* ========================================
    ПИСЬМО САНТЕ
    ======================================== */
 
@@ -1532,6 +1171,7 @@ input:focus {
   font-family: 'Makan Hati Cyrillic', sans-serif;
 }
 
+
 /* ========================================
    ЧАТ
    ======================================== */
@@ -1543,28 +1183,24 @@ input:focus {
   background-repeat: no-repeat;
   background-position: center 70%;
   padding: 40px;
-  display: flex;           /* ← добавлено */
-  align-items: center;     /* ← добавлено */
-  justify-content: center; /* ← добавлено */
-  box-sizing: border-box;  /* ← добавлено */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
-
 .chat-container {
   max-width: 900px;
-  width: 100%;             /* ← изменено с max-width */
-  height: 600px;           /* ← фиксированная высота на ПК */
-  max-height: calc(100vh - 80px); /* ← ограничение по высоте экрана */
-  margin: 0 auto;
+  width: 100%;
+  height: 600px;
+  max-height: calc(100vh - 80px);
   background: white;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   position: relative;
-  z-index: 1;
-  overflow: hidden;        /* ← добавлено */
+  overflow: hidden;
 }
-
 .chat-container .btn-secondary {
   position: absolute;
   top: 70px;
@@ -1573,44 +1209,18 @@ input:focus {
   padding: 10px 24px;
   width: auto;
 }
-
-.chat-header {
-  text-align: center;
-  padding: 15px 20px 20px;
-  border-bottom: 2px solid #ecf0f1;
-}
-
-.chat-title {
-  font-size: 20px;
-  color: var(--dark-color);
-  margin: 0 0 5px 0;
-  font-weight: 700;
-}
-
-.chat-team {
-  font-size: 16px;
-  color: var(--primary-color);
-  margin: 0;
-  font-weight: 600;
-}
-
-.chat-partner {
-  font-size: 13px;
-  color: var(--gray-color);
-  margin: 8px 0 0;
-  font-style: italic;
-}
-
-/* Вкладки чата */
+.chat-header { text-align: center; padding: 15px 20px 20px; border-bottom: 2px solid #ecf0f1; }
+.chat-title { font-size: 20px; font-weight: 700; margin: 0 0 5px; }
+.chat-team { font-size: 16px; color: var(--primary-color); font-weight: 600; }
+.chat-partner { font-size: 13px; color: var(--gray-color); margin: 8px 0 0; font-style: italic; }
 .chat-tabs {
   display: flex;
-  gap: 7px;
+  gap: var(--spacing);
   padding: 10px 10px 0;
   background: #f8f9fa;
   border-radius: 20px 20px 0 0;
   border-bottom: 2px solid #ecf0f1;
 }
-
 .chat-tab {
   flex: 1;
   padding: 12px 16px;
@@ -1621,41 +1231,12 @@ input:focus {
   font-weight: 600;
   color: var(--gray-color);
   cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
 }
-
-.chat-tab.active {
-  background: var(--primary-color);
-  color: white;
-}
-
-/* Сообщения */
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.message {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  animation: messageSlide 0.3s ease-out;
-}
-
-.message-them {
-  align-self: flex-start;
-}
-
-.message-me {
-  align-self: flex-end;
-  flex-direction: row-reverse;
-}
-
+.chat-tab.active { background: var(--primary-color); color: white; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+.message { display: flex; align-items: flex-end; gap: 10px; animation: messageSlide 0.3s ease-out; }
+.message-them { align-self: flex-start; }
+.message-me { align-self: flex-end; flex-direction: row-reverse; }
 .message-avatar {
   width: 40px;
   height: 40px;
@@ -1667,248 +1248,268 @@ input:focus {
   font-size: 20px;
   flex-shrink: 0;
 }
-
-.message-avatar.me {
-  background: var(--primary-color);
-}
-
-.message-bubble {
-  max-width: 70%;
-  padding: 12px 16px;
-  border-radius: 18px;
-}
-
-.message-them .message-bubble {
-  background: #ecf0f1;
-  color: var(--dark-color);
-  border-bottom-left-radius: 4px;
-}
-
-.message-me .message-bubble {
-  background: var(--primary-color);
-  color: white;
-  border-bottom-right-radius: 4px;
-}
-
-.message-text {
-  margin: 0 0 5px 0;
-  font-size: 15px;
-  line-height: 1.4;
-}
-
-.message-time {
-  font-size: 11px;
-  opacity: 0.7;
-  display: block;
-  text-align: right;
-}
-
-/* Ввод сообщения */
+.message-avatar.me { background: var(--primary-color); }
+.message-bubble { max-width: 70%; padding: 12px 16px; border-radius: 18px; }
+.message-them .message-bubble { background: #ecf0f1; border-bottom-left-radius: 4px; }
+.message-me .message-bubble { background: var(--primary-color); color: white; border-bottom-right-radius: 4px; }
+.message-text { margin: 0 0 5px; font-size: 15px; line-height: 1.4; }
+.message-time { font-size: 11px; opacity: 0.7; display: block; text-align: right; }
 .chat-input-form {
   display: flex;
-  gap: 7px;
+  gap: var(--spacing);
   padding: 20px;
   border-top: 2px solid #ecf0f1;
   background: #fafafa;
   border-radius: 0 0 20px 20px;
 }
-
-.chat-input {
-  flex: 1;
-  padding: 14px 18px;
-  border: 2px solid #ddd;
-  border-radius: 25px;
-  font-size: 15px;
-  outline: none;
-}
-
-.chat-input:focus {
-  border-color: var(--primary-color);
-}
-
-/* Кнопка отправки — РОВНЫЙ КРУГ */
+.chat-input { flex: 1; padding: 14px 18px; border: 2px solid #ddd; border-radius: 25px; font-size: 15px; }
+.chat-input:focus { border-color: var(--primary-color); }
 .chat-send-btn {
   width: 50px;
   height: 50px;
   padding: 0;
-  border: none;
   background: var(--primary-color);
   color: white;
   border-radius: 50%;
   font-size: 20px;
   cursor: pointer;
-  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  line-height: 1;
 }
+.chat-send-btn:hover { background: var(--primary-hover); transform: scale(1.1); }
+@keyframes messageSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.chat-send-btn:hover {
-  background: var(--primary-hover);
-  transform: scale(1.1);
-}
-
-@keyframes messageSlide {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* ========================================
    АДАПТИВНОСТЬ
    ======================================== */
 
 @media (max-width: 768px) {
-  .card1,
-  .card_profile,
-  .card_profile_red,
-  .card_wishlist,
-  .card_wishlist_add,
-  .card_wishlist_red,
-  .card_game {
-    padding: 25px;
+  /* === КАРТОЧКИ === */
+  .card1, .card_profile, .card_profile_red, .card_wishlist,
+  .card_wishlist_add, .card_wishlist_red, .card_game, .card_game_add, .card_game-edit {
+    padding: 28px 21px;
   }
   
-  .profile-content,
-  .wishlist-content,
-  .game-status-grid,
-  .game-buttons-grid {
+  /* === ОВЕРЛЕИ === */
+  .overlay1, .overlay_profile_red, .overlay_wishlist, .overlay_wishlist_add,
+  .overlay_wishlist_red, .overlay_game, .overlay_game_add {
+    padding: 21px;
+  }
+  
+  /* === СЕТКИ === */
+  .profile-content, .wishlist-content, .game-status-grid, .game-buttons-grid, .edit-content-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 21px;
   }
   
-  /* Кнопки в строку на мобильных — в столбик */
-  .card_profile_red .button-group,
+  /* === ФОРМЫ === */
+  .form-row { grid-template-columns: 1fr; gap: var(--spacing); }
+  .edit-footer { flex-direction: column; gap: var(--spacing); margin-top: 21px; }
+  .edit-footer .btn-primary, .edit-footer .btn-secondary { width: 100%; padding: 12px 16px; }
+  .participants-scroll { max-height: 250px; }
+  
+  /* === ЗАГОЛОВКИ === */
+  .card1 h1, .card_profile h1, .card_profile_red h1, .card_wishlist h1,
+  .card_wishlist_add h1, .card_wishlist_red h1, .card_game h1, .card_game_add h1, .card_game-edit h1 {
+    font-size: 24px;
+    margin-bottom: 21px;
+    text-align: center;
+  }
+  .card_wishlist_add h1, .card_wishlist_red h1 { text-align: center; }
+  
+  /* === ПРОФИЛЬ === */
+  .card_profile_red .form-group { max-width: 100%; }
+  
+  /* === РЕГИСТРАЦИЯ === */
+  .card1 .agreement1 { margin-top: 21px; font-size: 11px; }
+  .auth-tabs { gap: var(--spacing); margin-bottom: 21px; }
+  .auth-tab { padding: 10px 12px; font-size: 14px; }
+  .auth-form input { padding: 12px 14px; font-size: 14px; }
+  .btn-link { font-size: 13px; }
+  
+  /* === ВИШЛИСТ === */
+  .card_wishlist { display: block; }
+  .avatar-preview { max-width: 260px; margin: 28px auto 0; }
+  .arrows-container { gap: var(--spacing-2); margin: 14px 0 var(--spacing); }
+  .arrow { width: 36px; height: 36px; }
+  .upload-area { padding: 21px 14px; }
+  .input-data { padding: 10px 12px; margin-bottom: var(--spacing); }
+ 
+  /* === ВСЕ КНОПКИ — ОДИНАКОВЫЕ (100% ширина, колонка) === */
+  .card_profile_red, .card_wishlist .staff-data, .button-group,
   .wishlist-add-buttons,
-  .wishlist-red-buttons {
+  .wishlist-red-buttons,
+  .game-add-buttons,
+  .card_profile_red .button-group,
+  .edit-footer {
     flex-direction: column;
+    gap: var(--spacing);
+    margin-top: var(--spacing-2);
+    width: 100%;
+    padding: 12px 18px;
+  }
+  .game-add-buttons button,
+  .card_profile_red button, .card_wishlist .staff-data button,
+  .button-group button,
+  .wishlist-add-buttons button,
+  .wishlist-red-buttons button,
+  .game-add-buttons button,
+  .card_profile_red button,
+  .edit-footer .btn-primary,
+  .edit-footer .btn-secondary {
+    width: 100%;
+    padding: 12px 16px;
+    box-sizing: border-box;
   }
   
-  .card1 h1 {
-    font-size: 24px;
-  }
-  
-  .card_profile h1,
-  .card_profile_red h1,
-  .card_wishlist h1,
-  .card_wishlist_add h1,
-  .card_wishlist_red h1 {
-    font-size: 24px;
-  }
-  
-  /* Картинка вишлиста — мобильная версия */
-  .avatar-preview {
-    max-width: 200px;
-    height: 160px;
-    margin: 30px auto 0 auto;
-  }
-  
-  .letter-card {
-    padding: 40px 30px;
-  }
-  
-  .letter-from,
-  .letter-to,
-  .letter-date,
-  .greeting,
-  .letter-text,
-  .highlight,
-  .closing {
-    font-size: 18px;
+  /* === ПИСЬМО === */
+  .letter-card { padding: 40px 30px; }
+  .letter-from, .letter-to, .letter-date, .greeting, .letter-text, .highlight, .closing { font-size: 18px; }
+  .letter-page { padding: 20px; }
+
+  /* === ЧАТ === */
+  .chat-page {
+    padding: 20px 10px !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   
   .chat-container {
-    height: 100vh;         /* ← на всю высоту экрана */
-    max-height: 100vh;     /* ← убираем ограничение */
-    border-radius: 0;      /* ← убираем скругление на мобильных */
-    max-width: 100%;       /* ← на всю ширину */
+    height: 80vh !important;
+    min-height: 80vh !important;
+    max-height: 80vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    border-radius: 20px !important;
+    position: relative !important;
+    overflow: hidden !important;
   }
   
   .chat-container .btn-secondary {
-    position: static;
-    margin: 10px;
-    width: auto;
-    align-self: flex-end;
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    z-index: 20 !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 6px 14px !important;
+    font-size: 12px !important;
   }
   
-  .game-title {
-    font-size: 20px;
+  .chat-header {
+    padding-top: 15px !important;
+    padding-bottom: 10px !important;
   }
   
-  .team-name {
-    font-size: 24px;
+  .chat-title {
+    font-size: 16px !important;
   }
   
-  .game-buttons-grid {
-    grid-template-columns: 1fr;
-    gap: 7px;
+  .chat-team {
+    font-size: 13px !important;
   }
   
-  .buttons-column {
-    gap: 7px;
+  .chat-partner {
+    font-size: 11px !important;
   }
   
-  .overlay_wishlist,
-  .overlay_wishlist_add,
-  .overlay_wishlist_red {
-    padding: 20px;
-  }
-  
-  .overlay_game {
-    padding: 20px;
-  }
-  
-  .letter-page {
-    padding: 20px;
-  }
-  
-  .chat-page {
-    padding: 10px;
-    align-items: stretch;  /* ← растягиваем по высоте */
-    justify-content: stretch;
+  .chat-messages {
+    padding-top: 50px !important;
+    padding-bottom: 15px !important;
   }
   
   .chat-tabs {
-    gap: 7px;
+    gap: 5px !important;
+    padding: 8px 8px 0 !important;
+  }
+  
+  .chat-tab {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
   }
   
   .chat-input-form {
-    gap: 7px;
+    gap: 7px !important;
+    padding: 10px !important;
   }
   
-  /* Пагинация на мобильных */
-  .arrows-container {
-    gap: 10px;
+  .chat-input {
+    padding: 10px 14px !important;
+    font-size: 14px !important;
   }
   
-  .arrow {
-    width: 36px;
-    height: 36px;
+  .chat-send-btn {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 16px !important;
+  }
+  
+  .message-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 16px !important;
+  }
+  
+  .message-bubble {
+    padding: 8px 12px !important;
+    max-width: 75% !important;
+  }
+  
+  .message-text {
+    font-size: 13px !important;
+  }
+  
+  .message-time {
+    font-size: 9px !important;
+  }
+  
+  
+  /* === ПУСТОЙ ВИШЛИСТ === */
+  .wishlist-empty { padding: 28px; gap: var(--spacing-2); }
+  .empty-icon { font-size: 60px; margin-bottom: var(--spacing); }
+  .empty-title { font-size: 22px; margin-bottom: 10px; }
+  .empty-text { font-size: 14px; margin-bottom: var(--spacing-2); }
+  .wishlist-empty .btn-primary, 
+  .wishlist-empty .btn-secondary { padding: 12px 20px; width: 100%; }
+  
+  /* === ЗАВЕРШЕНИЕ РЕГИСТРАЦИИ === */
+  .registration-end-form h3 { font-size: 16px; margin-bottom: var(--spacing-2); }
+  .registration-end-form .btn-primary, 
+  .registration-end-form .btn-secondary { padding: 12px 16px; width: 100%; }
+  
+  /* === СОЗДАНИЕ ИГРЫ === */
+  .game-add-form .form-group { max-width: 100%; }
+  .game-add-form input[type="text"], .date-input { padding: 12px 14px; font-size: 14px; }
+  .date-placeholder { font-size: 14px; left: 14px; }
+  .checkbox-text { font-size: 14px; }
+  .game-add-buttons { flex-direction: column; max-width: 100%; }
+  .game-add-buttons button { width: 100%; padding: 12px 18px; }
+
+  /* === ЧАТ === */
+  .chat-container .btn-secondary {
+    position: absolute !important;
+    top: 50px !important;        /* ← поднял выше (было 12px) */
+    right: 15px !important;
+    z-index: 20 !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 7px 14px !important;
+    font-size: 11px !important;
+  }
+  
+  .chat-messages {
+    padding-top: 50px !important; 
   }
 
-  /* Создание игры — адаптивность */
-  .card_game_add {
-    padding: 25px;
+  .btn-edit-game {
+    top: 15px !important;        
+    right: 5px !important;
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+    width: auto !important;
   }
-  
-  .card_game_add h1 {
-    font-size: 24px;
-  }
-  
-  .game-add-form .form-group {
-    max-width: 100%;
-  }
-  
-  /* Кнопки в столбик на мобильных */
-  .game-add-buttons {
-    flex-direction: column;
-  }
-  
 }

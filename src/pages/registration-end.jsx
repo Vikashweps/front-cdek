@@ -20,13 +20,13 @@ function Registration_end() {
       <div className="card1">
         <h1>ТАЙНЫЙ САНТА</h1>
 
-        <form>
+        <form className="registration-end-form">
           <h3>Спасибо! Регистрация завершена.</h3>
 
-          <button className="btn-primary" type="submit1"  onClick={handleGoWishlist}>
+          <button className="btn-primary" type="button"  onClick={handleGoWishlist}>
             Создать вишлист
           </button>
-          <button className="btn-primary" type="submit1"  onClick={handleGoProfile}>
+          <button className="btn-primary" type="button"  onClick={handleGoProfile}>
             Мой профиль
           </button>
 

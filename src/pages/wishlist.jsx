@@ -4,7 +4,7 @@ import './main.css';
 
 function Wishlist() {
   const navigate = useNavigate();
-  const isEmpty = true; // Поменяйте на `false`, чтобы показать обычный вид
+  const isEmpty = false; //   `false`, чтобы показать обычный вид
 
   const handleGoProfile = () => {
     navigate('/profile'); 
@@ -30,10 +30,19 @@ function Wishlist() {
     <div className="overlay_wishlist">
       <div className="card_wishlist">
 
-        {/* === ПУСТОЕ СОСТОЯНИЕ === */}
+        {/*  ПУСТОЕ СОСТОЯНИЕ  */}
         {isEmpty ? (
           <div className="wishlist-empty">
-            <div className="empty-icon">🎁</div>
+            <div className="empty-icon">
+              <i 
+                className="ti ti-gift" 
+                style={{ 
+                  fontSize: '48px', 
+                  color: '#44E858',
+                  animation: 'bounce 2s infinite'
+                }}
+              ></i>
+            </div>
             <h2 className="empty-title">Тут пока ничего нет</h2>
             <p className="empty-text">
               Добавьте первый товар в свой вишлист, чтобы друзья знали, что вам подарить!
@@ -54,7 +63,7 @@ function Wishlist() {
             </button>
           </div>
         ) : (
-          /* === ОБЫЧНЫЙ ВИД (если есть товары) === */
+          /* если есть товары */
           <div className="wishlist-content">
             <div className="column staff-data">
               <h1>Название</h1>
@@ -79,7 +88,7 @@ function Wishlist() {
             <div className="column picture">
               <div className="avatar-upload">
                 <div className="avatar-preview">
-                  <img src="/Group 47.png" alt="Товар" />
+                  <img src="/cookie.png" alt="Товар" />
                 </div>
               </div>
             </div>

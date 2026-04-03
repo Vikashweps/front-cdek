@@ -2,8 +2,6 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main.css';
 
-// === ФУНКЦИИ ВАЛИДАЦИИ ===
-
 // Валидация названия товара
 const validateName = (name) => {
   const errors = [];
@@ -41,11 +39,6 @@ const validateName = (name) => {
 const validatePrice = (price) => {
   const errors = [];
   
-//   if (!price) {
-//     errors.push('Цена обязательна для заполнения');
-//     return errors;
-//   }
-  
   const num = parseFloat(price);
   
   // Проверка: это число
@@ -61,7 +54,7 @@ const validatePrice = (price) => {
   
   // Проверка: разумный максимум
   if (num > 1000000) {
-    errors.push('Максимальная цена — 1 000 000');
+    errors.push('Максимальная цена — 10 000');
   }
   
   // Проверка: не больше 2 знаков после запятой
@@ -120,7 +113,7 @@ function WishlistAdd() {
     }
   };
 
-  // ← НОВОЕ: Обработчик потери фокуса (валидация при уходе с поля)
+  //  Обработчик потери фокуса (валидация при уходе с поля)
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
@@ -132,7 +125,7 @@ function WishlistAdd() {
     }
   };
 
-  // ← НОВОЕ: Проверка всей формы перед отправкой
+  //  Проверка всей формы перед отправкой
   const isFormValid = () => {
     const nameErrors = validateName(formData.name);
     const priceErrors = validatePrice(formData.price);
@@ -140,7 +133,6 @@ function WishlistAdd() {
     return nameErrors.length === 0 && priceErrors.length === 0;
   };
 
-  // Drag & Drop
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -167,7 +159,7 @@ function WishlistAdd() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // ← НОВОЕ: Валидируем перед отправкой
+    // Валидируем перед отправкой
     if (!isFormValid()) {
       setTouched({ name: true, price: true }); // Показать все ошибки
       return;
@@ -204,12 +196,9 @@ function WishlistAdd() {
         
         <form onSubmit={handleSubmit} noValidate>
           <div className="wishlist-content">
-            {/* ЛЕВАЯ КОЛОНКА */}
             <div className="form-left">
-              
-              {/* Поле названия */}
+
               <div className="form-group">
-                {/* ← ИСПРАВЛЕНО: Текст лейбла */}
                 <label>Название товара <span className="required">*</span></label>
                 <input 
                   type="text" 

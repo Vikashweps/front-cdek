@@ -8,17 +8,16 @@ html {
     scroll-behavior: smooth;
 }
 
-/* === ФОН ВСЕЙ СТРАНИЦЫ === */
+/*  ФОН ВСЕЙ СТРАНИЦЫ  */
 .app {
   background-image: url('/background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed; /* Фон фиксируется при прокрутке */
+  background-attachment: fixed;
   min-height: 100vh;
 }
 
-/* Если фон не применяется к .app, можно задать его body */
 body {
   background-image: url('/background.jpg');
   background-size: cover;
@@ -27,23 +26,23 @@ body {
   background-attachment: fixed;
 }
 
-/* === ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ === */
+/*  ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ  */
 .decoration {
   position: absolute;
-  z-index: 2; /* Поверх контента, но под текстом секций */
+  z-index: 2;       /* Поверх контента, но под текстом секций */
   pointer-events: none; /* Картинки не мешают кликам */
   user-select: none;
 }
 
 /* Печенье — правый верхний угол секции "Правила" */
 .cookie {
-  top: 20px;
-  right: 20px;
-  width: 230px;
+  top: 10px;
+  right: 50px;
+  width: 150px;
   height: auto;
   transform: rotate(12deg);
   /* Анимация лёгкого покачивания */
-  animation: float 3s ease-in-out infinite;
+  animation: float 5s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -53,46 +52,46 @@ body {
 
 /* Гирлянда — между секциями */
 .garland {
-  position: relative; /* Не absolute, чтобы встраивалась в поток */
+  position: relative; 
   display: block;
   width: 100%;
   /* max-width: 1200px; */
-  margin: 0 auto 20px; /* Отступ снизу до FAQ */
+  margin: 0 auto 7px;
   height: auto;
   opacity: 0.9;
 }
 
 /* Санта — левый край подвала */
 .santa {
-  bottom: 200px;
+  bottom: 260px;
   left: 0;
-  width: 450px;
+  width: 180px;
+  z-index: 2; 
   height: auto;
 }
 
 /* Адаптивность: на мобильных уменьшаем декорации */
 @media (max-width: 732px) {
   .cookie {
-    width: 50px;
+    width: 70px;
     top: 10px;
-    right: 10px;
+    right: 15px;
   }
-  
+  s
   .garland {
     max-width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 7px;
   }
   
   .santa {
-    width: 80px;
-    transform: translateY(20%);
+    width: 100px;
+    z-index: 2; 
+    transform: translateY(-45%);
   }
 }
 
-/* ========================================
-   HEADER — ПК версия: лого центр, ссылки по бокам
   
-/* ========== HEADER — ВСЁ ПО ЦЕНТРУ С ОТСТУПАМИ ========== */
+/*  HEADER */
 .header {
   background: white;
   padding: 12px 20px;
@@ -104,7 +103,7 @@ body {
 .header-left,
 .header-right {
     display: flex;
-    gap: 100px;  /* ← Отступ ВНУТРИ группы */
+    gap: 100px;  
     align-items: center;
     z-index: 101;
 }
@@ -113,15 +112,15 @@ body {
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
-  justify-content: center;  /* ← Центрируем всё */
+  justify-content: center; 
   align-items: center;
-  gap: 100px;                /* ← Равномерные отступы между элементами */
+  gap: 100px;                
   position: relative;
   min-height: 50px;
-  flex-wrap: wrap;          /* ← На маленьких экранах перенос */
+  flex-wrap: wrap;          
 }
 
-/* Ссылки — просто ссылки, без лишних обёрток */
+/* Ссылки  */
 .header a {
   text-decoration: none;
   color: #1E1E1E;
@@ -154,8 +153,7 @@ body {
   white-space: nowrap;
 }
 
-/* Бургер — скрыт на ПК */
-/* Бургер — базовые стили */
+/* Бургер */
 .burger-menu {
     display: none;
     flex-direction: column;
@@ -167,14 +165,14 @@ body {
     cursor: pointer;
     padding: 0;
     z-index: 103;
-    order: 1; /* ← На мобильных: первый элемент (слева) */
+    order: 1;
 }
 
 .burger-menu span {
     display: block;
     width: 100%;
     height: 3px;
-    background: #44E858;  /* ← ЗЕЛЁНЫЙ, не чёрный */
+    background: #44E858; 
     border-radius: 2px;
     transition: all 0.3s ease;
 }
@@ -197,20 +195,17 @@ body {
   background: #44E858;
 }
 
-/* HERO - Фон 1 */
+/* HERO */
 .hero {
   text-align: center;
   padding: 400px 50px 500px;
-  
-  /* Локальный фон для героя */
+  /* Локальный фон */
   background-image: url('/bg_hero.jpg');
   background-size: cover;
   background-position: center 85%;
   background-repeat: no-repeat;
-  
   position: relative;
-  /* Важно: белый или полупрозрачный фон, чтобы не было «дыр» */
-  background-color: rgba(255, 255, 255, 0.95); /* Опционально: лёгкая подложка */
+  background-color: rgba(255, 255, 255, 0.95); 
 }
 
 .hero h1, .hero p, .hero button {
@@ -338,11 +333,6 @@ body {
 /* RULES */
 .rules {
     padding: 80px 20px;
-    /* background-image: url('/bg-rules.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative; */
 }
 
 .rules h2, .rules ul, .rules button {
@@ -424,11 +414,6 @@ body {
 /* FAQ */
 .faq {
     padding: 80px 20px;
-    /* background-image: url('/bg-faq.jpg');
-    background-size: cover;
-    background-position: center 20%;
-    background-repeat: no-repeat;
-    position: relative; */
 }
 
 .faq h2, .faq-list, .faq .footer-button {
@@ -521,8 +506,6 @@ body {
 }
 
 /* FOOTER */
-
-/* Для позиционирования декораций внутри секций */
 .rules,
 .footer {
   position: relative;
@@ -593,11 +576,9 @@ body {
     font-size: 12px;
 }
 
-/* Всплывающее меню — компактное, под шапкой */
-/* Всплывающее меню — фиксированное, чтобы не обрезалось */
 .mobile-nav {
-    position: fixed;           /* ← FIX: было absolute */
-    top: 60px;                 /* ← Отступ вниз = высота хедера */
+    position: fixed;           
+    top: 60px;               
     left: 20px;
     background: white;
     border-radius: 12px;
@@ -607,22 +588,19 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    z-index: 999;              /* ← Выше всего */
-    
-    /* Скрыто по умолчанию */
+    z-index: 999;            
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.2s ease;
-    pointer-events: none;      /* ← Не кликабельно, когда скрыто */
+    pointer-events: none;       
 }
 
-/* Показываем при активном классе */
 .mobile-nav.active {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-    pointer-events: auto;      /* ← Кликабельно, когда видно */
+    pointer-events: auto;     
 }
 
 .mobile-nav a {
@@ -640,20 +618,18 @@ body {
     color: #44E858;
 }
 
-/* Затемнение — для закрытия по клику вне меню */
 .mobile-overlay {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100vh;
     background: transparent;
     z-index: 998;
-    cursor: default;           /* ← Не менять курсор */
+    cursor: default;           
 }
 
-/* ========================================
-   АДАПТИВНОСТЬ (Обновленный медиа-запрос)
-   ======================================== */
-/* ========== МОБИЛЬНАЯ ВЕРСИЯ (≤732px) ========== */
+
+/* АДАПТИВНОСТЬ */
+
 @media (max-width: 732px) {
     .header {
         padding: 12px 15px;
@@ -661,18 +637,16 @@ body {
     
     .header nav {
         max-width: 100%;
-        justify-content: center; /* Лого по центру */
+        justify-content: center; 
         position: relative;
-        padding: 0 40px; /* Место для бургера слева */
+        padding: 0 40px; 
     }
     
-    /* Скрываем десктопные группы */
     .header-left,
     .header-right {
         display: none !important;
     }
     
-    /* Бургер — строго слева */
     .burger-menu {
         display: flex;
         position: absolute;
@@ -682,42 +656,38 @@ body {
         order: 1;
     }
     
-    /* Лого — строго по центру */
     .logo {
         position: static;
         transform: none;
         margin: 0;
         order: 2;
     }
-    
-   
-    
-    /* Остальные адаптивы */
+ 
     .hero { padding: 180px 15px 220px; background-position: center 80%; }
     .hero h1 { font-size: 24px; margin-top: -140px; }
     .hero p { font-size: 14px; }
-    .hero button { padding: 12px 28px; font-size: 15px; min-width: 160px; width: 100%; max-width: 260px; }
+    .hero button { padding: 10px 18px; font-size: 15px; min-width: 100px; width: 30%; max-width: 260px; }
     
-    .advantages { padding: 50px 15px; }
+    .advantages { padding: 10px 30px; }
     .advantages h2 { font-size: 22px; }
     .cards { flex-direction: column; }
-    .card { width: 100%; max-width: 300px; padding: 28px 18px; }
+    .card { width: 100%; max-width: 300px; padding: 18px 7px; }
     
-    .rules { padding: 50px 15px; background-position: center 30%; }
+    .rules { padding: 50px 20px; background-position: center 30%; }
     .rules h2 { font-size: 22px; }
-    .rules li { font-size: 14px; padding-left: 24px; }
-    .rules button { padding: 12px 28px; font-size: 15px; min-width: 160px; width: 100%; max-width: 260px; }
+    .rules li { font-size: 14px; padding-left: 44px; }
+    .rules button { padding: 10px 18px; font-size: 15px; min-width: 100px; width: 30%; max-width: 260px; }
     
     .faq { padding: 50px 15px; background-position: center 10%; }
     .faq h2 { font-size: 22px; }
     .faq-item summary { font-size: 16px; padding: 16px 18px; }
     .faq-item p { font-size: 14px; padding: 0 18px 16px 18px; }
-    .faq .footer-button { padding: 12px 28px; font-size: 15px; min-width: 160px; width: 100%; max-width: 260px; }
+    .faq .footer-button { padding: 10px 18px; font-size: 15px; min-width: 100px; width: 30%; max-width: 260px; }
     
-    .footer { padding: 40px 15px 20px; }
-    .footer-content { flex-direction: column; text-align: center; gap: 24px; align-items: center; }
-    .footer-logo { margin: 0 auto; justify-content: center; }
-    .footer-section { min-width: 100%; }
+    .footer { padding: 30px 10px 20px; }
+    .footer-content {  display: grid; grid-template-columns: 1fr 1fr; gap: 24px 16px; text-align: center; align-items: start; }
+    .footer-logo { justify-content: center; }
+    .footer-section { min-width: auto; }
     .footer-bottom { font-size: 11px; }
 }
    

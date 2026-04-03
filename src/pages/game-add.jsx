@@ -142,7 +142,7 @@ function Game_add() {
     navigate(-1);
   };
 
-  // ← НОВОЕ: Флаг, можно ли отправлять форму
+
   const canSubmit = teamName.trim() && drawDate && 
                     errors.teamName.length === 0 && 
                     errors.drawDate.length === 0;
@@ -191,7 +191,7 @@ function Game_add() {
               required
             />
             {!drawDate && !touched.drawDate && (
-              <span className="date-placeholder">Дата жеребьевки</span>
+              <span className="date-placeholder"></span>
             )}
             {/* ← Сообщения об ошибках */}
             {errors.drawDate.length > 0 && touched.drawDate && (
