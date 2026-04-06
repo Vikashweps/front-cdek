@@ -259,11 +259,12 @@ function Game_edit() {
                     </div>
                     <button
                       type="button"
-                      className="btn-remove"
+                      className="btn-secondary"
                       onClick={() => handleRemoveParticipant(participant.id)}
                       title="Удалить участника"
+                      style={{ border: 'none' }}
                     >
-                      <i className="ti ti-x" style={{ fontSize: '16px', color: 'white' }}></i>
+                      <i className="ti ti-x" style={{ fontSize: '16px', color: 'black'}}></i>
                     </button>
                   </div>
                 ))
