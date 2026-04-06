@@ -50,8 +50,7 @@ function Registration() {
   return (
     <div className="overlay1">
       <div className="card1">
-        <h1>ТАЙНЫЙ САНТА</h1>
-        <h3>Авторизация</h3>
+        <h1>Вход</h1>
 
         <form onSubmit={handleLoginSubmit} className="auth-form">
           
