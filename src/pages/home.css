@@ -63,9 +63,9 @@ body {
 
 /* Санта — левый край подвала */
 .santa {
-  bottom: 260px;
+  bottom: 280px;
   left: 0;
-  width: 180px;
+  width: 150px;
   z-index: 2; 
   height: auto;
 }
@@ -86,7 +86,7 @@ body {
   .santa {
     width: 100px;
     z-index: 2; 
-    transform: translateY(-45%);
+    transform: translateY(20%);
   }
 }
 
