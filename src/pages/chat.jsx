@@ -72,9 +72,9 @@ function SecretChat() {
   return (
     <div className="chat-page">
       <div className="chat-container">
-      <button className="btn-secondary" onClick={handleGoBack}>
-          Назад
-          </button>
+      <button className="close" onClick={() => navigate(-1)}>
+           <i className="ti ti-x" style={{ fontSize: '24px', color: '#000000' }}></i>
+        </button>
         
         <div className="chat-tabs">
           <button

@@ -4,7 +4,11 @@ import './main.css';
 
 function Wishlist() {
   const navigate = useNavigate();
-  const isEmpty = false; //   `false`, чтобы показать обычный вид
+  const isEmpty = false; // `false`, чтобы показать обычный вид
+  
+  // Параметры пагинации
+  const currentPage = 1;
+  const totalPages = 1; // если товаров мало, страница 1 из 1
 
   const handleGoProfile = () => {
     navigate('/profile'); 
@@ -18,19 +22,38 @@ function Wishlist() {
     navigate('/wishlist-red'); 
   };
 
-  const handleGoBack = () => {
-    if (window.history.length > 2) {
-      navigate(-1);
-    } else {
-      navigate('/', { replace: true });
+  // Закрыть страницу (переход на главную)
+  const handleClose = () => {
+    navigate('/', { replace: true });
+  };
+
+  // Обработчики для пагинации
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      console.log('Предыдущая страница');
     }
   };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      console.log('Следующая страница');
+    }
+  };
+
+  // Флаги активности кнопок
+  const isPrevDisabled = currentPage <= 1;
+  const isNextDisabled = currentPage >= totalPages;
+  const showPagination = !isEmpty && totalPages > 0;
 
   return (
     <div className="overlay_wishlist">
       <div className="card_wishlist">
-
-        {/*  ПУСТОЕ СОСТОЯНИЕ  */}
+        
+        {/* КРЕСТИК ДЛЯ ЗАКРЫТИЯ */}
+        <button className="close" onClick={() => navigate(-1)}>
+           <i className="ti ti-x" style={{ fontSize: '24px', color: '#44E858' }}></i>
+        </button>
+        {/* ПУСТОЕ СОСТОЯНИЕ */}
         {isEmpty ? (
           <div className="wishlist-empty">
             <div className="empty-icon">
@@ -54,13 +77,6 @@ function Wishlist() {
             >
               Добавить товар
             </button>
-            <button 
-              type="button" 
-              className="btn-secondary" 
-              onClick={handleGoBack}
-            >
-              Назад
-            </button>
           </div>
         ) : (
           /* если есть товары */
@@ -80,9 +96,6 @@ function Wishlist() {
                 <button type="button" className="btn-primary" onClick={handleGoWishlist_add}>
                   Добавить новый товар
                 </button>
-                <button type="button" className="btn-secondary" onClick={handleGoBack}>
-                  Назад
-                </button>
               </form>
             </div>
             <div className="column picture">
@@ -95,16 +108,26 @@ function Wishlist() {
           </div>
         )}
 
-        {/* Пагинация — показываем только если есть товары */}
-        {!isEmpty && (
+        {/* Пагинация — показываем только если есть товары и больше 0 страниц */}
+        {showPagination && (
           <div className="arrows-container">
-            <button type="button" className="arrow">
+            <button 
+              type="button" 
+              className={`arrow ${isPrevDisabled ? 'arrow-disabled' : ''}`}
+              onClick={handlePrevPage}
+              disabled={isPrevDisabled}
+            >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M15 18l-6-6 6-6" />
               </svg>
             </button>
-            <h3>1 из 1</h3>
-            <button type="button" className="arrow">
+            <h3>{currentPage} из {totalPages}</h3>
+            <button 
+              type="button" 
+              className={`arrow ${isNextDisabled ? 'arrow-disabled' : ''}`}
+              onClick={handleNextPage}
+              disabled={isNextDisabled}
+            >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M9 18l6-6-6-6" />
               </svg>

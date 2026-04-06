@@ -61,11 +61,11 @@ const validateDrawDate = (dateString) => {
     errors.push('Дата жеребьёвки не может быть в прошлом');
   }
   
-  // Проверка: разумный максимум (не дальше 5 лет)
+  // Проверка: разумный максимум (не дальше 1 года)
   const maxDate = new Date();
-  maxDate.setFullYear(maxDate.getFullYear() + 5);
+  maxDate.setFullYear(maxDate.getFullYear() + 1);
   if (date > maxDate) {
-    errors.push('Дата жеребьёвки не может быть дальше 5 лет');
+    errors.push('Дата жеребьёвки не может быть дальше 1 года');
   }
   
   return errors;
