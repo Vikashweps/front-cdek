@@ -17,7 +17,7 @@
 
 @font-face {
   font-family: 'Makan Hati Cyrillic'; 
-  src: url('../fonts/MakanHatiCyrillic.otf') format('otf');
+  src: url('../fonts/MakanHatiCyrillic.otf');
 }
 
 * {
@@ -1154,7 +1154,9 @@ input:focus {
   line-height: 1.8;
   margin: 15px 0;
   color: var(--dark-color);
-  font-family: 'Makan Hati Cyrillic', sans-serif;
+  /*font-family: 'Makan Hati Cyrillic', sans-serif;*/
+    font-family: 'Makan Hati Cyrillic';
+
 }
 
 .highlight {

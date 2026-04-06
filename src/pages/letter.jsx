@@ -33,7 +33,8 @@ function Letter() {
           <p className="greeting">Дорогой Санта,</p>
           
           <p className="letter-text">
-            Меня зовут <span className="highlight">Имя</span>. В этом году я стабильно показывал(а) хорошие результаты!
+            Меня зовут <span className="highlight">Имя</span>.  fjkednrgnrg 
+            В этом году я стабильно показывал(а) хорошие результаты!
             В качестве подарка я буду рад(а) получить следующее:
           </p>
 
