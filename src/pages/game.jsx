@@ -68,7 +68,13 @@ function Game() {
             onClick={handleGoEditGame}
             title="Настройки игры"
           >
-            Редактировать
+            <i 
+            className="ti ti-edit" 
+            style={{ 
+              fontSize: '20px', 
+              color: '#000000' 
+            }}
+          ></i>
           </button>
         )}
 

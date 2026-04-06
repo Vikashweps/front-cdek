@@ -654,7 +654,7 @@ input:focus {
   right: 20px;           /* ← Отступ справа */
   
   background: transparent;
-  border: 1px solid var(--gray-color);
+  border: 1px solid var(--primary-color);
   color: var(--gray-color);
   padding: 8px 16px;
   border-radius: 8px;
@@ -669,8 +669,8 @@ input:focus {
 }
 
 .btn-edit-game:hover {
-  background: var(--dark-color);
-  border-color: var(--dark-color);
+  background: var(--primary-color);
+  border-color: var(--primary-color);
   color: white;
   transform: translateY(-2px);
 }
