@@ -9,19 +9,16 @@ const validateTeamName = (name) => {
   const errors = [];
   const trimmed = name.trim();
   
-  // Проверка: не пустое
   if (!trimmed) {
     errors.push('Название команды обязательно');
     return errors;
   }
   
-  // Проверка: только разрешённые символы (кириллица, латиница, цифры, пробел, - , . ( ) /)
   const validPattern = /^[а-яА-ЯёЁa-zA-Z0-9\s\-\,\.\(\)\/]+$/;
   if (!validPattern.test(trimmed)) {
     errors.push('Разрешены только буквы, цифры, пробел и символы: - , . ( ) /');
   }
   
-  // Проверка: длина (3–150 символов)
   if (trimmed.length < 3) {
     errors.push('Минимальная длина названия — 3 символа');
   }
@@ -29,7 +26,6 @@ const validateTeamName = (name) => {
     errors.push('Максимальная длина названия — 150 символов');
   }
   
-  // Проверка: нет пробелов по краям
   if (trimmed.startsWith(' ') || trimmed.endsWith(' ')) {
     errors.push('Название не должно начинаться или заканчиваться пробелом');
   }
@@ -37,8 +33,8 @@ const validateTeamName = (name) => {
   return errors;
 };
 
-// Валидация даты жеребьёвки
-const validateDrawDate = (dateString) => {
+// ← ИСПРАВЛЕНО: Функция теперь принимает даты как параметры
+const validateDrawDate = (dateString, minDateStr, maxDateStr) => {
   const errors = [];
   
   if (!dateString) {
@@ -47,8 +43,6 @@ const validateDrawDate = (dateString) => {
   }
   
   const date = new Date(dateString);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Сбрасываем время для корректного сравнения
   
   // Проверка: валидная дата
   if (isNaN(date.getTime())) {
@@ -56,16 +50,23 @@ const validateDrawDate = (dateString) => {
     return errors;
   }
   
-  // Проверка: не в прошлом
-  if (date < today) {
-    errors.push('Дата жеребьёвки не может быть в прошлом');
+  // ← ИСПРАВЛЕНО: Парсим строки дат в формате YYYY-MM-DD
+  const minDate = new Date(minDateStr);
+  const maxDate = new Date(maxDateStr);
+  
+  // Сбрасываем время для корректного сравнения
+  date.setHours(0, 0, 0, 0);
+  minDate.setHours(0, 0, 0, 0);
+  maxDate.setHours(23, 59, 59, 999);
+  
+  // Проверка: не раньше минимума
+  if (date < minDate) {
+    errors.push(`Дата не может быть раньше ${minDateStr}`);
   }
   
-  // Проверка: разумный максимум (не дальше 1 года)
-  const maxDate = new Date();
-  maxDate.setFullYear(maxDate.getFullYear() + 1);
+  // ← ИСПРАВЛЕНО: Сравниваем с объектом Date, а не со строкой
   if (date > maxDate) {
-    errors.push('Дата жеребьёвки не может быть дальше 1 года');
+    errors.push(`Дата не может быть позднее ${maxDateStr}`);
   }
   
   return errors;
@@ -88,26 +89,27 @@ function Game_edit() {
     { id: 6, name: 'Алексей Морозов', email: 'alexey@example.com' },
   ]);
 
-  // ← НОВОЕ: Состояния для ошибок и "затронутых" полей
+  // ← ИСПРАВЛЕНО: Формат дат должен быть YYYY-MM-DD (как возвращает input type="date")
+  const MIN_DATE = '2026-12-01';
+  const MAX_DATE = '2027-01-31';
+
   const [errors, setErrors] = useState({ teamName: [], drawDate: [] });
   const [touched, setTouched] = useState({ teamName: false, drawDate: false });
 
-  // Обработчики изменений полей
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     
-    // Если поле уже было затронуто — валидируем сразу
     if (touched[name]) {
       if (name === 'teamName') {
         setErrors(prev => ({ ...prev, teamName: validateTeamName(value) }));
       } else if (name === 'drawDate') {
-        setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value) }));
+        // ← ИСПРАВЛЕНО: Передаём даты как параметры
+        setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value, MIN_DATE, MAX_DATE) }));
       }
     }
   };
 
-  // ← НОВОЕ: Обработчик потери фокуса (валидация при уходе с поля)
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
@@ -115,30 +117,28 @@ function Game_edit() {
     if (name === 'teamName') {
       setErrors(prev => ({ ...prev, teamName: validateTeamName(value) }));
     } else if (name === 'drawDate') {
-      setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value) }));
+      // ← ИСПРАВЛЕНО: Передаём даты как параметры
+      setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value, MIN_DATE, MAX_DATE) }));
     }
   };
 
-  // ← НОВОЕ: Проверка всей формы перед сохранением
+  // ← ИСПРАВЛЕНО: Используем formData.drawDate вместо drawDate
   const isFormValid = () => {
     const nameErrors = validateTeamName(formData.teamName);
-    const dateErrors = validateDrawDate(formData.drawDate);
+    const dateErrors = validateDrawDate(formData.drawDate, MIN_DATE, MAX_DATE);
     setErrors({ teamName: nameErrors, drawDate: dateErrors });
     return nameErrors.length === 0 && dateErrors.length === 0;
   };
 
-  // Удаление участника
   const handleRemoveParticipant = (id) => {
     if (window.confirm('Удалить этого участника из игры?')) {
       setParticipants(participants.filter(p => p.id !== id));
     }
   };
 
-  // Сохранение изменений
   const handleSave = () => {
-    // ← НОВОЕ: Валидируем перед сохранением
     if (!isFormValid()) {
-      setTouched({ teamName: true, drawDate: true }); // Показать все ошибки
+      setTouched({ teamName: true, drawDate: true });
       return;
     }
     
@@ -148,7 +148,6 @@ function Game_edit() {
     navigate('/game');
   };
 
-  // Отмена
   const handleCancel = () => {
     navigate('/game');
   };
@@ -181,14 +180,10 @@ function Game_edit() {
   return (
     <div className="overlay_game">
       <div className="card_game card_game-edit">
-        {/* Заголовок */}
         <h2 className="game-title">Редактирование игры</h2>
         <h1 className="team-name">{formData.teamName}</h1>
 
-        {/* Две колонки */}
         <div className="edit-content-grid">
-          
-          {/* ЛЕВАЯ КОЛОНКА: Поля редактирования */}
           <div className="edit-column edit-settings">
             <h3>Настройки игры</h3>
             
@@ -202,10 +197,8 @@ function Game_edit() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Введите название"
-                // ← Визуальная индикация ошибки
                 className={errors.teamName.length > 0 && touched.teamName ? 'input-error' : ''}
               />
-              {/* ← Сообщения об ошибках */}
               {errors.teamName.length > 0 && touched.teamName && (
                 <ul className="error-list">
                   {errors.teamName.map((err, i) => (
@@ -224,12 +217,11 @@ function Game_edit() {
                 value={formData.drawDate}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                // ← Визуальная индикация ошибки
                 className={errors.drawDate.length > 0 && touched.drawDate ? 'input-error' : ''}
-                // ← Минимальная дата — сегодня
-                min={new Date().toISOString().split('T')[0]}
+                // ← Используем тот же формат для min/max
+                min={MIN_DATE}
+                max={MAX_DATE}
               />
-              {/* ← Сообщения об ошибках */}
               {errors.drawDate.length > 0 && touched.drawDate && (
                 <ul className="error-list">
                   {errors.drawDate.map((err, i) => (
@@ -239,7 +231,6 @@ function Game_edit() {
               )}
             </div>
 
-            {/* Ссылка на добавление участников */}
             <button 
               type="button" 
               className="btn-secondary"
@@ -256,7 +247,6 @@ function Game_edit() {
               <span className="participants-hint">Нажмите ✕ для удаления</span>
             </div>
             
-            {/* Скроллируемый список */}
             <div className="participants-scroll">
               {participants.length === 0 ? (
                 <p className="empty-participants">Пока нет участников</p>
@@ -273,7 +263,7 @@ function Game_edit() {
                       onClick={() => handleRemoveParticipant(participant.id)}
                       title="Удалить участника"
                     >
-                      ✕
+                      <i className="ti ti-x" style={{ fontSize: '16px', color: 'white' }}></i>
                     </button>
                   </div>
                 ))
@@ -282,20 +272,11 @@ function Game_edit() {
           </div>
         </div>
 
-        {/* Кнопки сохранения */}
         <div className="edit-footer">
-          <button 
-            type="button" 
-            className="btn-primary"
-            onClick={handleSave}
-          >
+          <button type="button" className="btn-primary" onClick={handleSave}>
             Сохранить изменения
           </button>
-          <button 
-            type="button" 
-            className="btn-secondary"
-            onClick={handleCancel}
-          >
+          <button type="button" className="btn-secondary" onClick={handleCancel}>
             Отмена
           </button>
         </div>
@@ -308,18 +289,22 @@ function Game_edit() {
             <button className="modal-close" onClick={handleCloseModal}>×</button>
             <p className="modal-label">Ссылка для приглашения:</p>
             <div className="link-row">
-              <input 
-                type="text" 
-                className="link-input" 
-                value={inviteLink} 
-                readOnly 
-              />
+              <input type="text" className="link-input" value={inviteLink} readOnly />
               <button 
                 type="button" 
-                className="btn-primary"
+                className="btn-primary" 
                 onClick={handleCopyLink}
               >
-                {isCopied ? '✓' : 'Копировать'}
+                {isCopied ? (
+                  <i 
+                    className="ti ti-check" 
+                    style={{ 
+                      fontSize: '18px', 
+                      color: '#1E1E1E',    /* ← Тёмный цвет для контраста на зелёном */
+                      fontWeight: 'bold'   /* ← Жирность для лучшей видимости */
+                    }}
+                  />
+                ) : 'Копировать'}
               </button>
             </div>
           </div>
