@@ -9,110 +9,64 @@ function Registration() {
     navigate('/registration-end'); 
   };
 
-  const [activeTab, setActiveTab] = useState('register'); // 'register' или 'login'
-  
-  // ← НОВОЕ: Состояния для полей форм
-  const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
   const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const [passwordSent, setPasswordSent] = useState(false);
 
-  const handleRegisterChange = (e) => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
-  };
-
-  const handleRegisterSubmit = (e) => {
-    e.preventDefault();
-    console.log('Регистрация:', registerData);
-    handleGoRegistration_end();
-  };
-
-  // ← НОВОЕ: Обработчики для формы входа
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
+    if (e.target.name === 'email') setPasswordSent(false);
   };
 
+  // Обработчик входа
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     console.log('Вход:', loginData);
     handleGoRegistration_end();
   };
 
-  // ← НОВОЕ: Обработчик для GitHub (общий)
+  // Авторизация через GitHub
   const handleGithubAuth = () => {
     console.log('Авторизация через GitHub');
     handleGoRegistration_end();
+  };
+
+  // ← Отправка пароля на почту
+  const handleSendPassword = () => {
+    const { email } = loginData;
+    
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Сначала введите корректный адрес почты');
+      return;
+    }
+    
+    // Имитация отправки (в реальном приложении — запрос к API)
+    console.log(`Отправляем пароль на ${email}`);
+    setPasswordSent(true);
+    
+    setTimeout(() => setPasswordSent(false), 5000);
+    alert(`Пароль отправлен на ${email}`);
   };
 
   return (
     <div className="overlay1">
       <div className="card1">
         <h1>ТАЙНЫЙ САНТА</h1>
+        <h3>Авторизация</h3>
 
-         {/* ← НОВОЕ: Вкладки */}
-        <div className="auth-tabs">
-          <button
-            type="button"
-            className={`auth-tab ${activeTab === 'register' ? 'active' : ''}`}
-            onClick={() => setActiveTab('register')}
-          >
-            Регистрация
-          </button>
-          <button
-            type="button"
-            className={`auth-tab ${activeTab === 'login' ? 'active' : ''}`}
-            onClick={() => setActiveTab('login')}
-          >
-            Вход
-          </button>
-        </div>
-
-        {activeTab === 'register' && (
-          <form onSubmit={handleRegisterSubmit} className="auth-form">
-            <input
-              type="text"
-              name="name"
-              placeholder="Введите имя"
-              value={registerData.name}
-              onChange={handleRegisterChange}
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Введите почту"
-              value={registerData.email}
-              onChange={handleRegisterChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Придумайте пароль"
-              value={registerData.password}
-              onChange={handleRegisterChange}
-              required
-            />
-
-            <button className="btn-primary" type="submit">
-              Создать аккаунт
-            </button>
-
-            <button type="button" className="btn-secondary" onClick={handleGithubAuth}>
-              Через GitHub
-            </button>
-          </form>
-        )}
-
-        {/* ← НОВОЕ: Форма входа (показывается если activeTab === 'login') */}
-        {activeTab === 'login' && (
-          <form onSubmit={handleLoginSubmit} className="auth-form">
-            <input
-              type="email"
-              name="email"
-              placeholder="Введите почту"
-              value={loginData.email}
-              onChange={handleLoginChange}
-              required
-            />
+        <form onSubmit={handleLoginSubmit} className="auth-form">
+          
+          {/* Поле почты */}
+          <input
+            type="email"
+            name="email"
+            placeholder="Введите почту"
+            value={loginData.email}
+            onChange={handleLoginChange}
+            required
+          />
+          
+          {/* Поле пароля с кнопкой отправки */}
+          <div className="password-field-group">
             <input
               type="password"
               name="password"
@@ -120,21 +74,31 @@ function Registration() {
               value={loginData.password}
               onChange={handleLoginChange}
               required
+              className="password-input"
             />
+            <button 
+              type="button" 
+              className="btn-primary"
+              onClick={handleSendPassword}
+              title="Отправить пароль на почту"
+            >
+              Код
+            </button>
+          </div>
+          
+          {passwordSent && (
+            <span className="password-sent-hint">✓ Пароль отправлен!</span>
+          )}
 
-            <button className="btn-primary" type="submit">
-              Войти
-            </button>
+          {/* Кнопки */}
+          <button className="btn-primary" type="submit">
+            Войти
+          </button>
 
-            <button type="button" className="btn-secondary" onClick={handleGithubAuth}>
-              Через GitHub
-            </button>
-            
-            <button type="button" className="btn-link" onClick={() => setActiveTab('register')}>
-              Забыли пароль?
-            </button>
-          </form>
-        )}
+          <button type="button" className="btn-secondary" onClick={handleGithubAuth}>
+            Через GitHub
+          </button>
+        </form>
 
         <p className="agreement1">
           Продолжая, вы соглашаетесь с <a href="#">Пользовательским соглашением</a>

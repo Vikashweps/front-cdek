@@ -25,7 +25,6 @@ function Letter() {
             <span className="label">Кому:</span>
             <span className="name">Санте</span>
           </div>
-          <div className="letter-date">14 декабря 2026</div>
         </div>
 
         {/* Текст письма */}

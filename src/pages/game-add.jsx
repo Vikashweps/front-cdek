@@ -79,8 +79,8 @@ function Game_add() {
   const [touched, setTouched] = useState({ teamName: false, drawDate: false });
 
   // Ограничение даты: декабрь 2026 - январь 2027
-  const MIN_DATE = '2026-12-01';
-  const MAX_DATE = '2027-01-31';
+  const MIN_DATE = '01.12.2026';
+  const MAX_DATE = '31.01.2027';
 
   // Обработчик изменения названия с валидацией
   const handleTeamNameChange = (e) => {

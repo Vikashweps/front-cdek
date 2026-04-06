@@ -119,8 +119,11 @@ function SecretChat() {
                 <span className="message-time">{msg.time}</span>
               </div>
 
+              {/* Аватарка пользователя */}
               {msg.sender === 'me' && (
-                <div className="message-avatar me"></div>
+                <div className="message-avatar me">
+                  <i className="ti ti-user"></i> {/* ← Цвет задаётся через CSS */}
+                </div>
               )}
             </div>
           ))}

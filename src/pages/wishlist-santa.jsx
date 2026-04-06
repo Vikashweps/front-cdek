@@ -17,7 +17,14 @@ function Wishlist_Santa() {
         {/* === ПУСТОЕ СОСТОЯНИЕ === */}
         {isEmpty ? (
           <div className="wishlist-empty">
-            <div className="empty-icon">🎁</div>
+            <i 
+                className="ti ti-gift" 
+                style={{ 
+                  fontSize: '48px', 
+                  color: '#44E858',
+                  animation: 'bounce 2s infinite'
+                }}
+              ></i>
             <h2 className="empty-title">У этого участника пока нет вишлиста</h2>
             <p className="empty-text">
               Возможно, он ещё не успел добавить товары. Попробуйте позже или напишите в секретный чат!
