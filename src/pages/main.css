@@ -131,7 +131,7 @@ input:focus {
   padding: 60px;
 }
 
-.overlay_game { background-image: url('/game.png'); }
+.overlay_game { background-image: url('/bg_registry.png'); }
 
 /* ========================================
    ОБЩИЕ КАРТОЧКИ
@@ -625,7 +625,7 @@ input:focus {
 
 .overlay_game {
   min-height: 100vh;
-  background-image: url('/game.png');
+  background-image: url('/bg_registry.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center 70%;
@@ -1285,7 +1285,7 @@ input:focus {
 
 .chat-page {
   min-height: 100vh;
-  background-image: url('/game.png');
+  background-image: url('/bg_registry.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center 70%;
