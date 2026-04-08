@@ -242,10 +242,10 @@ function Game_edit() {
             </div>
 
             <div className="form-group">
-              <label>Пожелания от организатора</label>
+              <label>Пожелания от организатора <br /> (отобразится в письмах участников после жеребьевки)</label>
               <textarea
                 name="organizerNotes"
-                placeholder="Например: Сбор подарков в офисе на 3 этаже, обмен — в конференц-зале..."
+                placeholder="Например: Сбор подарков в офисе на 3 этаже, обмен — в конференц-зале... "
                 value={organizerNotes}
                 onChange={handleNotesChange}
                 onBlur={handleBlur}

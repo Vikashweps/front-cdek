@@ -1335,8 +1335,8 @@ input:focus {
 .edit-participants {
   display: flex;
   flex-direction: column;
-  height: 100%; /* Занимает всю высоту грида */
-  min-height: 400px;
+  flex: 1; /* Растягиваем на всю высоту колонки */
+  min-height: 0; /* Важно для flex-контейнера */
 }
 
 .participants-header {
@@ -1357,8 +1357,8 @@ input:focus {
 }
 
 .participants-scroll {
-  /* flex: 1; Занимает всё доступное место */
-  overflow-y: auto; /* Скролл внутри */
+  flex: 1 1 auto;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;

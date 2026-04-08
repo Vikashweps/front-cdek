@@ -222,7 +222,7 @@ function Game_add() {
           </div>
 
           <div className="form-group">
-            <label>Пожелания от организатора</label>
+            <label>Пожелания от организатора <br /> (отобразится в письмах участников после жеребьевки)</label>
             <textarea
               name="organizerNotes"
               placeholder="Например: Сбор подарков в офисе на 3 этаже 28.12, обмен — в конференц-зале..."
