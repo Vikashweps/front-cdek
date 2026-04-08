@@ -148,7 +148,7 @@ input:focus {
 }
 
 .card1 { max-width: 500px; text-align: center; background: #fbfbfb; padding: 50px 60px; }
-.card_profile { max-width: 900px; padding: 30px; }
+.card_profile { max-width: 900px; padding: 30px; position: relative;}
 .card_profile_red { max-width: 600px; padding: 40px 50px; }
 .card_wishlist { max-width: 700px; padding: 40px 50px; }
 .card_wishlist_add, .card_wishlist_red { max-width: 700px; padding: 40px 50px; }
@@ -243,6 +243,46 @@ input:focus {
 .games-scroll-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: var(--spacing-2); }
 .games-scroll-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: var(--spacing-2); }
 
+/* === КНОПКА ВЫХОДА ИЗ ПРОФИЛЯ === */
+.btn-logout {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+  color: var(--gray-color);
+  z-index: 10;
+}
+
+.btn-logout:hover {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  transform: scale(1.1);
+}
+
+.btn-logout:active {
+  transform: scale(0.95);
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .btn-logout {
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
 /* ========================================
    РЕДАКТИРОВАНИЕ ПРОФИЛЯ
    ======================================== */
@@ -273,29 +313,266 @@ input:focus {
   align-items: start;
   margin-bottom: var(--spacing-3);
 }
-.card_wishlist .staff-data form {
+/* ========================================
+   НОВЫЙ СТИЛЬ ВИШЛИСТА
+   ======================================== */
+
+.wishlist-new {
+  max-width: 1200px;
+  padding: 40px;
+  position: relative;
+}
+
+/* Кнопка закрытия */
+.close-wishlist {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.close-wishlist:hover {
+  background: rgba(68, 232, 88, 0.1);
+}
+
+/* Заголовок с кнопкой */
+.wishlist-header {
+  display: flex;
+  gap: 30px;
+  align-items: center;        
+  /* margin-bottom: 30px; */
+}
+
+.wishlist-title {
+  margin-top: 40px;
+  font-weight: 900;
+  color: var(--dark-color);
+  margin: 0;
+  line-height: 1;  
+}
+
+/* Скроллируемый контейнер */
+.wishlist-scroll-container {
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 10px;
+  margin: 0 -10px;
+}
+
+.wishlist-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.wishlist-scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.wishlist-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+/* Сетка подарков - 2 колонки */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* Карточка подарка */
+.gift-card {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  transition: all 0.3s;
+  min-height: 200px;
+}
+
+.gift-card:hover {
+  box-shadow: 0 8px 25px rgba(68, 232, 88, 0.15);
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
+}
+
+/* Меню (3 точки) */
+.gift-menu {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 5;
+}
+
+.gift-menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.gift-menu-btn:hover {
+  background: rgba(68, 232, 88, 0.1);
+}
+
+/* Выпадающее меню */
+.gift-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  min-width: 160px;
+  overflow: hidden;
+  z-index: 10;
+  border: 1px solid #e0e0e0;
+}
+
+.menu-item {
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+  text-align: left;
+}
+
+.menu-item.edit {
+  color: var(--dark-color);
+}
+
+.menu-item.edit:hover {
+  background: rgba(68, 232, 88, 0.1);
+}
+
+.menu-item.delete {
+  color: #e74c3c;
+  border-top: 1px solid #f0f0f0;
+}
+
+.menu-item.delete:hover {
+  background: rgba(231, 76, 60, 0.1);
+}
+
+/* Метка "Забронировано" */
+.gift-reserved-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: var(--primary-color);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Контент карточки */
+.gift-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.gift-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f5f5f5;
+}
+
+.gift-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gift-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing);
+  gap: 8px;
 }
-.card_wishlist .staff-data button {
-  width: 100%;
-  margin-top: var(--spacing);
-  padding: 12px 20px;
+
+.gift-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin: 0;
+  line-height: 1.3;
 }
-.input-data {
-  padding: 12px 15px;
-  background: #f8f9fa;
-  border: 1px solid #eee;
-  border-radius: var(--border-radius);
+
+.gift-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.gift-link {
   font-size: 14px;
-  margin-bottom: var(--spacing);
+  color: var(--gray-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
 }
-.input-data .value { font-weight: 600; }
+
+.gift-link:hover {
+  color: var(--primary-color);
+}
+
+.gift-shop-link {
+  font-size: 14px;
+  color: var(--primary-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  margin-top: auto;
+  transition: all 0.2s;
+}
+
+.gift-shop-link:hover {
+  color: var(--primary-hover);
+  transform: translateX(2px);
+}
+
+/* Зона загрузки файла */
 .upload-area {
   border: 2px dashed var(--gray-color);
   border-radius: var(--border-radius);
-  padding: 28px 14px;
+  padding: 40px 20px;
   text-align: center;
   background: #f8f9fa;
   cursor: pointer;
@@ -303,84 +580,94 @@ input:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-bottom: var(--spacing);
-}
-.upload-area:hover { border-color: var(--primary-color); background: #f1f8f4; }
-.avatar-preview {
-  width: 100%;
-  max-width: 200px;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  margin: 52px auto 0;
-  border: 3px solid #ecf0f1;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
+  gap: 12px;
+  min-height: 200px;
   justify-content: center;
-}
-.avatar-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.arrows-container {
-  display: flex;
-  gap: var(--spacing-2);
-  justify-content: center;
-  margin: var(--spacing-3) 0 var(--spacing) 0;
-}
-.arrow {
-  width: 40px;
-  height: 40px;
-  padding: 0 !important;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 50px;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-.arrow:hover { background: var(--primary-color); border-color: var(--primary-color); color: white; }
-.arrow:disabled,
-.arrow.arrow-disabled {
-  opacity: 2.4;
-  cursor: not-allowed;
-  pointer-events: none;
 }
 
-.close {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 32px;
-  color: var(--gray-color);
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-  padding: 0;
-  z-index: 10;
+.upload-area:hover {
+  border-color: var(--primary-color);
+  background: #f1f8f4;
 }
 
-.close:hover {
-  background: rgba(0, 0, 0, 0.05);
+.upload-area.dragover {
+  border-color: var(--primary-color);
+  background: rgba(68, 232, 88, 0.1);
+  border-style: solid;
+}
+
+.upload-text {
   color: var(--dark-color);
-  transform: rotate(90deg);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-.card_wishlist {
-  position: relative;
+.upload-hint {
+  color: var(--gray-color);
+  font-size: 12px;
 }
 
+/* Список файлов */
+.file-list {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: var(--border-radius);
+  border: 1px solid #e0e0e0;
+}
+
+.file-list strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--dark-color);
+  font-size: 14px;
+}
+
+.file-item {
+  font-size: 13px;
+  color: var(--gray-color);
+  padding: 4px 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .wishlist-new {
+    padding: 30px 20px;
+  }
+  
+  .wishlist-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .wishlist-title {
+    font-size: 24px;
+  }
+  
+  .btn-add-gift {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .wishlist-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .gift-content {
+    flex-direction: column;
+  }
+  
+  .gift-image {
+    width: 100%;
+    height: 200px;
+  }
+  
+  .wishlist-scroll-container {
+    max-height: none;
+  }
+}
 /* ========================================
    ПУСТОЙ ВИШЛИСТ
    ======================================== */
@@ -483,6 +770,106 @@ input:focus {
   margin-left: 4px;
   font-weight: 500;
   animation: fadeIn 0.3s ease;
+}
+
+/* === ПОЛЕ КОДА С КНОПКОЙ ВНУТРИ === */
+.password-field-group {
+  width: 100%;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  width: 100%;
+  padding: 14px 16px;
+  padding-right: 110px; /* ← Отступ под кнопку */
+  border: 2px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 15px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* Кнопка "Отправить код" внутри поля — как текст */
+.btn-send-code-inline {
+  position: absolute;
+  right: 20px;
+  bottom: 25px;
+  top: 50%;
+  
+  /* Убираем все стили кнопки */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  
+  /* Стиль как у текста */
+  color: var(--primary-color);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  
+  /* Для удобства */
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.btn-send-code-inline:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.btn-send-code-inline:active {
+  color: var(--primary-hover);
+}
+
+.btn-send-code-inline:disabled {
+  color: var(--gray-color);
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* Подсказка об отправке */
+.password-sent-hint {
+  display: block;
+  font-size: 12px;
+  color: var(--primary-color);
+  margin-top: 4px;
+  margin-left: 4px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .password-input {
+    padding-right: 14px; /* Убираем отступ на мобильных */
+  }
+  
+  .btn-send-code-inline {
+    position: static; /* Кнопка под полем на мобильных */
+    transform: none;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+    margin-top: 8px;
+    border-top: 1px dashed #ddd;
+  }
 }
 
 @keyframes fadeIn {
@@ -618,6 +1005,52 @@ input:focus {
   width: 100%;
 }
 .game-add-buttons button { flex: 1; padding: 12px 28px; }
+
+/* === TEXTAREA ДЛЯ ПОЖЕЛАНИЙ === */
+.input-notes {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-family: 'PT Sans', sans-serif;
+  transition: border-color 0.3s;
+  resize: vertical; /* Разрешаем менять высоту */
+  min-height: 100px;
+  box-sizing: border-box;
+}
+
+.input-notes:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.input-notes::placeholder {
+  color: var(--gray-color);
+  font-style: italic;
+}
+
+/* Счётчик символов */
+.notes-hint {
+  font-size: 11px;
+  color: var(--gray-color);
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* Ошибка для textarea */
+.input-notes.input-error {
+  border-color: #e74c3c !important;
+  background: #fff5f5;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .input-notes {
+    min-height: 80px;
+    font-size: 13px;
+  }
+}
 
 /* ========================================
    ИГРА
@@ -1276,6 +1709,50 @@ input:focus {
   font-size: 34px;
   color: var(--dark-color);
   font-family: 'Makan Hati Cyrillic', sans-serif;
+}
+
+/* === ПОСЛАНИЕ ОТ ОРГАНИЗАТОРА === */
+.organizer-message {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(68, 232, 88, 0.08);
+  border: 2px dashed var(--primary-color);
+  border-radius: 12px;
+  font-family: 'Makan Hati Cyrillic', cursive;
+}
+
+.organizer-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-hover);
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(68, 232, 88, 0.5);
+}
+
+.organizer-text {
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--dark-color);
+  margin: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .organizer-message {
+    padding: 15px;
+    margin-top: 20px;
+  }
+  
+  .organizer-badge {
+    font-size: 16px;
+  }
+  
+  .organizer-text {
+    font-size: 18px;
+  }
 }
 
 

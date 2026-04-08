@@ -2,24 +2,23 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main.css'; 
 
+// === ФУНКЦИИ ВАЛИДАЦИИ ===
+
 // Валидация названия команды
 const validateTeamName = (name) => {
   const errors = [];
   const trimmed = name.trim();
   
-  // Проверка: не пустое
   if (!trimmed) {
     errors.push('Название команды обязательно');
     return errors;
   }
   
-  // Проверка: только разрешённые символы
   const validPattern = /^[а-яА-ЯёЁa-zA-Z0-9\s\-\,\.\(\)\/]+$/;
   if (!validPattern.test(trimmed)) {
     errors.push('Разрешены только буквы, цифры, пробел и символы: - , . ( ) /');
   }
   
-  // Проверка: длина (3–150 символов)
   if (trimmed.length < 3) {
     errors.push('Минимальная длина названия — 3 символа');
   }
@@ -27,7 +26,6 @@ const validateTeamName = (name) => {
     errors.push('Максимальная длина названия — 150 символов');
   }
   
-  // Проверка: нет пробелов по краям
   if (trimmed.startsWith(' ') || trimmed.endsWith(' ')) {
     errors.push('Название не должно начинаться или заканчиваться пробелом');
   }
@@ -48,20 +46,29 @@ const validateDrawDate = (dateString, minDate, maxDate) => {
   const min = new Date(minDate);
   const max = new Date(maxDate);
   
-  // Сбрасываем время для корректного сравнения
   date.setHours(0, 0, 0, 0);
   min.setHours(0, 0, 0, 0);
   max.setHours(23, 59, 59, 999);
   
-  // Проверка: валидная дата
   if (isNaN(date.getTime())) {
     errors.push('Введите корректную дату');
     return errors;
   }
   
-  // Проверка: в разрешённом диапазоне
   if (date < min || date > max) {
     errors.push(`Дата должна быть между ${minDate} и ${maxDate}`);
+  }
+  
+  return errors;
+};
+
+// Валидация пожеланий (опциональное поле)
+const validateOrganizerNotes = (notes) => {
+  const errors = [];
+  
+  // Проверка: не больше 500 символов
+  if (notes && notes.length > 500) {
+    errors.push('Максимальная длина — 500 символов');
   }
   
   return errors;
@@ -74,15 +81,15 @@ function Game_add() {
   const [drawDate, setDrawDate] = useState('');
   const [wantParticipate, setWantParticipate] = useState(false);
   
-  // Состояния для ошибок и "затронутых" полей
-  const [errors, setErrors] = useState({ teamName: [], drawDate: [] });
-  const [touched, setTouched] = useState({ teamName: false, drawDate: false });
+  //  Состояние для пожеланий организатора
+  const [organizerNotes, setOrganizerNotes] = useState('');
+  
+  const [errors, setErrors] = useState({ teamName: [], drawDate: [], organizerNotes: [] });
+  const [touched, setTouched] = useState({ teamName: false, drawDate: false, organizerNotes: false });
 
-  // Ограничение даты: декабрь 2026 - январь 2027
-  const MIN_DATE = '01.12.2026';
-  const MAX_DATE = '31.01.2027';
+  const MIN_DATE = '2026-12-01';
+  const MAX_DATE = '2027-01-31';
 
-  // Обработчик изменения названия с валидацией
   const handleTeamNameChange = (e) => {
     const value = e.target.value;
     setTeamName(value);
@@ -91,7 +98,6 @@ function Game_add() {
     }
   };
 
-  // Обработчик изменения даты с валидацией
   const handleDateChange = (e) => {
     const value = e.target.value;
     setDrawDate(value);
@@ -100,7 +106,15 @@ function Game_add() {
     }
   };
 
-  // Обработчик потери фокуса (валидация при уходе с поля)
+  //Обработчик для пожеланий
+  const handleNotesChange = (e) => {
+    const value = e.target.value;
+    setOrganizerNotes(value);
+    if (touched.organizerNotes) {
+      setErrors(prev => ({ ...prev, organizerNotes: validateOrganizerNotes(value) }));
+    }
+  };
+
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
@@ -109,28 +123,35 @@ function Game_add() {
       setErrors(prev => ({ ...prev, teamName: validateTeamName(value) }));
     } else if (name === 'drawDate') {
       setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value, MIN_DATE, MAX_DATE) }));
+    } else if (name === 'organizerNotes') {
+      setErrors(prev => ({ ...prev, organizerNotes: validateOrganizerNotes(value) }));
     }
   };
 
-  // Проверка всей формы перед отправкой
   const isFormValid = () => {
     const nameErrors = validateTeamName(teamName);
     const dateErrors = validateDrawDate(drawDate, MIN_DATE, MAX_DATE);
-    setErrors({ teamName: nameErrors, drawDate: dateErrors });
-    return nameErrors.length === 0 && dateErrors.length === 0;
+    const notesErrors = validateOrganizerNotes(organizerNotes);
+    setErrors({ teamName: nameErrors, drawDate: dateErrors, organizerNotes: notesErrors });
+    return nameErrors.length === 0 && dateErrors.length === 0 && notesErrors.length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Валидируем перед отправкой
     if (!isFormValid()) {
-      setTouched({ teamName: true, drawDate: true }); // Показать все ошибки
+      setTouched({ teamName: true, drawDate: true, organizerNotes: true });
       return;
     }
     
-    console.log({ teamName, drawDate, wantParticipate });
-    // Отправка данных на сервер...
+    console.log({ 
+      teamName, 
+      drawDate, 
+      wantParticipate,
+      organizerNotes  
+    });
+    
+    // Отправка на сервер...
     navigate('/game-add-link');
   };
 
@@ -141,7 +162,6 @@ function Game_add() {
   const handleGoBack = () => {
     navigate(-1);
   };
-
 
   const canSubmit = teamName.trim() && drawDate && 
                     errors.teamName.length === 0 && 
@@ -166,7 +186,6 @@ function Game_add() {
               className={`input-field ${errors.teamName.length > 0 && touched.teamName ? 'input-error' : ''}`}
               required
             />
-            {/* ← Сообщения об ошибках */}
             {errors.teamName.length > 0 && touched.teamName && (
               <ul className="error-list">
                 {errors.teamName.map((err, i) => (
@@ -193,10 +212,30 @@ function Game_add() {
             {!drawDate && !touched.drawDate && (
               <span className="date-placeholder"></span>
             )}
-            {/* ← Сообщения об ошибках */}
             {errors.drawDate.length > 0 && touched.drawDate && (
               <ul className="error-list">
                 {errors.drawDate.map((err, i) => (
+                  <li key={i} className="error-item">• {err}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label>Пожелания от организатора</label>
+            <textarea
+              name="organizerNotes"
+              placeholder="Например: Сбор подарков в офисе на 3 этаже 28.12, обмен — в конференц-зале..."
+              value={organizerNotes}
+              onChange={handleNotesChange}
+              onBlur={handleBlur}
+              className={`input-field input-notes ${errors.organizerNotes.length > 0 && touched.organizerNotes ? 'input-error' : ''}`}
+              rows={4}
+              maxLength={500}
+            />
+            {errors.organizerNotes.length > 0 && touched.organizerNotes && (
+              <ul className="error-list">
+                {errors.organizerNotes.map((err, i) => (
                   <li key={i} className="error-item">• {err}</li>
                 ))}
               </ul>
@@ -222,6 +261,7 @@ function Game_add() {
               className="btn-primary" 
               disabled={!canSubmit}
               title={!canSubmit ? 'Заполните все обязательные поля' : ''}
+              onClick={handleGoGameAddLink}
             >
               Создать
             </button>

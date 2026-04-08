@@ -1,14 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main.css';
 
 function Wishlist() {
   const navigate = useNavigate();
-  const isEmpty = false; // `false`, чтобы показать обычный вид
+  const isEmpty = false;
   
-  // Параметры пагинации
-  const currentPage = 1;
-  const totalPages = 1; // если товаров мало, страница 1 из 1
+  // Демо-данные подарков
+  const [gifts, setGifts] = useState([
+    {
+      id: 1,
+      name: 'Алая зима - Мари Аннетт',
+      price: '500 ₽',
+      image: '/cookie.png',
+      link: 'https://example.com/book',
+    },
+    {
+      id: 2,
+      name: 'Набор чая',
+      price: '800 ₽',
+      image: '/cookie.png',
+      link: 'https://example.com/tea'
+    },
+    {
+      id: 3,
+      name: 'Коврик для мыши',
+      price: '2 300 ₽',
+      image: '/cookie.png',
+      link: 'https://example.com/mousepad'
+    },
+    {
+      id: 4,
+      name: 'Эфирные масла',
+      price: '500 ₽',
+      image: '/cookie.png',
+      link: null
+    }
+  ]);
+
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   const handleGoProfile = () => {
     navigate('/profile'); 
@@ -18,123 +48,124 @@ function Wishlist() {
     navigate('/wishlist-add'); 
   };
 
-  const handleGoWishlist_red = () => {
+  const handleGoWishlist_red = (id) => {
+    console.log('Редактировать:', id);
     navigate('/wishlist-red'); 
+    setOpenMenuId(null);
   };
 
-  // Закрыть страницу (переход на главную)
+  const handleDelete = (id) => {
+    if (window.confirm('Удалить этот подарок?')) {
+      setGifts(gifts.filter(gift => gift.id !== id));
+      setOpenMenuId(null);
+    }
+  };
+
   const handleClose = () => {
-    navigate('/', { replace: true });
+    navigate(-1);
   };
 
-  // Обработчики для пагинации
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      console.log('Предыдущая страница');
+  const toggleMenu = (id) => {
+    setOpenMenuId(openMenuId === id ? null : id);
+  };
+
+  // Закрытие меню при клике вне
+  React.useEffect(() => {
+    const handleClickOutside = () => setOpenMenuId(null);
+    if (openMenuId) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
     }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      console.log('Следующая страница');
-    }
-  };
-
-  // Флаги активности кнопок
-  const isPrevDisabled = currentPage <= 1;
-  const isNextDisabled = currentPage >= totalPages;
-  const showPagination = !isEmpty && totalPages > 0;
+  }, [openMenuId]);
 
   return (
     <div className="overlay_wishlist">
-      <div className="card_wishlist">
+      <div className="card_wishlist wishlist-new">
         
         {/* КРЕСТИК ДЛЯ ЗАКРЫТИЯ */}
-        <button className="close" onClick={() => navigate(-1)}>
-           <i className="ti ti-x" style={{ fontSize: '24px', color: '#44E858' }}></i>
+        <button className="close-wishlist" onClick={handleClose}>
+          <i className="ti ti-x" style={{ fontSize: '24px', color: '#44E858' }}></i>
         </button>
+
         {/* ПУСТОЕ СОСТОЯНИЕ */}
         {isEmpty ? (
           <div className="wishlist-empty">
             <div className="empty-icon">
-              <i 
-                className="ti ti-gift" 
-                style={{ 
-                  fontSize: '48px', 
-                  color: '#44E858',
-                  animation: 'bounce 2s infinite'
-                }}
-              ></i>
+              <i className="ti ti-gift" style={{ fontSize: '48px', color: '#44E858', animation: 'bounce 2s infinite' }}></i>
             </div>
             <h2 className="empty-title">Тут пока ничего нет</h2>
             <p className="empty-text">
               Добавьте первый товар в свой вишлист, чтобы друзья знали, что вам подарить!
             </p>
-            <button 
-              type="button" 
-              className="btn-primary" 
-              onClick={handleGoWishlist_add}
-            >
+            <button type="button" className="btn-primary" onClick={handleGoWishlist_add}>
               Добавить товар
             </button>
           </div>
         ) : (
-          /* если есть товары */
-          <div className="wishlist-content">
-            <div className="column staff-data">
-              <h1>Название</h1>
-              <form>
-                <div className="input-data">
-                  <span className="value">100 Р</span>
-                </div>
-                <div className="input-data">
-                  <span className="value">Ссылка на товар</span>
-                </div>
-                <button type="button" className="btn-secondary" onClick={handleGoWishlist_red}>
-                  Редактировать
-                </button>
-                <button type="button" className="btn-primary" onClick={handleGoWishlist_add}>
-                  Добавить новый товар
-                </button>
-              </form>
+          <>
+            {/* ЗАГОЛОВОК С КНОПКОЙ */}
+            <div className="wishlist-header">
+              <h1 className="wishlist-title">Мой вишлист</h1>
+              <button type="button" className="btn-primary" onClick={handleGoWishlist_add}>
+                Добавить подарок
+              </button>
             </div>
-            <div className="column picture">
-              <div className="avatar-upload">
-                <div className="avatar-preview">
-                  <img src="/cookie.png" alt="Товар" />
-                </div>
+
+            {/* СКРОЛЛИРУЕМЫЙ СПИСОК ПОДАРКОВ */}
+            <div className="wishlist-scroll-container">
+              <div className="wishlist-grid">
+                {gifts.map((gift) => (
+                  <div key={gift.id} className="gift-card">
+                    {/* Меню (3 точки) */}
+                    <div className="gift-menu" onClick={(e) => e.stopPropagation()}>
+                      <button 
+                        className="gift-menu-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleMenu(gift.id);
+                        }}
+                      >
+                        <i className="ti ti-dots-vertical" style={{ fontSize: '20px', color: '#757575' }}></i>
+                      </button>
+                      
+                      {/* Выпадающее меню */}
+                      {openMenuId === gift.id && (
+                        <div className="gift-menu-dropdown">
+                          <button 
+                            className="menu-item edit"
+                            onClick={() => handleGoWishlist_red(gift.id)}
+                          >
+                            <i className="ti ti-pencil" style={{ fontSize: '16px' }}></i>
+                            Редактировать
+                          </button>
+                          <button 
+                            className="menu-item delete"
+                            onClick={() => handleDelete(gift.id)}
+                          >
+                            <i className="ti ti-trash" style={{ fontSize: '16px' }}></i>
+                            Удалить
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Контент карточки */}
+                    <div className="gift-content">
+                      <div className="gift-image">
+                        <img src={gift.image} alt={gift.name} />
+                      </div>
+                      <div className="gift-info">
+                        <h3 className="gift-name">{gift.name}</h3>
+                        <p className="gift-price">{gift.price}</p>
+                        {gift.link }
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          </>
         )}
-
-        {/* Пагинация — показываем только если есть товары и больше 0 страниц */}
-        {showPagination && (
-          <div className="arrows-container">
-            <button 
-              type="button" 
-              className={`arrow ${isPrevDisabled ? 'arrow-disabled' : ''}`}
-              onClick={handlePrevPage}
-              disabled={isPrevDisabled}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-            <h3>{currentPage} из {totalPages}</h3>
-            <button 
-              type="button" 
-              className={`arrow ${isNextDisabled ? 'arrow-disabled' : ''}`}
-              onClick={handleNextPage}
-              disabled={isNextDisabled}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
-          </div>
-        )}
-
       </div>
     </div>
   );

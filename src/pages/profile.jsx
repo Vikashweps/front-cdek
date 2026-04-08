@@ -24,9 +24,27 @@ function Profile() {
     navigate('/game'); 
   };
 
+  const handleLogout = () => {
+    if (window.confirm('Вы действительно хотите выйти из профиля?')) {
+      // Здесь можно очистить токены/данные пользователя
+      localStorage.removeItem('token'); 
+      navigate('/', { replace: true });
+    }
+  };
+
   return (
     <div className="overlay_profile">
       <div className="card_profile">
+
+        <button 
+          type="button" 
+          className="btn-logout" 
+          onClick={handleLogout}
+          title="Выйти из профиля"
+        >
+          <i className="ti ti-logout" style={{ fontSize: '20px' }}></i>
+        </button>
+        
         <h1>МОЙ ПРОФИЛЬ</h1>
 
         <div className="profile-content">

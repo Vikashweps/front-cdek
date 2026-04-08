@@ -139,7 +139,10 @@ function Home() {
       {/*  HERO  */}
       <section className="hero">
         <h1>ТАЙНЫЙ САНТА</h1>
-        <p>Один клик — и вы в игре. Один конверт — и вы узнаёте, чью жизнь сделаете чуточку ярче этим Новым годом!</p>
+        <p>
+          Один клик — и вы в игре. Один конверт — и вы узнаёте,<br />
+          чью жизнь сделаете чуточку ярче этим Новым годом!
+        </p>
         <button onClick={handleGoRegistration}>НАЧАТЬ</button>
       </section>
 
@@ -194,7 +197,7 @@ function Home() {
             </details>
           ))}
         </div>
-        <button className="footer-button" onClick={handleGoRegistration}>НАЧАТЬ</button>
+        {/* <button className="footer-button" onClick={handleGoRegistration}>НАЧАТЬ</button> */}
       </section>
 
       {/*  FOOTER  */}

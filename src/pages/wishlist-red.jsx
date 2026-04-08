@@ -294,9 +294,6 @@ function WishlistRed() {
             <button type="submit" className="btn-primary">
               Сохранить
             </button>
-            <button type="button" className="btn-secondary" onClick={handleDelete}>
-              Удалить
-            </button>
             <button type="button" className="btn-secondary" onClick={handleGoBack}>
               Отмена
             </button>

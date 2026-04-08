@@ -64,25 +64,26 @@ function Registration() {
             required
           />
           
-          {/* Поле пароля с кнопкой отправки */}
+          {/* Поле кода с кнопкой внутри */}
           <div className="password-field-group">
-            <input
-              type="password"
-              name="password"
-              placeholder="Введите пароль"
-              value={loginData.password}
-              onChange={handleLoginChange}
-              required
-              className="password-input"
-            />
-            <button 
-              type="button" 
-              className="btn-primary"
-              onClick={handleSendPassword}
-              title="Отправить пароль на почту"
-            >
-              Код
-            </button>
+            <div className="password-input-wrapper">
+              <input
+                type="password"
+                name="password"
+                placeholder="Введите код"
+                value={loginData.password}
+                onChange={handleLoginChange}
+                required
+                className="password-input"
+              />
+              <button 
+                type="button" 
+                className="btn-send-code-inline"
+                onClick={handleSendPassword}
+              >
+                Отправить код на почту
+              </button>
+            </div>
           </div>
           
           {passwordSent && (

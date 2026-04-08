@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main.css';
 
-function Letter() {
+function Letter({ organizerMessage }) {  
   const navigate = useNavigate();
 
   const handleGoWishlist = () => {
@@ -11,7 +11,6 @@ function Letter() {
 
   return (
     <div className="letter-page">
-
       <div className="letter-card">
         <button className="letter-close" onClick={() => navigate(-1)}>×</button>
         
@@ -38,7 +37,7 @@ function Letter() {
           </p>
 
           <button className="btn-primary" onClick={handleGoWishlist}>
-            МОЙ ВИШЛИСТ
+            Мой вишлист
           </button>
 
           <p className="letter-text">
@@ -49,6 +48,16 @@ function Letter() {
           <p className="closing">
             С праздничным настроением, <span className="highlight">Имя</span>
           </p>
+
+          {organizerMessage && (
+            <div className="organizer-message">
+              <div className="organizer-badge">
+                <i className="ti ti-speakerphone" style={{ fontSize: '16px', marginRight: '6px' }}></i>
+                От организатора
+              </div>
+              <p className="organizer-text">{organizerMessage}</p>
+            </div>
+          )}
         </div>
 
         {/* Пунктирная рамка */}
