@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main.css';
 
-// === ФУНКЦИИ ВАЛИДАЦИИ ===
-
 // Валидация названия команды
 const validateTeamName = (name) => {
   const errors = [];
@@ -33,7 +31,7 @@ const validateTeamName = (name) => {
   return errors;
 };
 
-// ← ИСПРАВЛЕНО: Функция теперь принимает даты как параметры
+// Валидация даты жеребьёвки
 const validateDrawDate = (dateString, minDateStr, maxDateStr) => {
   const errors = [];
   
@@ -43,30 +41,32 @@ const validateDrawDate = (dateString, minDateStr, maxDateStr) => {
   }
   
   const date = new Date(dateString);
+  const minDate = new Date(minDateStr);
+  const maxDate = new Date(maxDateStr);
   
-  // Проверка: валидная дата
+  date.setHours(0, 0, 0, 0);
+  minDate.setHours(0, 0, 0, 0);
+  maxDate.setHours(23, 59, 59, 999);
+  
   if (isNaN(date.getTime())) {
     errors.push('Введите корректную дату');
     return errors;
   }
   
-  // ← ИСПРАВЛЕНО: Парсим строки дат в формате YYYY-MM-DD
-  const minDate = new Date(minDateStr);
-  const maxDate = new Date(maxDateStr);
-  
-  // Сбрасываем время для корректного сравнения
-  date.setHours(0, 0, 0, 0);
-  minDate.setHours(0, 0, 0, 0);
-  maxDate.setHours(23, 59, 59, 999);
-  
-  // Проверка: не раньше минимума
-  if (date < minDate) {
-    errors.push(`Дата не может быть раньше ${minDateStr}`);
+  if (date < minDate || date > maxDate) {
+    errors.push(`Дата должна быть между ${minDateStr} и ${maxDateStr}`);
   }
   
-  // ← ИСПРАВЛЕНО: Сравниваем с объектом Date, а не со строкой
-  if (date > maxDate) {
-    errors.push(`Дата не может быть позднее ${maxDateStr}`);
+  return errors;
+};
+
+// Валидация пожеланий (опциональное поле)
+const validateOrganizerNotes = (notes) => {
+  const errors = [];
+  
+  // Проверка: не больше 500 символов
+  if (notes && notes.length > 500) {
+    errors.push('Максимальная длина — 500 символов');
   }
   
   return errors;
@@ -80,6 +80,8 @@ function Game_edit() {
     drawDate: '2026-12-14',
   });
 
+  const [organizerNotes, setOrganizerNotes] = useState('');
+
   const [participants, setParticipants] = useState([
     { id: 1, name: 'Анна Петрова', email: 'anna@example.com' },
     { id: 2, name: 'Иван Сидоров', email: 'ivan@example.com' },
@@ -89,12 +91,11 @@ function Game_edit() {
     { id: 6, name: 'Алексей Морозов', email: 'alexey@example.com' },
   ]);
 
-  // ← ИСПРАВЛЕНО: Формат дат должен быть YYYY-MM-DD (как возвращает input type="date")
   const MIN_DATE = '2026-12-01';
   const MAX_DATE = '2027-01-31';
 
-  const [errors, setErrors] = useState({ teamName: [], drawDate: [] });
-  const [touched, setTouched] = useState({ teamName: false, drawDate: false });
+  const [errors, setErrors] = useState({ teamName: [], drawDate: [], organizerNotes: [] });
+  const [touched, setTouched] = useState({ teamName: false, drawDate: false, organizerNotes: false });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -104,9 +105,17 @@ function Game_edit() {
       if (name === 'teamName') {
         setErrors(prev => ({ ...prev, teamName: validateTeamName(value) }));
       } else if (name === 'drawDate') {
-        // ← ИСПРАВЛЕНО: Передаём даты как параметры
         setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value, MIN_DATE, MAX_DATE) }));
       }
+    }
+  };
+
+  // ← НОВОЕ: Обработчик для пожеланий
+  const handleNotesChange = (e) => {
+    const value = e.target.value;
+    setOrganizerNotes(value);
+    if (touched.organizerNotes) {
+      setErrors(prev => ({ ...prev, organizerNotes: validateOrganizerNotes(value) }));
     }
   };
 
@@ -117,17 +126,19 @@ function Game_edit() {
     if (name === 'teamName') {
       setErrors(prev => ({ ...prev, teamName: validateTeamName(value) }));
     } else if (name === 'drawDate') {
-      // ← ИСПРАВЛЕНО: Передаём даты как параметры
       setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value, MIN_DATE, MAX_DATE) }));
+    } else if (name === 'organizerNotes') {
+      setErrors(prev => ({ ...prev, organizerNotes: validateOrganizerNotes(value) }));
     }
   };
 
-  // ← ИСПРАВЛЕНО: Используем formData.drawDate вместо drawDate
+  // ← НОВОЕ: Включаем валидацию пожеланий
   const isFormValid = () => {
     const nameErrors = validateTeamName(formData.teamName);
     const dateErrors = validateDrawDate(formData.drawDate, MIN_DATE, MAX_DATE);
-    setErrors({ teamName: nameErrors, drawDate: dateErrors });
-    return nameErrors.length === 0 && dateErrors.length === 0;
+    const notesErrors = validateOrganizerNotes(organizerNotes);
+    setErrors({ teamName: nameErrors, drawDate: dateErrors, organizerNotes: notesErrors });
+    return nameErrors.length === 0 && dateErrors.length === 0 && notesErrors.length === 0;
   };
 
   const handleRemoveParticipant = (id) => {
@@ -138,13 +149,13 @@ function Game_edit() {
 
   const handleSave = () => {
     if (!isFormValid()) {
-      setTouched({ teamName: true, drawDate: true });
+      setTouched({ teamName: true, drawDate: true, organizerNotes: true });
       return;
     }
     
-    console.log('Сохраняем изменения:', formData);
+    console.log('Сохраняем изменения:', { ...formData, organizerNotes });
     console.log('Участники:', participants);
-    alert('✅ Изменения сохранены!');
+    alert('Изменения сохранены!');
     navigate('/game');
   };
 
@@ -218,13 +229,33 @@ function Game_edit() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={errors.drawDate.length > 0 && touched.drawDate ? 'input-error' : ''}
-                // ← Используем тот же формат для min/max
                 min={MIN_DATE}
                 max={MAX_DATE}
               />
               {errors.drawDate.length > 0 && touched.drawDate && (
                 <ul className="error-list">
                   {errors.drawDate.map((err, i) => (
+                    <li key={i} className="error-item">• {err}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label>Пожелания от организатора</label>
+              <textarea
+                name="organizerNotes"
+                placeholder="Например: Сбор подарков в офисе на 3 этаже, обмен — в конференц-зале..."
+                value={organizerNotes}
+                onChange={handleNotesChange}
+                onBlur={handleBlur}
+                className={`input-field input-notes ${errors.organizerNotes.length > 0 && touched.organizerNotes ? 'input-error' : ''}`}
+                rows={4}
+                maxLength={500}
+              />
+              {errors.organizerNotes.length > 0 && touched.organizerNotes && (
+                <ul className="error-list">
+                  {errors.organizerNotes.map((err, i) => (
                     <li key={i} className="error-item">• {err}</li>
                   ))}
                 </ul>
@@ -301,8 +332,8 @@ function Game_edit() {
                     className="ti ti-check" 
                     style={{ 
                       fontSize: '18px', 
-                      color: '#1E1E1E',    /* ← Тёмный цвет для контраста на зелёном */
-                      fontWeight: 'bold'   /* ← Жирность для лучшей видимости */
+                      color: '#1E1E1E',
+                      fontWeight: 'bold'
                     }}
                   />
                 ) : 'Копировать'}

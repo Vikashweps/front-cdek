@@ -1254,7 +1254,7 @@ input:focus {
   grid-template-columns: 1fr 1fr;
   gap: 30px;
   margin-bottom: 30px;
-  align-items: start;
+  align-items: stretch; /* Растягиваем колонки по высоте */
 }
 
 /* Общие стили колонок */
@@ -1263,6 +1263,9 @@ input:focus {
   border-radius: var(--border-radius);
   padding: 20px;
   border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Занимаем всю высоту грида */
 }
 
 .edit-column h3 {
@@ -1274,6 +1277,17 @@ input:focus {
 }
 
 /* === ЛЕВАЯ КОЛОНКА: Настройки === */
+
+.edit-settings {
+  justify-content: flex-start;
+}
+
+.edit-settings h3 {
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary-color);
+}
+
 .edit-settings .form-group {
   margin-bottom: 15px;
 }
@@ -1286,36 +1300,54 @@ input:focus {
   margin-bottom: 6px;
 }
 
-.edit-settings input {
+.edit-settings input,
+.edit-settings textarea {
   width: 100%;
   padding: 12px 14px;
   border: 1.5px solid #ddd;
   border-radius: var(--border-radius);
   font-size: 14px;
   transition: border-color 0.3s;
+  box-sizing: border-box;
 }
 
-.edit-settings input:focus {
+.edit-settings input:focus,
+.edit-settings textarea:focus {
   outline: none;
   border-color: var(--primary-color);
 }
 
-/* Две даты в ряд */
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.edit-settings textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: 'PT Sans', sans-serif;
 }
 
+/* Кнопка добавления участников */
+.edit-settings .btn-secondary {
+  width: 100%;
+  /* margin-top: auto; */
+  padding: 14px;
+}
+
+
 /* === ПРАВАЯ КОЛОНКА: Участники === */
+.edit-participants {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Занимает всю высоту грида */
+  min-height: 400px;
+}
+
 .participants-header {
   margin-bottom: 15px;
+  flex-shrink: 0;
 }
 
 .participants-header h3 {
-  margin: 0;
-  border-bottom: none;
-  padding-bottom: 0;
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  color: var(--dark-color);
 }
 
 .participants-hint {
@@ -1324,28 +1356,32 @@ input:focus {
   font-style: italic;
 }
 
-/* Скроллируемый список */
 .participants-scroll {
-  max-height: 220px;
-  overflow-y: auto;
+  /* flex: 1; Занимает всё доступное место */
+  overflow-y: auto; /* Скролл внутри */
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding-right: 5px;
+  height: 350px;
 }
 
 .participants-scroll::-webkit-scrollbar {
-  width: 6px;
+  width: 8px; /* Чуть шире скроллбар */
 }
 
 .participants-scroll::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .participants-scroll::-webkit-scrollbar-thumb {
   background: var(--primary-color);
-  border-radius: 3px;
+  border-radius: 4px;
+}
+
+.participants-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
 }
 
 /* Элемент участника */
@@ -1358,6 +1394,7 @@ input:focus {
   border-radius: 8px;
   border: 1px solid #eee;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .participant-item:hover {
@@ -1369,6 +1406,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
 }
 
 .participant-name {
@@ -1389,6 +1427,7 @@ input:focus {
   color: var(--gray-color);
   font-size: 14px;
   padding: 20px;
+  flex: 1;
 }
 
 /* Футер с кнопками */
@@ -1509,6 +1548,74 @@ input:focus {
 
 .input-error {
   animation: shake 0.3s ease-in-out;
+}
+
+/* === TEXTAREA ДЛЯ ПОЖЕЛАНИЙ === */
+.input-notes {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-family: 'PT Sans', sans-serif;
+  transition: border-color 0.3s;
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
+}
+
+.input-notes:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.input-notes::placeholder {
+  color: var(--gray-color);
+  font-style: italic;
+}
+
+/* Счётчик символов */
+.notes-hint {
+  font-size: 11px;
+  color: var(--gray-color);
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* Ошибка для textarea */
+.input-notes.input-error {
+  border-color: #e74c3c !important;
+  background: #fff5f5;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .input-notes {
+    min-height: 80px;
+    font-size: 13px;
+  }
+}
+
+/* Кнопка удаления участника */
+.btn-remove {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-remove:hover {
+  background: #c0392b;
+  transform: scale(1.1);
 }
 
 /* Адаптивность */
