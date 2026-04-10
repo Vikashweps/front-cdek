@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+// ИСПРАВЛЕНО: Импорт из gameApi, а не authApi
+import { isAuthenticated } from '../api/gameApi'; 
 import './home.css';
 
 function Home() {
+  // ... остальной код без изменений ...
   const [openIndex, setOpenIndex] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const navigate = useNavigate();
+
+  // Проверяем авторизацию при рендере
+  const isAuth = isAuthenticated();
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
-  const navigate = useNavigate();
 
   // Блокировка прокрутки при открытом меню
   useEffect(() => {
@@ -18,18 +24,37 @@ function Home() {
     return () => { document.body.style.overflow = ''; };
   }, [isMobileMenuOpen]);
 
+  // --- ЛОГИКА НАВИГАЦИИ С ПРОВЕРКОЙ АВТОРИЗАЦИИ ---
+
+  // Кнопка "Профиль" (в шапке и моб. меню)
   const handleGoProfile = () => {
-    navigate('/profile');
+    if (isAuth) {
+      navigate('/profile');
+    } else {
+      navigate('/registration'); 
+    }
     setIsMobileMenuOpen(false);
   };
 
-  const handleGoRegistration = () => {
-    navigate('/registration');
-    setIsMobileMenuOpen(false);
-  };
-
+  // Кнопка "Вишлист"
   const handleGoWishlist = () => {
-    navigate('/wishlist');
+    if (isAuth) {
+      navigate('/wishlist');
+    } else {
+      navigate('/registration');
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  // Кнопка "НАЧАТЬ" (Hero и Rules)
+  const handleStartGame = () => {
+    if (isAuth) {
+      // Если авторизован -> Сразу создаем игру
+      navigate('/game-add');
+    } else {
+      // Если нет -> На регистрацию
+      navigate('/registration');
+    }
     setIsMobileMenuOpen(false);
   };
 
@@ -143,7 +168,8 @@ function Home() {
           Один клик — и вы в игре. Один конверт — и вы узнаёте,<br />
           чью жизнь сделаете чуточку ярче этим Новым годом!
         </p>
-        <button onClick={handleGoRegistration}>НАЧАТЬ</button>
+        {/* ИЗМЕНЕНО: вызов handleStartGame вместо handleGoRegistration */}
+        <button onClick={handleStartGame}>НАЧАТЬ</button>
       </section>
 
       {/*  ADVANTAGES  */}
@@ -175,7 +201,8 @@ function Home() {
             </li>
           ))}
         </ul>
-        <button onClick={handleGoRegistration}>НАЧАТЬ</button>
+        {/* ИЗМЕНЕНО: вызов handleStartGame вместо handleGoRegistration */}
+        <button onClick={handleStartGame}>НАЧАТЬ</button>
       </section>
 
       <img 
@@ -197,7 +224,6 @@ function Home() {
             </details>
           ))}
         </div>
-        {/* <button className="footer-button" onClick={handleGoRegistration}>НАЧАТЬ</button> */}
       </section>
 
       {/*  FOOTER  */}
