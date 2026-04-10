@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './main.css';
 
 function Profile() {
   const navigate = useNavigate();
 
+  // Состояния для модального окна подключения
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [joinLink, setJoinLink] = useState('');
+  const [joinError, setJoinError] = useState('');
+
   const handleGoHome = () => {
-    navigate('/'); // ← Переход на главную
+    navigate('/'); 
   };
+
   const handleGoWishlist = () => {
     navigate('/wishlist'); 
   };
@@ -24,9 +30,50 @@ function Profile() {
     navigate('/game'); 
   };
 
+  // Открытие модалки
+  const openJoinModal = () => {
+    setIsJoinModalOpen(true);
+    setJoinLink('');
+    setJoinError('');
+  };
+
+  // Закрытие модалки
+  const closeJoinModal = () => {
+    setIsJoinModalOpen(false);
+    setJoinLink('');
+    setJoinError('');
+  };
+
+  // Обработка подключения к игре
+  const handleJoinSubmit = () => {
+    if (!joinLink.trim()) {
+      setJoinError('Введите ссылку-приглашение');
+      return;
+    }
+
+    // Простая проверка: ссылка должна содержать домен или путь /join/
+    // Можно усложнить регулярное выражение при необходимости
+    const isValidLink = joinLink.includes('/join/') || joinLink.startsWith('http');
+
+    if (!isValidLink) {
+      setJoinError('Некорректный формат ссылки');
+      return;
+    }
+
+    // Если всё ок
+    setJoinError('');
+    console.log("Подключение по ссылке:", joinLink);
+    
+    // Здесь будет запрос к API для проверки ссылки
+    // Если успешно -> navigate('/game');
+    
+    alert('Вы успешно подключились к игре!'); // Заглушка
+    closeJoinModal();
+    navigate('/game'); // Переход в игру
+  };
+
   const handleLogout = () => {
     if (window.confirm('Вы действительно хотите выйти из профиля?')) {
-      // Здесь можно очистить токены/данные пользователя
       localStorage.removeItem('token'); 
       navigate('/', { replace: true });
     }
@@ -48,23 +95,23 @@ function Profile() {
         <h1>МОЙ ПРОФИЛЬ</h1>
 
         <div className="profile-content">
+          {/* Левая колонка: Личные данные */}
           <div className="column personal-data">
-            <h3 >ЛИЧНЫЕ ДАННЫЕ</h3>
+            <h3>ЛИЧНЫЕ ДАННЫЕ</h3>
             <form>
               <div className="input-readonly">
                 <span className="value">Иван Иванов</span>
-                </div>
+              </div>
 
-                <div className="input-readonly">
+              <div className="input-readonly">
                 <span className="value">ivan@example.com</span>
-                </div>
+              </div>
 
-                <button type="button" className="btn-secondary" onClick={handleGoProfileRed}>
-              
+              <button type="button" className="btn-secondary" onClick={handleGoProfileRed}>
                 Изменить данные
               </button>
 
-             <button type="button" className="btn-primary" onClick={handleGoWishlist}>
+              <button type="button" className="btn-primary" onClick={handleGoWishlist}>
                 Мой вишлист
               </button>
 
@@ -74,8 +121,10 @@ function Profile() {
             </form>
           </div>
 
+          {/* Правая колонка: Игры */}
           <div className="column games-list">
             <h3>МОИ ИГРЫ</h3>
+            
             <div className="games-scroll-container">
               <button type="button" className="game-item" onClick={handleGoGame}>Команда 1 </button>
               <button type="button" className="game-item" onClick={handleGoGame}>Команда 2</button>
@@ -86,15 +135,60 @@ function Profile() {
               <button type="button" className="game-item" onClick={handleGoGame}>Команда 7</button>
               <button type="button" className="game-item" onClick={handleGoGame}>Команда 8</button> 
             </div>
-            <button type="button" className="btn-secondary" onClick={handleGoGameAdd}>
-                Создать новую игру
-            </button>
+
+            {/* Блок кнопок управления играми */}
+            <div className="game-actions" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '15px' }}>
+              <button type="button" className="btn-primary" onClick={handleGoGameAdd}>
+                + Создать новую игру
+              </button>
+              
+              <button type="button" className="btn-secondary" onClick={openJoinModal}>
+                Подключиться к игре
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* === МОДАЛЬНОЕ ОКНО ПОДКЛЮЧЕНИЯ === */}
+      {isJoinModalOpen && (
+        <div className="modal-overlay" onClick={closeJoinModal}>
+          <div className="modal-small" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeJoinModal}>×</button>
+            
+            <h3>Подключение к игре</h3>
+            <p className="modal-label">Вставьте ссылку-приглашение:</p>
+            
+            <div className="link-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+              <input 
+                type="text" 
+                className={`link-input ${joinError ? 'input-error' : ''}`}
+                placeholder="https://site.com/join/..."
+                value={joinLink}
+                onChange={(e) => {
+                  setJoinLink(e.target.value);
+                  if (joinError) setJoinError('');
+                }}
+                style={{ marginBottom: '10px' }}
+              />
+              
+              <button 
+                type="button" 
+                className="btn-primary"
+                onClick={handleJoinSubmit}
+                style={{ width: '100%' }}
+              >
+                Войти в игру
+              </button>
+            </div>
+
+            {joinError && <span className="error-text" style={{ marginTop: '8px', display: 'block' }}>{joinError}</span>}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
-
 
 export default Profile;

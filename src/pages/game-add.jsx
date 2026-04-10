@@ -4,7 +4,6 @@ import './main.css';
 
 // === ФУНКЦИИ ВАЛИДАЦИИ ===
 
-// Валидация названия команды
 const validateTeamName = (name) => {
   const errors = [];
   const trimmed = name.trim();
@@ -33,7 +32,6 @@ const validateTeamName = (name) => {
   return errors;
 };
 
-// Валидация даты жеребьёвки
 const validateDrawDate = (dateString, minDate, maxDate) => {
   const errors = [];
   
@@ -62,15 +60,37 @@ const validateDrawDate = (dateString, minDate, maxDate) => {
   return errors;
 };
 
-// Валидация пожеланий (опциональное поле)
+// Валидация бюджета (цены игры)
+const validateBudget = (value) => {
+  const errors = [];
+  const num = Number(value);
+
+  if (!value) {
+    errors.push('Укажите бюджет подарка');
+    return errors;
+  }
+
+  if (isNaN(num)) {
+    errors.push('Бюджет должен быть числом');
+    return errors;
+  }
+
+  if (num <= 0) {
+    errors.push('Бюджет должен быть больше 0');
+  }
+
+  if (num > 5000) {
+    errors.push('Бюджет слишком большой (макс. 5 000)');
+  }
+
+  return errors;
+};
+
 const validateOrganizerNotes = (notes) => {
   const errors = [];
-  
-  // Проверка: не больше 500 символов
   if (notes && notes.length > 500) {
     errors.push('Максимальная длина — 500 символов');
   }
-  
   return errors;
 };
 
@@ -79,16 +99,28 @@ function Game_add() {
   
   const [teamName, setTeamName] = useState('');
   const [drawDate, setDrawDate] = useState('');
+  const [giftBudget, setGiftBudget] = useState(''); // Новое состояние для цены
   const [wantParticipate, setWantParticipate] = useState(false);
-  
-  //  Состояние для пожеланий организатора
   const [organizerNotes, setOrganizerNotes] = useState('');
   
-  const [errors, setErrors] = useState({ teamName: [], drawDate: [], organizerNotes: [] });
-  const [touched, setTouched] = useState({ teamName: false, drawDate: false, organizerNotes: false });
+  const [errors, setErrors] = useState({ 
+    teamName: [], 
+    drawDate: [], 
+    giftBudget: [], // Ошибки бюджета
+    organizerNotes: [] 
+  });
+  
+  const [touched, setTouched] = useState({ 
+    teamName: false, 
+    drawDate: false, 
+    giftBudget: false, // Отслеживание касания поля бюджета
+    organizerNotes: false 
+  });
 
   const MIN_DATE = '2026-12-01';
   const MAX_DATE = '2027-01-31';
+
+  // --- Обработчики изменений ---
 
   const handleTeamNameChange = (e) => {
     const value = e.target.value;
@@ -106,7 +138,15 @@ function Game_add() {
     }
   };
 
-  //Обработчик для пожеланий
+  // Обработчик изменения бюджета
+  const handleBudgetChange = (e) => {
+    const value = e.target.value;
+    setGiftBudget(value);
+    if (touched.giftBudget) {
+      setErrors(prev => ({ ...prev, giftBudget: validateBudget(value) }));
+    }
+  };
+
   const handleNotesChange = (e) => {
     const value = e.target.value;
     setOrganizerNotes(value);
@@ -123,49 +163,69 @@ function Game_add() {
       setErrors(prev => ({ ...prev, teamName: validateTeamName(value) }));
     } else if (name === 'drawDate') {
       setErrors(prev => ({ ...prev, drawDate: validateDrawDate(value, MIN_DATE, MAX_DATE) }));
+    } else if (name === 'giftBudget') {
+      setErrors(prev => ({ ...prev, giftBudget: validateBudget(value) }));
     } else if (name === 'organizerNotes') {
       setErrors(prev => ({ ...prev, organizerNotes: validateOrganizerNotes(value) }));
     }
   };
 
+  // Проверка валидности всей формы
   const isFormValid = () => {
     const nameErrors = validateTeamName(teamName);
     const dateErrors = validateDrawDate(drawDate, MIN_DATE, MAX_DATE);
+    const budgetErrors = validateBudget(giftBudget);
     const notesErrors = validateOrganizerNotes(organizerNotes);
-    setErrors({ teamName: nameErrors, drawDate: dateErrors, organizerNotes: notesErrors });
-    return nameErrors.length === 0 && dateErrors.length === 0 && notesErrors.length === 0;
+    
+    setErrors({ 
+      teamName: nameErrors, 
+      drawDate: dateErrors, 
+      giftBudget: budgetErrors, 
+      organizerNotes: notesErrors 
+    });
+    
+    return nameErrors.length === 0 && 
+           dateErrors.length === 0 && 
+           budgetErrors.length === 0 && 
+           notesErrors.length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
     if (!isFormValid()) {
-      setTouched({ teamName: true, drawDate: true, organizerNotes: true });
+      setTouched({ 
+        teamName: true, 
+        drawDate: true, 
+        giftBudget: true, 
+        organizerNotes: true 
+      });
       return;
     }
     
     console.log({ 
       teamName, 
       drawDate, 
+      giftBudget, // Добавлено в лог
       wantParticipate,
       organizerNotes  
     });
     
-    // Отправка на сервер...
+    // Здесь будет отправка на сервер
     navigate('/game-add-link');
-  };
-
-  const handleGoGameAddLink = () => {
-    navigate('/game-add-link'); 
   };
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
-  const canSubmit = teamName.trim() && drawDate && 
+  // Кнопка активна, если нет ошибок в обязательных полях
+  const canSubmit = teamName.trim() && 
+                    drawDate && 
+                    giftBudget && 
                     errors.teamName.length === 0 && 
-                    errors.drawDate.length === 0;
+                    errors.drawDate.length === 0 &&
+                    errors.giftBudget.length === 0;
 
   return (
     <div className="overlay_game_add"> 
@@ -173,7 +233,8 @@ function Game_add() {
         <h1>Создание игры</h1>
 
         <form onSubmit={handleSubmit} className="game-add-form" noValidate>                     
-          {/* Поле названия команды */}
+          
+          {/* 1. Поле названия команды */}
           <div className="form-group">
             <label>Название команды <span className="required">*</span></label>
             <input 
@@ -195,7 +256,7 @@ function Game_add() {
             )}
           </div>
 
-          {/* Поле выбора даты */}
+          {/* 2. Поле выбора даты */}
           <div className="form-group date-group">
             <label>Дата жеребьёвки <span className="required">*</span></label>
             <input
@@ -221,11 +282,36 @@ function Game_add() {
             )}
           </div>
 
+          {/* 3. ПОЛЕ ЦЕНЫ (БЮДЖЕТА) */}
           <div className="form-group">
-            <label>Пожелания от организатора <br /> (отобразится в письмах участников после жеребьевки)</label>
+            <label>Бюджет на подарок (руб.) <span className="required">*</span></label>
+            <input 
+              type="number"
+              name="giftBudget"
+              placeholder="Например: 1500"
+              value={giftBudget}
+              onChange={handleBudgetChange}
+              onBlur={handleBlur}
+              min="1"
+              step="100"
+              className={`input-field ${errors.giftBudget.length > 0 && touched.giftBudget ? 'input-error' : ''}`}
+              required
+            />
+            {errors.giftBudget.length > 0 && touched.giftBudget && (
+              <ul className="error-list">
+                {errors.giftBudget.map((err, i) => (
+                  <li key={i} className="error-item">• {err}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* 4. Пожелания организатора */}
+          <div className="form-group">
+            <label>Пожелания от организатора <br /> <span style={{fontWeight: 'normal', fontSize: '12px', color: '#757575'}}>(отобразится в письмах участников после жеребьевки)</span></label>
             <textarea
               name="organizerNotes"
-              placeholder="Например: Сбор подарков в офисе на 3 этаже 28.12, обмен — в конференц-зале..."
+              placeholder="Например: Сбор подарков в офисе на 3 этаже 28.12..."
               value={organizerNotes}
               onChange={handleNotesChange}
               onBlur={handleBlur}
@@ -240,9 +326,11 @@ function Game_add() {
                 ))}
               </ul>
             )}
+            {/* Счетчик символов */}
+            <div className="notes-hint">{organizerNotes.length} / 500</div>
           </div>
 
-          {/* Чекбокс */}
+          {/* Чекбокс участия */}
           <div className="form-group checkbox-group">
             <label className="checkbox-label">
               <input
@@ -251,19 +339,19 @@ function Game_add() {
                 onChange={(e) => setWantParticipate(e.target.checked)}
                 className="checkbox"
               />
-              <span className="checkbox-text">Хочу участвовать в жеребьевке</span>
+              <span className="checkbox-text">Хочу участвовать в жеребьевке как игрок</span>
             </label>
           </div>
 
+          {/* Кнопки */}
           <div className="game-add-buttons">
             <button 
               type="submit" 
               className="btn-primary" 
               disabled={!canSubmit}
-              title={!canSubmit ? 'Заполните все обязательные поля' : ''}
-              onClick={handleGoGameAddLink}
+              title={!canSubmit ? 'Заполните все обязательные поля корректно' : ''}
             >
-              Создать
+              Создать игру
             </button>
             <button type="button" className="btn-secondary" onClick={handleGoBack}>
               Отмена

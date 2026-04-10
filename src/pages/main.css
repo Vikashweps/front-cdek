@@ -221,7 +221,7 @@ input:focus {
   text-align: center;
 }
 .games-scroll-container {
-  max-height: 215px;
+  max-height: 150px;
   overflow-y: auto;
   padding: var(--spacing);
   background: #f9f9f9;
