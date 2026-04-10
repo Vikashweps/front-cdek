@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+// ИСПРАВЛЕНО: Импорт из gameApi, а не authApi
+import { isAuthenticated } from '../api/gameApi'; 
 import './home.css';
 
 function Home() {
+  // ... остальной код без изменений ...
   const [openIndex, setOpenIndex] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const navigate = useNavigate();
+
+  // Проверяем авторизацию при рендере
+  const isAuth = isAuthenticated();
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
-  const navigate = useNavigate();
 
   // Блокировка прокрутки при открытом меню
   useEffect(() => {
@@ -18,18 +24,37 @@ function Home() {
     return () => { document.body.style.overflow = ''; };
   }, [isMobileMenuOpen]);
 
+  // --- ЛОГИКА НАВИГАЦИИ С ПРОВЕРКОЙ АВТОРИЗАЦИИ ---
+
+  // Кнопка "Профиль" (в шапке и моб. меню)
   const handleGoProfile = () => {
-    navigate('/profile');
+    if (isAuth) {
+      navigate('/profile');
+    } else {
+      navigate('/registration'); 
+    }
     setIsMobileMenuOpen(false);
   };
 
-  const handleGoRegistration = () => {
-    navigate('/registration');
-    setIsMobileMenuOpen(false);
-  };
-
+  // Кнопка "Вишлист"
   const handleGoWishlist = () => {
-    navigate('/wishlist');
+    if (isAuth) {
+      navigate('/wishlist');
+    } else {
+      navigate('/registration');
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  // Кнопка "НАЧАТЬ" (Hero и Rules)
+  const handleStartGame = () => {
+    if (isAuth) {
+      // Если авторизован -> Сразу создаем игру
+      navigate('/game-add');
+    } else {
+      // Если нет -> На регистрацию
+      navigate('/registration');
+    }
     setIsMobileMenuOpen(false);
   };
 
@@ -54,11 +79,11 @@ function Home() {
   ];
 
   const rulesData = [
-    { title: "Зарегистрируйтесь и создайте игру", desc: "Организатор задаёт название команды/отдела, выбирает даты жеребьёвки и бюджет подарка." },
-    { title: "Пригласите друзей", desc: "Система выдаёт уникальную ссылку. Отправьте её участникам для подключения к игре!" },
-    { title: "Заполните вишлисты", desc: "Каждый участник переходит по ссылке, регистрируется и добавляет желаемые подарки." },
-    { title: "Жеребьёвка", desc: "В назначенную дату система автоматически распределяет пары." },
-    { title: "Дарите подарки!", desc: "" }
+    { title: "Шаг 1. Регистрация", desc: "Чтобы начать, каждому участнику необходимо зарегистрироваться на сайте и войти в свой личный профиль." },
+    { title: "Шаг 2. Создание игры", desc: "Зайдите в свой профиль и нажмите «Создать игру». Заполните данные: название команды, дату жеребьёвки и бюджет подарка. Скопируйте уникальную ссылку-приглашение или отправьте её прямо на email друзей через форму на сайте. Отправьте эту ссылку всем, кого хотите видеть в игре. После сохранения вы станете Организатором. Только вы сможете менять настройки игры, добавлять или удалять участников." },
+    { title: "Шаг 3. Подключение к игре (для Участников)", desc: "Получив ссылку от друга, убедитесь, что вы зарегистрированы и авторизованы. Зайдите в свой профиль и нажмите кнопку «Подключиться к игре». Вставьте полученную ссылку" },
+    { title: "Шаг 4. Вишлисты и Жеребьёвка", desc: "Каждый участник заполняет свой Вишлист (список желаемых подарков) в профиле. Это поможет вашему Тайному Санте выбрать идеальный презент. В назначенную организатором дату система автоматически проведёт Жеребьёвку и распределит пары. Вам будут доступны результаты жеребьевки: имя и вишлист человека, кому вы дарите подарок." },
+    { title: "Шаг 5. Подготовьте подарок и вручите в праздничный день! 🎄", desc: "" }
   ];
 
   const advantagesData = [
@@ -143,7 +168,8 @@ function Home() {
           Один клик — и вы в игре. Один конверт — и вы узнаёте,<br />
           чью жизнь сделаете чуточку ярче этим Новым годом!
         </p>
-        <button onClick={handleGoRegistration}>НАЧАТЬ</button>
+        {/* ИЗМЕНЕНО: вызов handleStartGame вместо handleGoRegistration */}
+        <button onClick={handleStartGame}>НАЧАТЬ</button>
       </section>
 
       {/*  ADVANTAGES  */}
@@ -175,7 +201,8 @@ function Home() {
             </li>
           ))}
         </ul>
-        <button onClick={handleGoRegistration}>НАЧАТЬ</button>
+        {/* ИЗМЕНЕНО: вызов handleStartGame вместо handleGoRegistration */}
+        <button onClick={handleStartGame}>НАЧАТЬ</button>
       </section>
 
       <img 
@@ -197,7 +224,6 @@ function Home() {
             </details>
           ))}
         </div>
-        {/* <button className="footer-button" onClick={handleGoRegistration}>НАЧАТЬ</button> */}
       </section>
 
       {/*  FOOTER  */}

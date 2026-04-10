@@ -9,3 +9,16 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] })
   ],
 })
+
+/*export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000', // Адрес твоего бэкенда
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+})*/
