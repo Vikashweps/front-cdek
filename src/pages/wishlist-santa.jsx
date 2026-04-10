@@ -1,128 +1,105 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './main.css';
 
-function Wishlist_Santa() {
+function Wishlist_Santa({ participantName }) {  // ← НОВОЕ: проп для имени
   const navigate = useNavigate();
-  const isEmpty = false; // Поменяйте на `true`, чтобы показать пустое состояние
+  const { name } = useParams();  // ← НОВОЕ: получение имени из URL
   
-  // Параметры пагинации
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 3; // Замените на реальное количество страниц из данных
-
-  const handleGoBack = () => {
-    navigate(-1);  
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      // Здесь логика загрузки предыдущей страницы
-      console.log('Предыдущая страница', currentPage - 1);
+  // ← НОВОЕ: Приоритет: пропсы > URL params > демо-значение
+  const displayName = participantName || name || 'Участник';
+  
+  const isEmpty = false;
+  
+  // Демо-данные подарков
+  const [gifts] = useState([
+    {
+      id: 1,
+      name: 'Алая зима - Мари Аннетт',
+      price: '500 ₽',
+      image: '/cookie.png',
+      link: 'https://example.com/book',
+    },
+    {
+      id: 2,
+      name: 'Набор чая',
+      price: '800 ₽',
+      image: '/cookie.png',
+      link: 'https://example.com/tea'
+    },
+    {
+      id: 3,
+      name: 'Коврик для мыши',
+      price: '2 300 ₽',
+      image: '/cookie.png',
+      link: 'https://example.com/mousepad'
+    },
+    {
+      id: 4,
+      name: 'Эфирные масла',
+      price: '500 ₽',
+      image: '/cookie.png',
+      link: null
     }
-  };
+  ]);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-      // Здесь логика загрузки следующей страницы
-      console.log('Следующая страница', currentPage + 1);
-    }
+  const handleClose = () => {
+    navigate(-1);
   };
-
-  // Флаги активности кнопок
-  const isPrevDisabled = currentPage <= 1;
-  const isNextDisabled = currentPage >= totalPages;
-  const showPagination = !isEmpty && totalPages > 0;
 
   return (
     <div className="overlay_wishlist">
-      <div className="card_wishlist">
+      <div className="card_wishlist wishlist-new">
+        
+        {/* КРЕСТИК ДЛЯ ЗАКРЫТИЯ */}
+        <button className="close-wishlist" onClick={handleClose}>
+          <i className="ti ti-x" style={{ fontSize: '24px', color: '#44E858' }}></i>
+        </button>
 
-        {/* === ПУСТОЕ СОСТОЯНИЕ === */}
+        {/* ПУСТОЕ СОСТОЯНИЕ */}
         {isEmpty ? (
           <div className="wishlist-empty">
-            <i 
-              className="ti ti-gift" 
-              style={{ 
-                fontSize: '48px', 
-                color: '#44E858',
-                animation: 'bounce 2s infinite'
-              }}
-            ></i>
-            <h2 className="empty-title">У этого участника пока нет вишлиста</h2>
+            <div className="empty-icon">
+              <i className="ti ti-gift" style={{ fontSize: '48px', color: '#44E858', animation: 'bounce 2s infinite' }}></i>
+            </div>
+            <h2 className="empty-title">Тут пока ничего нет</h2>
             <p className="empty-text">
-              Возможно, он ещё не успел добавить товары. Попробуйте позже или напишите в секретный чат!
+              Подождите пока участник добавит товары или напишите в секретный чат!
             </p>
-            <button 
-              type="button" 
-              className="btn-secondary" 
-              onClick={handleGoBack}
-            >
-              Назад
-            </button>
           </div>
         ) : (
-          /* === ОБЫЧНЫЙ ВИД (если товары есть) === */
-          <div className="wishlist-content">
-            <div className="column staff-data">
-              <h1>Вишлист Имя</h1>
-
-              <h3>Название</h3>
-              <form>
-                <div className="input-data">
-                  <span className="value">000 Р</span>
-                </div>
-
-                <div className="input-data">
-                  <span className="value">Ссылка на товар</span>
-                </div>
-
-                <button type="button" className="btn-secondary" onClick={handleGoBack}>
-                  Назад
-                </button>
-              </form>
+          <>
+            {/* ЗАГОЛОВОК — ← НОВОЕ: реальное имя участника */}
+            <div className="wishlist-header">
+              <h1 className="wishlist-title">Вишлист {displayName}</h1>
             </div>
 
-            <div className="column picture">
-              <div className="avatar-upload">
-                <div className="avatar-preview">
-                  <img src="/cookie.png" alt="Товар" />
-                </div>
+            {/* СКРОЛЛИРУЕМЫЙ СПИСОК ПОДАРКОВ */}
+            <div className="wishlist-scroll-container">
+              <div className="wishlist-grid">
+                {gifts.map((gift) => (
+                  <div key={gift.id} className="gift-card">
+                    <div className="gift-content">
+                      <div className="gift-image">
+                        <img src={gift.image} alt={gift.name} />
+                      </div>
+                      <div className="gift-info">
+                        <h3 className="gift-name">{gift.name}</h3>
+                        <p className="gift-price">{gift.price}</p>
+                        {gift.link && (
+                          <a href={gift.link} className="gift-link" target="_blank" rel="noopener noreferrer">
+                            В магазин
+                            <i className="ti ti-arrow-up-right" style={{ fontSize: '14px' }}></i>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          </>
         )}
-
-        {/* Пагинация — показываем только если есть товары и страниц больше 0 */}
-        {showPagination && (
-          <div className="arrows-container">
-            <button 
-              type="button" 
-              className={`arrow ${isPrevDisabled ? 'arrow-disabled' : ''}`}
-              onClick={handlePrevPage}
-              disabled={isPrevDisabled}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-
-            <h3>{currentPage} из {totalPages}</h3>
-
-            <button 
-              type="button" 
-              className={`arrow ${isNextDisabled ? 'arrow-disabled' : ''}`}
-              onClick={handleNextPage}
-              disabled={isNextDisabled}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
-          </div>
-        )}
-
       </div>
     </div>
   );
