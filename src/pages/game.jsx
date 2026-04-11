@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './main.css';
 
 function Game() {
   const navigate = useNavigate();
+  const { eventId } = useParams();
   const isDrawDone = true; // Поменяйте на `true`, чтобы показать состояние после жеребьёвки
   const isOrganizer = true; 
 
@@ -26,7 +27,7 @@ function Game() {
     navigate('/profile'); 
   };
   const handleGoEditGame = () => {
-    navigate('/game-edit'); 
+    navigate(`/game-edit?eventId=${encodeURIComponent(eventId || '')}`);
   };
 
   const handleLeaveGame = () => {
@@ -48,7 +49,7 @@ function Game() {
       alert('Секретный чат будет доступен после жеребьёвки!');
       return;
     }
-    navigate('/game-chat');
+    navigate(`/game/${eventId}/chat`);
   };
 
   return (

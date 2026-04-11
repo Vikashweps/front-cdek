@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { joinGameByLink } from '../api/invitationsApi.jsx';
+import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
+import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
 import './main.css';
+
+void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 // Валидация названия команды
 const validateTeamName = (name) => {
@@ -74,6 +79,8 @@ const validateOrganizerNotes = (notes) => {
 
 function Game_edit() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const eventId = searchParams.get('eventId') || 'demo';
 
   const [formData, setFormData] = useState({
     teamName: 'КОМАНДА1',
@@ -156,11 +163,11 @@ function Game_edit() {
     console.log('Сохраняем изменения:', { ...formData, organizerNotes });
     console.log('Участники:', participants);
     alert('Изменения сохранены!');
-    navigate('/game');
+    navigate(`/game/${eventId}`);
   };
 
   const handleCancel = () => {
-    navigate('/game');
+    navigate(`/game/${eventId}`);
   };
 
   // Модальное окно

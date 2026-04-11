@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './main.css'; 
+import { useNavigate, useLocation } from 'react-router-dom';
+import { joinGameByLink } from '../api/invitationsApi.jsx';
+import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
+import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+import './main.css';
+
+void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage]; 
 
 function Game_add_link() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const createdEventId = location.state?.eventId ?? 'demo';
     
     // Состояния модального окна
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -89,7 +96,7 @@ function Game_add_link() {
                 </button>
 
                 <div className="button-group" style={{ flexDirection: 'column' }}> 
-                    <button type="button" className="btn-primary" onClick={() => navigate('/game')}>
+                    <button type="button" className="btn-primary" onClick={() => navigate(`/game/${createdEventId}`)}>
                         Перейти к игре
                     </button>
                     <button type="button" className="btn-secondary" onClick={() => navigate('/profile')}>

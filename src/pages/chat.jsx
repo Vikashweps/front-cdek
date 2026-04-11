@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
 import './main.css';
 
 function SecretChat() {
   const navigate = useNavigate();
+  const { eventId } = useParams();
   
   // Состояние для активной вкладки
   const [activeTab, setActiveTab] = useState('recipient'); // 'recipient' или 'sender'
@@ -34,12 +36,22 @@ function SecretChat() {
     scrollToBottom();
   }, [messages, activeTab]);
 
+  useEffect(() => {
+    if (!eventId?.trim()) {
+      navigate('/profile', { replace: true });
+      return;
+    }
+    if (activeTab !== 'recipient') return;
+    fetchRecipientChat(eventId).catch(() => {});
+  }, [activeTab, eventId, navigate]);
+
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (message.trim()) {
+      const text = message.trim();
       const newMessage = {
         id: Date.now(),
-        text: message,
+        text,
         sender: 'me',
         time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
       };
@@ -50,11 +62,10 @@ function SecretChat() {
         [activeTab]: [...prev[activeTab], newMessage]
       }));
       setMessage('');
+      if (activeTab === 'recipient' && eventId?.trim()) {
+        sendMessage(eventId, text).catch(() => {});
+      }
     }
-  };
-
-  const handleGoBack = () => {
-    navigate(-1);
   };
 
   // Данные для отображения в заголовке

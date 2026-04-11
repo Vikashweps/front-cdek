@@ -1,6 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createProduct } from '../api/productsApi.jsx';
+import { joinGameByLink } from '../api/invitationsApi.jsx';
+import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
+import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
 import './main.css';
+
+void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 // Валидация названия товара
 const validateName = (name) => {
@@ -172,20 +178,11 @@ function WishlistAdd() {
     };
     
     try {
-      const response = await fetch('http://localhost:8080/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productData)
-      });
-      
-      if (response.ok) {
-        navigate('/wishlist');
-      } else {
-        alert('Ошибка при добавлении товара');
-      }
+      await createProduct(productData);
+      navigate('/wishlist');
     } catch (error) {
       console.error('Error:', error);
-      alert('Ошибка соединения с сервером');
+      alert(error.message || 'Ошибка при добавлении товара');
     }
   };
 

@@ -1,6 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { joinGameByLink } from '../api/invitationsApi.jsx';
+import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
+import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
 import './main.css';
+
+void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 // Валидация названия товара
 const validateName = (name) => {

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { joinGameByLink } from '../api/invitationsApi.jsx';
+import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
+import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
 import './main.css';
+
+void [fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 function Profile() {
   const navigate = useNavigate();
@@ -27,7 +32,7 @@ function Profile() {
   };
 
   const handleGoGame = () => {
-    navigate('/game'); 
+    navigate('/game/demo');
   };
 
   // Открытие модалки
@@ -45,7 +50,7 @@ function Profile() {
   };
 
   // Обработка подключения к игре
-  const handleJoinSubmit = () => {
+  const handleJoinSubmit = async () => {
     if (!joinLink.trim()) {
       setJoinError('Введите ссылку-приглашение');
       return;
@@ -60,16 +65,19 @@ function Profile() {
       return;
     }
 
-    // Если всё ок
     setJoinError('');
-    console.log("Подключение по ссылке:", joinLink);
-    
-    // Здесь будет запрос к API для проверки ссылки
-    // Если успешно -> navigate('/game');
-    
-    alert('Вы успешно подключились к игре!'); // Заглушка
-    closeJoinModal();
-    navigate('/game'); // Переход в игру
+    try {
+      const data = await joinGameByLink(joinLink.trim());
+      const id =
+        data?.eventId ??
+        data?.event?.id ??
+        data?.id ??
+        'demo';
+      closeJoinModal();
+      navigate(`/game/${id}`);
+    } catch (err) {
+      setJoinError(err.message || 'Не удалось подключиться к игре');
+    }
   };
 
   const handleLogout = () => {

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './main.css'; 
+import { joinGameByLink } from '../api/invitationsApi.jsx';
+import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
+import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+import './main.css';
+
+void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage]; 
 
 // === ФУНКЦИИ ВАЛИДАЦИИ ===
 
@@ -212,7 +217,7 @@ function Game_add() {
     });
     
     // Здесь будет отправка на сервер
-    navigate('/game-add-link');
+    navigate('/game-add-link', { state: { eventId: 'demo' } });
   };
 
   const handleGoBack = () => {

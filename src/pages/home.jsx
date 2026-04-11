@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// ИСПРАВЛЕНО: Импорт из gameApi, а не authApi
-import { isAuthenticated } from '../api/gameApi'; 
+import { isAuthenticated } from '../api/authApi.jsx';
+import { joinGameByLink } from '../api/invitationsApi.jsx';
+import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
+import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
 import './home.css';
+
+void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 function Home() {
   // ... остальной код без изменений ...

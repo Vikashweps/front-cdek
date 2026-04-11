@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom'
+
+function LegacyGameChatRedirect() {
+  const { eventId } = useParams();
+  return <Navigate to={`/game/${eventId}/chat`} replace />;
+}
 import Home from './pages/home';       
 import Registration from './pages/registration';
 import Registration_end from './pages/registration-end';
@@ -27,13 +32,16 @@ function App() {
         <Route path="/wishlist-add" element={<Wishlist_add />} />
         <Route path="/wishlist-red" element={<Wishlist_red />} />
         <Route path="/profile-red" element={<Profile_red />} />
-        <Route path="/game" element={<Game />} />
+        <Route path="/game/:eventId" element={<Game />} />
+        <Route path="/game/:eventId/chat" element={<SecretChat />} />
+        <Route path="/game" element={<Navigate to="/game/demo" replace />} />
+        <Route path="/game-chat/:eventId" element={<LegacyGameChatRedirect />} />
+        <Route path="/game-chat" element={<Navigate to="/game/demo/chat" replace />} />
         <Route path="/game-edit" element={<Game_edit />} />
         <Route path="/game-add" element={<Game_add />} />
         <Route path="/game-add-link" element={<Game_add_link />} />
         <Route path="/game-letter" element={<Letter />} />
         <Route path="/wishlist-santa" element={<Wishlist_Santa />} />
-        <Route path="/game-chat" element={<SecretChat />} />
       </Routes>
     </Router>
   )
