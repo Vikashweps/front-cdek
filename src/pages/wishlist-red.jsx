@@ -78,7 +78,7 @@ const validatePrice = (price) => {
 
 function WishlistRed() {
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { eventId, itemId } = useParams();
     const fileInputRef = useRef(null);
     
     // Демо-данные (без загрузки с сервера)
@@ -174,13 +174,13 @@ function WishlistRed() {
         
         console.log('Сохраняем товар:', formData);
         alert('Товар сохранён');
-        navigate('/wishlist');
+        navigate(`/game/${eventId}/wishlist`);
     };
 
     const handleDelete = () => {
         if (window.confirm('Удалить этот товар?')) {
         alert('Товар удалён');
-        navigate('/wishlist');
+        navigate(`/game/${eventId}/wishlist`);
         }
     };
 
@@ -193,7 +193,7 @@ function WishlistRed() {
       <div className="card_wishlist">
         <h1>Редактирование товара</h1>
         
-        <form onSubmit={handleSave} noValidate>
+        <form key={itemId} onSubmit={handleSave} noValidate>
           <div className="wishlist-content">
             {/* ЛЕВАЯ КОЛОНКА - ФОРМА */}
             <div className="form-left">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joinGameByLink } from '../api/invitationsApi.jsx';
 import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
 import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
@@ -9,9 +9,10 @@ void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 function Letter({ organizerMessage }) {  
   const navigate = useNavigate();
+  const { eventId } = useParams();
 
   const handleGoWishlist = () => {
-    navigate('/wishlist-santa');
+    navigate(`/game/${eventId}/wishlist/santa`);
   };
 
   return (

@@ -14,7 +14,7 @@ function Registration_end() {
     navigate('/'); // ← Переход на главную
   };
   const handleGoWishlist = () => {
-    navigate('/wishlist'); 
+    navigate('/game/demo/wishlist');
   };
   const handleGoProfile = () => {
     navigate('/profile'); 

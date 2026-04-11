@@ -20,15 +20,15 @@ function Profile() {
   };
 
   const handleGoWishlist = () => {
-    navigate('/wishlist'); 
+    navigate('/game/demo/wishlist');
   };
 
   const handleGoProfileRed = () => {
-    navigate('/profile-red'); 
+    navigate('/profile/edit');
   };
 
   const handleGoGameAdd = () => {
-    navigate('/game-add'); 
+    navigate('/game/add');
   };
 
   const handleGoGame = () => {

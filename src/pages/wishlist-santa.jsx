@@ -9,10 +9,13 @@ void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 function Wishlist_Santa({ participantName }) {  // ← НОВОЕ: проп для имени
   const navigate = useNavigate();
-  const { name } = useParams();  // ← НОВОЕ: получение имени из URL
-  
-  // ← НОВОЕ: Приоритет: пропсы > URL params > демо-значение
-  const displayName = participantName || name || 'Участник';
+  const { eventId, participantSlug } = useParams();
+  const nameFromSlug = participantSlug
+    ? decodeURIComponent(participantSlug)
+    : undefined;
+
+  // Приоритет: пропсы > сегмент URL > демо
+  const displayName = participantName || nameFromSlug || 'Участник';
   
   const isEmpty = false;
   
@@ -49,7 +52,7 @@ function Wishlist_Santa({ participantName }) {  // ← НОВОЕ: проп дл
   ]);
 
   const handleClose = () => {
-    navigate(-1);
+    navigate(`/game/${eventId}/wishlist`);
   };
 
   return (

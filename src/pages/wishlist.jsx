@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joinGameByLink } from '../api/invitationsApi.jsx';
 import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
 import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
@@ -9,6 +9,7 @@ void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 function Wishlist() {
   const navigate = useNavigate();
+  const { eventId } = useParams();
   const isEmpty = false;
   
   // Демо-данные подарков
@@ -50,12 +51,12 @@ function Wishlist() {
   };
 
   const handleGoWishlist_add = () => {
-    navigate('/wishlist-add'); 
+    navigate(`/game/${eventId}/wishlist/add`);
   };
 
   const handleGoWishlist_red = (id) => {
     console.log('Редактировать:', id);
-    navigate('/wishlist-red'); 
+    navigate(`/game/${eventId}/wishlist/items/${id}`);
     setOpenMenuId(null);
   };
 

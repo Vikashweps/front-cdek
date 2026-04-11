@@ -68,6 +68,10 @@ function SecretChat() {
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   // Данные для отображения в заголовке
   const chatData = {
     recipient: {

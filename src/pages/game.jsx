@@ -20,14 +20,14 @@ function Game() {
   });
 
   const handleGoWishlist = () => {
-    navigate('/wishlist'); 
+    navigate(`/game/${eventId}/wishlist`);
   };
 
   const handleGoProfile = () => {
     navigate('/profile'); 
   };
   const handleGoEditGame = () => {
-    navigate(`/game-edit?eventId=${encodeURIComponent(eventId || '')}`);
+    navigate(`/game/${eventId}/edit`);
   };
 
   const handleLeaveGame = () => {
@@ -41,7 +41,7 @@ function Game() {
       alert('Жеребьёвка ещё не проведена!');
       return;
     }
-    navigate('/game-letter');
+    navigate(`/game/${eventId}/letter`);
   };
 
   const handleSecretChat = () => {

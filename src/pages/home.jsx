@@ -43,7 +43,7 @@ function Home() {
   // Кнопка "Вишлист"
   const handleGoWishlist = () => {
     if (isAuth) {
-      navigate('/wishlist');
+      navigate('/game/demo/wishlist');
     } else {
       navigate('/registration');
     }
@@ -54,7 +54,7 @@ function Home() {
   const handleStartGame = () => {
     if (isAuth) {
       // Если авторизован -> Сразу создаем игру
-      navigate('/game-add');
+      navigate('/game/add');
     } else {
       // Если нет -> На регистрацию
       navigate('/registration');

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { createProduct } from '../api/productsApi.jsx';
 import { joinGameByLink } from '../api/invitationsApi.jsx';
 import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
@@ -74,6 +74,7 @@ const validatePrice = (price) => {
 
 function WishlistAdd() {
   const navigate = useNavigate();
+  const { eventId } = useParams();
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -90,7 +91,7 @@ function WishlistAdd() {
   const [files, setFiles] = useState([]);
 
   const handleGoWishlist = () => {
-    navigate('/wishlist'); 
+    navigate(`/game/${eventId}/wishlist`);
   };
 
   const handleGoBack = () => {
@@ -179,7 +180,7 @@ function WishlistAdd() {
     
     try {
       await createProduct(productData);
-      navigate('/wishlist');
+      navigate(`/game/${eventId}/wishlist`);
     } catch (error) {
       console.error('Error:', error);
       alert(error.message || 'Ошибка при добавлении товара');

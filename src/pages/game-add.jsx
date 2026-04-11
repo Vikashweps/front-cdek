@@ -217,7 +217,7 @@ function Game_add() {
     });
     
     // Здесь будет отправка на сервер
-    navigate('/game-add-link', { state: { eventId: 'demo' } });
+    navigate('/game/add/link', { state: { eventId: 'demo' } });
   };
 
   const handleGoBack = () => {
