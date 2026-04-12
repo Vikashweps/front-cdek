@@ -1,69 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { joinGameByLink } from '../api/invitationsApi.jsx';
-import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
-import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+// Импортируем ваши API методы
+import { 
+  fetchMyWishlist, 
+  addWishlistItem, 
+  deleteWishlistItem 
+} from '../api/wishlistApi.jsx'; // Убедитесь, что путь правильный
 import './main.css';
-
-void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 function Wishlist() {
   const navigate = useNavigate();
   const { eventId } = useParams();
-  const isEmpty = false;
   
-  // Демо-данные подарков
-  const [gifts, setGifts] = useState([
-    {
-      id: 1,
-      name: 'Алая зима - Мари Аннетт',
-      price: '500 ₽',
-      image: '/cookie.png',
-      link: 'https://example.com/book',
-    },
-    {
-      id: 2,
-      name: 'Набор чая',
-      price: '800 ₽',
-      image: '/cookie.png',
-      link: 'https://example.com/tea'
-    },
-    {
-      id: 3,
-      name: 'Коврик для мыши',
-      price: '2 300 ₽',
-      image: '/cookie.png',
-      link: 'https://example.com/mousepad'
-    },
-    {
-      id: 4,
-      name: 'Эфирные масла',
-      price: '500 ₽',
-      image: '/cookie.png',
-      link: null
-    }
-  ]);
-
+  // Состояния
+  const [gifts, setGifts] = useState([]);
+  const [wishlistId, setWishlistId] = useState(null); // ID вишлиста нужен для добавления/удаления
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isEmpty, setIsEmpty] = useState(false);
+  
   const [openMenuId, setOpenMenuId] = useState(null);
 
-  const handleGoProfile = () => {
-    navigate('/profile'); 
-  };
+  // Загрузка данных при монтировании
+  useEffect(() => {
+    const loadWishlist = async () => {
+      if (!eventId) return;
+
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        // Запрос к вашему API
+        const data = await fetchMyWishlist(eventId);
+        
+        // Адаптируйте под структуру ответа вашего API
+        // Обычно это { id: ..., items: [...] } или просто массив
+        const items = data.items || data.data || [];
+        const wId = data.id || data.wishlistId;
+
+        setWishlistId(wId);
+        setGifts(items);
+        setIsEmpty(items.length === 0);
+        
+      } catch (err) {
+        console.error('Ошибка загрузки вишлиста:', err);
+        setError(err.message || 'Не удалось загрузить товары');
+        setIsEmpty(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadWishlist();
+  }, [eventId]);
 
   const handleGoWishlist_add = () => {
-    navigate(`/game/${eventId}/wishlist/add`);
+    // Передаем wishlistId и eventId на страницу добавления
+    if (wishlistId) {
+      navigate(`/game/${eventId}/wishlist/add?wishlistId=${wishlistId}`);
+    } else {
+      alert('Ошибка: Вишлист не найден');
+    }
   };
 
   const handleGoWishlist_red = (id) => {
-    console.log('Редактировать:', id);
     navigate(`/game/${eventId}/wishlist/items/${id}`);
     setOpenMenuId(null);
   };
 
-  const handleDelete = (id) => {
+  // Удаление товара
+  const handleDelete = async (itemId) => {
+    if (!wishlistId) return;
+
     if (window.confirm('Удалить этот подарок?')) {
-      setGifts(gifts.filter(gift => gift.id !== id));
-      setOpenMenuId(null);
+      try {
+        // Оптимистичное обновление UI
+        const prevGifts = [...gifts];
+        setGifts(prev => prev.filter(gift => gift.id !== itemId));
+        setOpenMenuId(null);
+        
+        // Запрос на сервер
+        await deleteWishlistItem(wishlistId, itemId);
+        
+      } catch (err) {
+        console.error('Ошибка удаления:', err);
+        alert('Не удалось удалить товар. Попробуйте снова.');
+        // Откат изменений при ошибке
+        setGifts(prevGifts);
+      }
     }
   };
 
@@ -76,13 +100,50 @@ function Wishlist() {
   };
 
   // Закрытие меню при клике вне
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = () => setOpenMenuId(null);
     if (openMenuId) {
       document.addEventListener('click', handleClickOutside);
       return () => document.removeEventListener('click', handleClickOutside);
     }
   }, [openMenuId]);
+
+  // Рендер состояния загрузки
+  if (isLoading) {
+    return (
+      <div className="overlay_wishlist">
+        <div className="card_wishlist wishlist-new">
+          <button className="close-wishlist" onClick={handleClose}>
+            <i className="ti ti-x" style={{ fontSize: '24px', color: '#44E858' }}></i>
+          </button>
+          <div className="wishlist-loading">
+            <i className="ti ti-loader" style={{ fontSize: '48px', color: '#44E858', animation: 'spin 1s linear infinite' }}></i>
+            <p>Загрузка вишлиста...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Рендер состояния ошибки (если не пустой список)
+  if (error && !isEmpty && gifts.length === 0) {
+    return (
+      <div className="overlay_wishlist">
+        <div className="card_wishlist wishlist-new">
+          <button className="close-wishlist" onClick={handleClose}>
+            <i className="ti ti-x" style={{ fontSize: '24px', color: '#44E858' }}></i>
+          </button>
+          <div className="wishlist-error">
+            <i className="ti ti-alert-circle" style={{ fontSize: '48px', color: '#e74c3c' }}></i>
+            <p className="error-text">{error}</p>
+            <button className="btn-secondary" onClick={() => window.location.reload()}>
+              Попробовать снова
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="overlay_wishlist">
@@ -158,12 +219,19 @@ function Wishlist() {
                     {/* Контент карточки */}
                     <div className="gift-content">
                       <div className="gift-image">
-                        <img src={gift.image} alt={gift.name} />
+                        <img src={gift.imageUrl || gift.image || '/placeholder.png'} alt={gift.name} />
                       </div>
                       <div className="gift-info">
                         <h3 className="gift-name">{gift.name}</h3>
-                        <p className="gift-price">{gift.price}</p>
-                        {gift.link }
+                        <p className="gift-price">
+                          {gift.price ? `${Number(gift.price).toLocaleString('ru-RU')} ₽` : ''}
+                        </p>
+                        {gift.link && (
+                          <a href={gift.link} className="gift-link" target="_blank" rel="noopener noreferrer">
+                            В магазин
+                            <i className="ti ti-arrow-up-right" style={{ fontSize: '14px' }}></i>
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>

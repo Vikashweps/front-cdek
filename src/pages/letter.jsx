@@ -1,19 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { joinGameByLink } from '../api/invitationsApi.jsx';
-import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
-import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+// Импортируем нужные методы API
+import { fetchAssignments, fetchParticipantWishlist } from '../api/gameApi.js';
 import './main.css';
-
-void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 function Letter({ organizerMessage }) {  
   const navigate = useNavigate();
   const { eventId } = useParams();
 
+  // Состояния для данных
+  const [recipientName, setRecipientName] = useState('Санте'); // По умолчанию "Санте", если данные не загрузятся
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleGoWishlist = () => {
+    // Если есть ID получателя, можно передать его в маршрут
     navigate(`/game/${eventId}/wishlist/santa`);
   };
+
+  // Загрузка данных при монтировании
+  useEffect(() => {
+    const loadData = async () => {
+      if (!eventId) return;
+
+      try {
+        setIsLoading(true);
+        
+        // 1. Получаем назначение (кому мы дарим)
+        // Предполагаем, что API возвращает объект { recipient: { id, name, ... } }
+        const assignment = await fetchAssignments(eventId);
+        
+        if (assignment && assignment.recipient) {
+          setRecipientName(assignment.recipient.name || 'Санте');
+          
+          // 2. Получаем вишлист этого участника
+          // Используем ID получателя из назначения
+          const wishlist = await fetchParticipantWishlist(assignment.recipient.id, eventId);
+          
+          // Сохраняем список товаров (адаптируйте под структуру ответа: массив или .items)
+          const items = Array.isArray(wishlist) ? wishlist : (wishlist.items || []);
+          setWishlistItems(items);
+        }
+      } catch (error) {
+        console.error('Ошибка загрузки данных письма:', error);
+        // В случае ошибки оставляем значение по умолчанию ("Санте")
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, [eventId]);
+
+  // Пока данные грузятся, можно показывать заглушку или ничего не менять
+  if (isLoading) {
+    return (
+      <div className="letter-page">
+        <div className="letter-card">
+           <button className="letter-close" onClick={() => navigate(-1)}>×</button>
+           <p style={{ textAlign: 'center', paddingTop: '50px' }}>Загрузка письма...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="letter-page">
@@ -28,7 +77,8 @@ function Letter({ organizerMessage }) {
           </div>
           <div className="letter-to">
             <span className="label">Кому:</span>
-            <span className="name">Санте</span>
+            {/* ← ИЗМЕНЕНИЕ: Подставляем реальное имя получателя */}
+            <span className="name">{recipientName}</span>
           </div>
         </div>
 

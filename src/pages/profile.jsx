@@ -1,26 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { joinGameByLink } from '../api/invitationsApi.jsx';
-import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
-import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+// Импортируем нужные методы API
+import { fetchMe, fetchUserGames, joinGameByLink, logout as apiLogout } from '../api/gameApi.js';
 import './main.css';
-
-void [fetchGameById, runDraw, fetchRecipientChat, sendMessage];
 
 function Profile() {
   const navigate = useNavigate();
+
+  // Состояния для данных
+  const [user, setUser] = useState(null);
+  const [games, setGames] = useState([]);
+  
+  // Состояния загрузки и ошибок
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Состояния для модального окна подключения
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [joinLink, setJoinLink] = useState('');
   const [joinError, setJoinError] = useState('');
+  const [isJoining, setIsJoining] = useState(false);
+
+  // ← НОВОЕ: Загрузка данных профиля и игр
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        // Параллельная загрузка профиля и списка игр
+        const [userData, gamesData] = await Promise.all([
+          fetchMe(),
+          fetchUserGames()
+        ]);
+
+        setUser(userData);
+        
+        // Адаптируем ответ API под наш список (обычно это массив или объект { items: [] })
+        const gamesList = Array.isArray(gamesData) ? gamesData : (gamesData.items || gamesData.data || []);
+        setGames(gamesList);
+
+      } catch (err) {
+        console.error('Ошибка загрузки данных:', err);
+        setError(err.message || 'Не удалось загрузить данные профиля');
+        
+        // Если ошибка 401 (Unauthorized), можно сразу редиректить на вход
+        if (err.message.includes('401')) {
+          apiLogout();
+          navigate('/', { replace: true });
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, [navigate]);
 
   const handleGoHome = () => {
     navigate('/'); 
   };
 
-  const handleGoWishlist = () => {
-    navigate('/game/demo/wishlist');
+  const handleGoWishlist = (eventId) => {
+    // Переходим к вишлисту конкретной игры (или общей странице выбора)
+    if (eventId) {
+      navigate(`/game/${eventId}/wishlist`);
+    } else {
+      navigate('/wishlist'); 
+    }
   };
 
   const handleGoProfileRed = () => {
@@ -31,8 +78,8 @@ function Profile() {
     navigate('/game/add');
   };
 
-  const handleGoGame = () => {
-    navigate('/game/demo');
+  const handleGoGame = (eventId) => {
+    navigate(`/game/${eventId}`);
   };
 
   // Открытие модалки
@@ -56,36 +103,68 @@ function Profile() {
       return;
     }
 
-    // Простая проверка: ссылка должна содержать домен или путь /join/
-    // Можно усложнить регулярное выражение при необходимости
-    const isValidLink = joinLink.includes('/join/') || joinLink.startsWith('http');
-
-    if (!isValidLink) {
-      setJoinError('Некорректный формат ссылки');
-      return;
-    }
-
+    setIsJoining(true);
     setJoinError('');
+
     try {
       const data = await joinGameByLink(joinLink.trim());
-      const id =
-        data?.eventId ??
-        data?.event?.id ??
-        data?.id ??
-        'demo';
+      
+      // Извлекаем ID игры из ответа (адаптируйте под структуру вашего API)
+      const gameId = data?.eventId ?? data?.event?.id ?? data?.id;
+      
       closeJoinModal();
-      navigate(`/game/${id}`);
+      
+      if (gameId) {
+        navigate(`/game/${gameId}`);
+      } else {
+        // Если ID нет в ответе, просто обновляем список игр
+        const updatedGames = await fetchUserGames();
+        setGames(Array.isArray(updatedGames) ? updatedGames : (updatedGames.items || []));
+      }
     } catch (err) {
       setJoinError(err.message || 'Не удалось подключиться к игре');
+    } finally {
+      setIsJoining(false);
     }
   };
 
   const handleLogout = () => {
     if (window.confirm('Вы действительно хотите выйти из профиля?')) {
-      localStorage.removeItem('token'); 
+      apiLogout(); // Очищаем localStorage
       navigate('/', { replace: true });
     }
   };
+
+  // Рендер состояния загрузки
+  if (isLoading) {
+    return (
+      <div className="overlay_profile">
+        <div className="card_profile">
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            <i className="ti ti-loader" style={{ fontSize: '48px', color: '#44E858', animation: 'spin 1s linear infinite' }}></i>
+            <p style={{ marginTop: '20px', color: '#757575' }}>Загрузка профиля...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Рендер состояния ошибки
+  if (error && !user) {
+    return (
+      <div className="overlay_profile">
+        <div className="card_profile">
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            <i className="ti ti-alert-circle" style={{ fontSize: '48px', color: '#e74c3c' }}></i>
+            <h2 style={{ marginTop: '20px', color: '#1E1E1E' }}>Ошибка</h2>
+            <p style={{ color: '#757575', marginBottom: '20px' }}>{error}</p>
+            <button className="btn-primary" onClick={() => window.location.reload()}>Попробовать снова</button>
+            <button className="btn-secondary" onClick={handleGoHome} style={{ marginLeft: '10px' }}>На главную</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="overlay_profile">
@@ -108,18 +187,18 @@ function Profile() {
             <h3>ЛИЧНЫЕ ДАННЫЕ</h3>
             <form>
               <div className="input-readonly">
-                <span className="value">Иван Иванов</span>
+                <span className="value">{user?.name || 'Имя не указано'}</span>
               </div>
 
               <div className="input-readonly">
-                <span className="value">ivan@example.com</span>
+                <span className="value">{user?.email || 'Email не указан'}</span>
               </div>
 
               <button type="button" className="btn-secondary" onClick={handleGoProfileRed}>
                 Изменить данные
               </button>
 
-              <button type="button" className="btn-primary" onClick={handleGoWishlist}>
+              <button type="button" className="btn-primary" onClick={() => handleGoWishlist()}>
                 Мой вишлист
               </button>
 
@@ -131,17 +210,30 @@ function Profile() {
 
           {/* Правая колонка: Игры */}
           <div className="column games-list">
-            <h3>МОИ ИГРЫ</h3>
+            <h3>МОИ ИГРЫ ({games.length})</h3>
             
             <div className="games-scroll-container">
-              <button type="button" className="game-item" onClick={handleGoGame}>Команда 1 </button>
-              <button type="button" className="game-item" onClick={handleGoGame}>Команда 2</button>
-              <button type="button" className="game-item" onClick={handleGoGame}>Команда 3</button>
-              <button type="button" className="game-item" onClick={handleGoGame}>Команда 4</button>
-              <button type="button" className="game-item" onClick={handleGoGame}>Команда 5</button>
-              <button type="button" className="game-item" onClick={handleGoGame}>Команда 6</button>
-              <button type="button" className="game-item" onClick={handleGoGame}>Команда 7</button>
-              <button type="button" className="game-item" onClick={handleGoGame}>Команда 8</button> 
+              {games.length === 0 ? (
+                <p style={{ textAlign: 'center', color: '#757575', padding: '20px' }}>
+                  У вас пока нет активных игр. <br/> Создайте новую или подключитесь к существующей!
+                </p>
+              ) : (
+                games.map((game) => (
+                  <button 
+                    key={game.id} 
+                    type="button" 
+                    className="game-item" 
+                    onClick={() => handleGoGame(game.id)}
+                  >
+                    {game.name || `Игра #${game.id}`}
+                    {game.status && (
+                      <span style={{ float: 'right', fontSize: '12px', color: game.status === 'ACTIVE' ? '#44E858' : '#757575' }}>
+                        ● {game.status === 'ACTIVE' ? 'Активна' : game.status}
+                      </span>
+                    )}
+                  </button>
+                ))
+              )}
             </div>
 
             {/* Блок кнопок управления играми */}
@@ -177,20 +269,23 @@ function Profile() {
                   setJoinLink(e.target.value);
                   if (joinError) setJoinError('');
                 }}
+                disabled={isJoining}
                 style={{ marginBottom: '10px' }}
+                onKeyDown={(e) => e.key === 'Enter' && handleJoinSubmit()}
               />
               
               <button 
                 type="button" 
                 className="btn-primary"
                 onClick={handleJoinSubmit}
-                style={{ width: '100%' }}
+                disabled={isJoining}
+                style={{ width: '100%', opacity: isJoining ? 0.7 : 1 }}
               >
-                Войти в игру
+                {isJoining ? 'Подключение...' : 'Войти в игру'}
               </button>
             </div>
 
-            {joinError && <span className="error-text" style={{ marginTop: '8px', display: 'block' }}>{joinError}</span>}
+            {joinError && <span className="error-text" style={{ marginTop: '8px', display: 'block', color: '#e74c3c' }}>{joinError}</span>}
           </div>
         </div>
       )}

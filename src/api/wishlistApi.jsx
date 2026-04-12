@@ -35,3 +35,14 @@ export const deleteWishlistItem = async (wishlistId, itemId) => {
   });
   return handleResponse(response);
 };
+
+// Обновить товар в вишлисте (НОВОЕ)
+export const updateWishlistItem = async (wishlistId, itemId, itemData) => {
+  // Предполагаемый эндпоинт: PUT /wishlists/{wishlistId}/items/{itemId}
+  const response = await fetch(`${BASE_URL}/wishlists/${wishlistId}/items/${itemId}`, {
+    method: 'PUT', // или 'PATCH', зависит от вашего бэкенда
+    headers: getHeaders(),
+    body: JSON.stringify(itemData),
+  });
+  return handleResponse(response);
+};

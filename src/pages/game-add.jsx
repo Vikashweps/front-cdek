@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { joinGameByLink } from '../api/invitationsApi.jsx';
-import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
-import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+// Импортируем метод создания игры
+import { createGame } from '../api/gameApi.js';
 import './main.css';
 
-void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage]; 
-
-// === ФУНКЦИИ ВАЛИДАЦИИ ===
+// === ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ===
 
 const validateTeamName = (name) => {
   const errors = [];
@@ -65,7 +62,6 @@ const validateDrawDate = (dateString, minDate, maxDate) => {
   return errors;
 };
 
-// Валидация бюджета (цены игры)
 const validateBudget = (value) => {
   const errors = [];
   const num = Number(value);
@@ -102,30 +98,36 @@ const validateOrganizerNotes = (notes) => {
 function Game_add() {
   const navigate = useNavigate();
   
+  // Состояния формы
   const [teamName, setTeamName] = useState('');
   const [drawDate, setDrawDate] = useState('');
-  const [giftBudget, setGiftBudget] = useState(''); // Новое состояние для цены
+  const [giftBudget, setGiftBudget] = useState('');
   const [wantParticipate, setWantParticipate] = useState(false);
   const [organizerNotes, setOrganizerNotes] = useState('');
   
+  // Состояния ошибок и касаний
   const [errors, setErrors] = useState({ 
     teamName: [], 
     drawDate: [], 
-    giftBudget: [], // Ошибки бюджета
+    giftBudget: [], 
     organizerNotes: [] 
   });
   
   const [touched, setTouched] = useState({ 
     teamName: false, 
     drawDate: false, 
-    giftBudget: false, // Отслеживание касания поля бюджета
+    giftBudget: false, 
     organizerNotes: false 
   });
+
+  // ← НОВОЕ: Состояния загрузки и ошибки сервера
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   const MIN_DATE = '2026-12-01';
   const MAX_DATE = '2027-01-31';
 
-  // --- Обработчики изменений ---
+  // --- Обработчики изменений (без изменений) ---
 
   const handleTeamNameChange = (e) => {
     const value = e.target.value;
@@ -143,7 +145,6 @@ function Game_add() {
     }
   };
 
-  // Обработчик изменения бюджета
   const handleBudgetChange = (e) => {
     const value = e.target.value;
     setGiftBudget(value);
@@ -175,7 +176,6 @@ function Game_add() {
     }
   };
 
-  // Проверка валидности всей формы
   const isFormValid = () => {
     const nameErrors = validateTeamName(teamName);
     const dateErrors = validateDrawDate(drawDate, MIN_DATE, MAX_DATE);
@@ -195,8 +195,10 @@ function Game_add() {
            notesErrors.length === 0;
   };
 
-  const handleSubmit = (e) => {
+  // ← НОВОЕ: Отправка данных на сервер
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError(null);
     
     if (!isFormValid()) {
       setTouched({ 
@@ -208,29 +210,52 @@ function Game_add() {
       return;
     }
     
-    console.log({ 
-      teamName, 
-      drawDate, 
-      giftBudget, // Добавлено в лог
-      wantParticipate,
-      organizerNotes  
-    });
-    
-    // Здесь будет отправка на сервер
-    navigate('/game/add/link', { state: { eventId: 'demo' } });
+    try {
+      setIsSubmitting(true);
+
+      // Подготовка данных для API
+      const gameData = {
+        name: teamName.trim(),
+        drawDate: drawDate,
+        giftBudget: Number(giftBudget),
+        organizerNotes: organizerNotes.trim(),
+        isOrganizerParticipating: wantParticipate
+      };
+
+      // Вызов API создания игры
+      const createdGame = await createGame(gameData);
+      
+      // Переход на страницу созданной игры
+      // Предполагаем, что API возвращает объект с id: { id: '123', ... }
+      const gameId = createdGame.id || createdGame.eventId;
+      
+      if (gameId) {
+        navigate(`/game/${gameId}`);
+      } else {
+        throw new Error('Не удалось получить ID созданной игры');
+      }
+      
+    } catch (error) {
+      console.error('Ошибка создания игры:', error);
+      setSubmitError(error.message || 'Не удалось создать игру. Попробуйте позже.');
+      alert(error.message || 'Ошибка при создании игры');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
-  // Кнопка активна, если нет ошибок в обязательных полях
+  // Кнопка активна, если нет ошибок и форма не отправляется
   const canSubmit = teamName.trim() && 
                     drawDate && 
                     giftBudget && 
                     errors.teamName.length === 0 && 
                     errors.drawDate.length === 0 &&
-                    errors.giftBudget.length === 0;
+                    errors.giftBudget.length === 0 &&
+                    !isSubmitting;
 
   return (
     <div className="overlay_game_add"> 
@@ -249,6 +274,7 @@ function Game_add() {
               value={teamName}
               onChange={handleTeamNameChange}
               onBlur={handleBlur}
+              disabled={isSubmitting}
               className={`input-field ${errors.teamName.length > 0 && touched.teamName ? 'input-error' : ''}`}
               required
             />
@@ -270,6 +296,7 @@ function Game_add() {
               value={drawDate}
               onChange={handleDateChange}
               onBlur={handleBlur}
+              disabled={isSubmitting}
               min={MIN_DATE}
               max={MAX_DATE}
               className={`input-field date-input ${errors.drawDate.length > 0 && touched.drawDate ? 'input-error' : ''}`}
@@ -297,6 +324,7 @@ function Game_add() {
               value={giftBudget}
               onChange={handleBudgetChange}
               onBlur={handleBlur}
+              disabled={isSubmitting}
               min="1"
               step="100"
               className={`input-field ${errors.giftBudget.length > 0 && touched.giftBudget ? 'input-error' : ''}`}
@@ -320,6 +348,7 @@ function Game_add() {
               value={organizerNotes}
               onChange={handleNotesChange}
               onBlur={handleBlur}
+              disabled={isSubmitting}
               className={`input-field input-notes ${errors.organizerNotes.length > 0 && touched.organizerNotes ? 'input-error' : ''}`}
               rows={4}
               maxLength={500}
@@ -331,7 +360,6 @@ function Game_add() {
                 ))}
               </ul>
             )}
-            {/* Счетчик символов */}
             <div className="notes-hint">{organizerNotes.length} / 500</div>
           </div>
 
@@ -343,10 +371,18 @@ function Game_add() {
                 checked={wantParticipate}
                 onChange={(e) => setWantParticipate(e.target.checked)}
                 className="checkbox"
+                disabled={isSubmitting}
               />
               <span className="checkbox-text">Хочу участвовать в жеребьевке как игрок</span>
             </label>
           </div>
+
+          {/* Ошибка сервера */}
+          {submitError && (
+            <div style={{ color: '#e74c3c', fontSize: '14px', marginBottom: '15px', textAlign: 'center' }}>
+              ⚠️ {submitError}
+            </div>
+          )}
 
           {/* Кнопки */}
           <div className="game-add-buttons">
@@ -355,10 +391,16 @@ function Game_add() {
               className="btn-primary" 
               disabled={!canSubmit}
               title={!canSubmit ? 'Заполните все обязательные поля корректно' : ''}
+              style={{ opacity: isSubmitting ? 0.7 : 1 }}
             >
-              Создать игру
+              {isSubmitting ? 'Создание...' : 'Создать игру'}
             </button>
-            <button type="button" className="btn-secondary" onClick={handleGoBack}>
+            <button 
+              type="button" 
+              className="btn-secondary" 
+              onClick={handleGoBack}
+              disabled={isSubmitting}
+            >
               Отмена
             </button>
           </div>

@@ -1,79 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { joinGameByLink } from '../api/invitationsApi.jsx';
-import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
-import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+// Импортируем нужные методы API
+import { fetchGameById, updateGame, fetchParticipants, removeParticipant, generateInviteLink } from '../api/gameApi.js';
 import './main.css';
 
-void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
-
-// Валидация названия команды
+// === ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ===
 const validateTeamName = (name) => {
   const errors = [];
   const trimmed = name.trim();
-  
   if (!trimmed) {
     errors.push('Название команды обязательно');
     return errors;
   }
-  
   const validPattern = /^[а-яА-ЯёЁa-zA-Z0-9\s\-\,\.\(\)\/]+$/;
   if (!validPattern.test(trimmed)) {
     errors.push('Разрешены только буквы, цифры, пробел и символы: - , . ( ) /');
   }
-  
   if (trimmed.length < 3) {
     errors.push('Минимальная длина названия — 3 символа');
   }
   if (trimmed.length > 150) {
     errors.push('Максимальная длина названия — 150 символов');
   }
-  
   if (trimmed.startsWith(' ') || trimmed.endsWith(' ')) {
     errors.push('Название не должно начинаться или заканчиваться пробелом');
   }
-  
   return errors;
 };
 
-// Валидация даты жеребьёвки
 const validateDrawDate = (dateString, minDateStr, maxDateStr) => {
   const errors = [];
-  
   if (!dateString) {
     errors.push('Дата жеребьёвки обязательна');
     return errors;
   }
-  
   const date = new Date(dateString);
   const minDate = new Date(minDateStr);
   const maxDate = new Date(maxDateStr);
-  
   date.setHours(0, 0, 0, 0);
   minDate.setHours(0, 0, 0, 0);
   maxDate.setHours(23, 59, 59, 999);
-  
   if (isNaN(date.getTime())) {
     errors.push('Введите корректную дату');
     return errors;
   }
-  
   if (date < minDate || date > maxDate) {
     errors.push(`Дата должна быть между ${minDateStr} и ${maxDateStr}`);
   }
-  
   return errors;
 };
 
-// Валидация пожеланий (опциональное поле)
 const validateOrganizerNotes = (notes) => {
   const errors = [];
-  
-  // Проверка: не больше 500 символов
   if (notes && notes.length > 500) {
     errors.push('Максимальная длина — 500 символов');
   }
-  
   return errors;
 };
 
@@ -81,27 +62,74 @@ function Game_edit() {
   const navigate = useNavigate();
   const { eventId } = useParams();
 
+  // Состояния для данных формы
   const [formData, setFormData] = useState({
-    teamName: 'КОМАНДА1',
-    drawDate: '2026-12-14',
+    teamName: '',
+    drawDate: '',
   });
 
   const [organizerNotes, setOrganizerNotes] = useState('');
-
-  const [participants, setParticipants] = useState([
-    { id: 1, name: 'Анна Петрова', email: 'anna@example.com' },
-    { id: 2, name: 'Иван Сидоров', email: 'ivan@example.com' },
-    { id: 3, name: 'Мария Козлова', email: 'maria@example.com' },
-    { id: 4, name: 'Дмитрий Волков', email: 'dmitry@example.com' },
-    { id: 5, name: 'Елена Новикова', email: 'elena@example.com' },
-    { id: 6, name: 'Алексей Морозов', email: 'alexey@example.com' },
-  ]);
+  const [participants, setParticipants] = useState([]);
+  
+  // Состояния загрузки и ошибок
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [inviteLink, setInviteLink] = useState('');
 
   const MIN_DATE = '2026-12-01';
   const MAX_DATE = '2027-01-31';
 
   const [errors, setErrors] = useState({ teamName: [], drawDate: [], organizerNotes: [] });
   const [touched, setTouched] = useState({ teamName: false, drawDate: false, organizerNotes: false });
+
+  // ← НОВОЕ: Загрузка данных игры при монтировании
+  useEffect(() => {
+    const loadData = async () => {
+      if (!eventId) return;
+
+      try {
+        setIsLoading(true);
+        
+        // 1. Получаем данные игры
+        const game = await fetchGameById(eventId);
+        
+        // Заполняем форму данными с сервера
+        setFormData({
+          teamName: game.name || game.teamName || '',
+          drawDate: game.drawDate ? game.drawDate.split('T')[0] : '' // Преобразуем в YYYY-MM-DD
+        });
+        
+        // Получаем пожелания организатора (если есть такое поле в ответе)
+        setOrganizerNotes(game.organizerNotes || game.description || '');
+
+        // 2. Получаем ссылку-приглашение
+        try {
+          const inviteData = await generateInviteLink(eventId);
+          // Адаптируйте под структуру ответа (может быть ссылка или код)
+          const link = inviteData.link || inviteData.invitationLink || `${window.location.origin}/join/${inviteData.code || eventId}`;
+          setInviteLink(link);
+        } catch (err) {
+          console.warn('Не удалось получить ссылку-приглашение', err);
+          setInviteLink(`${window.location.origin}/join/${eventId}`);
+        }
+
+        // 3. Получаем список участников
+        const participantsList = await fetchParticipants(eventId);
+        // Адаптируем ответ (массив или объект { items: [] })
+        const list = Array.isArray(participantsList) ? participantsList : (participantsList.items || []);
+        setParticipants(list);
+
+      } catch (error) {
+        console.error('Ошибка загрузки данных игры:', error);
+        alert('Не удалось загрузить данные игры. Проверьте консоль.');
+        navigate(`/game/${eventId}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, [eventId, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -116,7 +144,6 @@ function Game_edit() {
     }
   };
 
-  // ← НОВОЕ: Обработчик для пожеланий
   const handleNotesChange = (e) => {
     const value = e.target.value;
     setOrganizerNotes(value);
@@ -138,7 +165,6 @@ function Game_edit() {
     }
   };
 
-  // ← НОВОЕ: Включаем валидацию пожеланий
   const isFormValid = () => {
     const nameErrors = validateTeamName(formData.teamName);
     const dateErrors = validateDrawDate(formData.drawDate, MIN_DATE, MAX_DATE);
@@ -147,22 +173,46 @@ function Game_edit() {
     return nameErrors.length === 0 && dateErrors.length === 0 && notesErrors.length === 0;
   };
 
-  const handleRemoveParticipant = (id) => {
+  // ← НОВОЕ: Удаление участника через API
+  const handleRemoveParticipant = async (id) => {
     if (window.confirm('Удалить этого участника из игры?')) {
-      setParticipants(participants.filter(p => p.id !== id));
+      try {
+        await removeParticipant(id);
+        // Обновляем список локально
+        setParticipants(prev => prev.filter(p => p.id !== id));
+      } catch (error) {
+        console.error('Ошибка удаления участника:', error);
+        alert('Не удалось удалить участника. Попробуйте позже.');
+      }
     }
   };
 
-  const handleSave = () => {
+  // ← НОВОЕ: Сохранение изменений через API
+  const handleSave = async () => {
     if (!isFormValid()) {
       setTouched({ teamName: true, drawDate: true, organizerNotes: true });
       return;
     }
     
-    console.log('Сохраняем изменения:', { ...formData, organizerNotes });
-    console.log('Участники:', participants);
-    alert('Изменения сохранены!');
-    navigate(`/game/${eventId}`);
+    try {
+      setIsSaving(true);
+
+      const updatedData = {
+        name: formData.teamName,
+        drawDate: formData.drawDate,
+        organizerNotes: organizerNotes
+      };
+
+      await updateGame(eventId, updatedData);
+      
+      alert('Изменения сохранены!');
+      navigate(`/game/${eventId}`);
+    } catch (error) {
+      console.error('Ошибка сохранения:', error);
+      alert('Не удалось сохранить изменения. Попробуйте позже.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -172,7 +222,6 @@ function Game_edit() {
   // Модальное окно
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const inviteLink = `${window.location.origin}/join/TEAM123`;
 
   const handleAddParticipant = () => {
     setIsModalOpen(true);
@@ -194,6 +243,20 @@ function Game_edit() {
     }
   };
 
+  // Рендер состояния загрузки
+  if (isLoading) {
+    return (
+      <div className="overlay_game">
+        <div className="card_game card_game-edit">
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            <i className="ti ti-loader" style={{ fontSize: '48px', color: '#44E858', animation: 'spin 1s linear infinite' }}></i>
+            <p style={{ marginTop: '20px', color: '#757575' }}>Загрузка настроек игры...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="overlay_game">
       <div className="card_game card_game-edit">
@@ -214,6 +277,7 @@ function Game_edit() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Введите название"
+                disabled={isSaving}
                 className={errors.teamName.length > 0 && touched.teamName ? 'input-error' : ''}
               />
               {errors.teamName.length > 0 && touched.teamName && (
@@ -234,6 +298,7 @@ function Game_edit() {
                 value={formData.drawDate}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                disabled={isSaving}
                 className={errors.drawDate.length > 0 && touched.drawDate ? 'input-error' : ''}
                 min={MIN_DATE}
                 max={MAX_DATE}
@@ -255,6 +320,7 @@ function Game_edit() {
                 value={organizerNotes}
                 onChange={handleNotesChange}
                 onBlur={handleBlur}
+                disabled={isSaving}
                 className={`input-field input-notes ${errors.organizerNotes.length > 0 && touched.organizerNotes ? 'input-error' : ''}`}
                 rows={4}
                 maxLength={500}
@@ -272,6 +338,7 @@ function Game_edit() {
               type="button" 
               className="btn-secondary"
               onClick={handleAddParticipant}
+              disabled={isSaving}
             >
               + Добавить участников
             </button>
@@ -299,6 +366,7 @@ function Game_edit() {
                       className="btn-secondary"
                       onClick={() => handleRemoveParticipant(participant.id)}
                       title="Удалить участника"
+                      disabled={isSaving}
                       style={{ border: 'none' }}
                     >
                       <i className="ti ti-x" style={{ fontSize: '16px', color: 'black'}}></i>
@@ -311,10 +379,10 @@ function Game_edit() {
         </div>
 
         <div className="edit-footer">
-          <button type="button" className="btn-primary" onClick={handleSave}>
-            Сохранить изменения
+          <button type="button" className="btn-primary" onClick={handleSave} disabled={isSaving}>
+            {isSaving ? 'Сохранение...' : 'Сохранить изменения'}
           </button>
-          <button type="button" className="btn-secondary" onClick={handleCancel}>
+          <button type="button" className="btn-secondary" onClick={handleCancel} disabled={isSaving}>
             Отмена
           </button>
         </div>
@@ -332,6 +400,7 @@ function Game_edit() {
                 type="button" 
                 className="btn-primary" 
                 onClick={handleCopyLink}
+                disabled={isCopied}
               >
                 {isCopied ? (
                   <i 

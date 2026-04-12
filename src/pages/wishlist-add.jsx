@@ -1,74 +1,50 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createProduct } from '../api/productsApi.jsx';
-import { joinGameByLink } from '../api/invitationsApi.jsx';
-import { fetchGameById, runDraw } from '../api/eventsApi.jsx';
-import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+// Импортируем нужные методы из вашего API
+import { fetchMyWishlist, addWishlistItem } from '../api/gameApi.js'; 
 import './main.css';
 
-void [joinGameByLink, fetchGameById, runDraw, fetchRecipientChat, sendMessage];
-
-// Валидация названия товара
+// === ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ===
 const validateName = (name) => {
   const errors = [];
   const trimmed = name.trim();
-  
-  // Проверка: не пустое
   if (!trimmed) {
     errors.push('Название товара обязательно');
     return errors;
   }
-  
-  // Проверка: только разрешённые символы
   const validPattern = /^[а-яА-ЯёЁa-zA-Z0-9\s\-\,\.\(\)\/]+$/;
   if (!validPattern.test(trimmed)) {
     errors.push('Разрешены только буквы, цифры, пробел и символы: - , . ( ) /');
   }
-  
-  // Проверка: длина (3–150 символов)
   if (trimmed.length < 3) {
     errors.push('Минимальная длина названия — 3 символа');
   }
   if (trimmed.length > 150) {
     errors.push('Максимальная длина названия — 150 символов');
   }
-  
-  // Проверка: нет пробелов по краям
   if (trimmed.startsWith(' ') || trimmed.endsWith(' ')) {
     errors.push('Название не должно начинаться или заканчиваться пробелом');
   }
-  
   return errors;
 };
 
-// Валидация цены
 const validatePrice = (price) => {
   const errors = [];
-  
   const num = parseFloat(price);
-  
-  // Проверка: это число
   if (isNaN(num)) {
     errors.push('Цена должна быть числом');
     return errors;
   }
-  
-  // Проверка: положительное число
   if (num <= 0) {
     errors.push('Цена должна быть больше 0');
   }
-  
-  // Проверка: разумный максимум
   if (num > 1000000) {
-    errors.push('Максимальная цена — 10 000');
+    errors.push('Максимальная цена — 1 000 000');
   }
-  
-  // Проверка: не больше 2 знаков после запятой
   const parts = price.toString().split('.');
   if (parts[1] && parts[1].length > 2) {
     errors.push('Цена может иметь не более 2 знаков после запятой');
   }
-  
   return errors;
 };
 
@@ -83,9 +59,12 @@ function WishlistAdd() {
     link: ''
   });
 
-  // ← НОВОЕ: Состояния для ошибок и "затронутых" полей
   const [errors, setErrors] = useState({ name: [], price: [] });
   const [touched, setTouched] = useState({ name: false, price: false });
+  
+  // ← НОВОЕ: Состояния для загрузки и ошибок сервера
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState([]);
@@ -98,33 +77,28 @@ function WishlistAdd() {
     navigate(-1);
   };
 
-  // Обработка ввода для поля цены
+  // Обработчики полей (без изменений)
   const handlePriceChange = (e) => {
     const value = e.target.value;
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setFormData(prev => ({ ...prev, price: value }));
-      // Если поле уже было затронуто — валидируем сразу
       if (touched.price) {
         setErrors(prev => ({ ...prev, price: validatePrice(value) }));
       }
     }
   };
 
-  // Остальные поля
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Если поле уже было затронуто — валидируем сразу
     if (touched[name] && name === 'name') {
       setErrors(prev => ({ ...prev, name: validateName(value) }));
     }
   };
 
-  //  Обработчик потери фокуса (валидация при уходе с поля)
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
-    
     if (name === 'name') {
       setErrors(prev => ({ ...prev, name: validateName(value) }));
     } else if (name === 'price') {
@@ -132,7 +106,6 @@ function WishlistAdd() {
     }
   };
 
-  //  Проверка всей формы перед отправкой
   const isFormValid = () => {
     const nameErrors = validateName(formData.name);
     const priceErrors = validatePrice(formData.price);
@@ -140,50 +113,68 @@ function WishlistAdd() {
     return nameErrors.length === 0 && priceErrors.length === 0;
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
+  // Drag & Drop (без изменений)
+  const handleDragOver = (e) => { e.preventDefault(); setIsDragging(true); };
+  const handleDragLeave = (e) => { e.preventDefault(); setIsDragging(false); };
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
     const droppedFiles = Array.from(e.dataTransfer.files);
     setFiles(prev => [...prev, ...droppedFiles]);
   };
-
   const handleFileSelect = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles(prev => [...prev, ...selectedFiles]);
   };
 
-  // Отправка формы
+  // ← НОВОЕ: Отправка формы с запросом к API
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Валидируем перед отправкой
+    setSubmitError(null);
+
+    // 1. Валидация
     if (!isFormValid()) {
-      setTouched({ name: true, price: true }); // Показать все ошибки
+      setTouched({ name: true, price: true });
       return;
     }
-    
-    const productData = {
-      name: formData.name.trim(),
-      price: parseFloat(formData.price) || 0,
-      productLink: formData.link
-    };
-    
+
+    if (!eventId) {
+      setSubmitError('ID игры не найден');
+      return;
+    }
+
     try {
-      await createProduct(productData);
+      setIsSubmitting(true);
+
+      // 2. Получаем вишлист пользователя, чтобы узнать его ID
+      // API обычно возвращает объект вишлиста с его ID
+      const wishlistData = await fetchMyWishlist(eventId);
+      const wishlistId = wishlistData.id || wishlistData.wishlistId;
+
+      if (!wishlistId) {
+        throw new Error('Не удалось получить ID вишлиста. Возможно, вы ещё не вступили в игру.');
+      }
+
+      // 3. Подготовка данных товара
+      const itemData = {
+        name: formData.name.trim(),
+        price: parseFloat(formData.price),
+        link: formData.link || null,
+        // imageUrl: ... (если бы мы загружали файл прямо сейчас)
+      };
+
+      // 4. Отправляем товар на сервер
+      await addWishlistItem(wishlistId, itemData);
+
+      // 5. Успех -> переходим обратно
       navigate(`/game/${eventId}/wishlist`);
+
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Ошибка при добавлении товара:', error);
+      setSubmitError(error.message || 'Не удалось добавить товар. Попробуйте позже.');
       alert(error.message || 'Ошибка при добавлении товара');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -195,7 +186,6 @@ function WishlistAdd() {
         <form onSubmit={handleSubmit} noValidate>
           <div className="wishlist-content">
             <div className="form-left">
-
               <div className="form-group">
                 <label>Название товара <span className="required">*</span></label>
                 <input 
@@ -206,9 +196,9 @@ function WishlistAdd() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   required 
+                  disabled={isSubmitting}
                   className={errors.name.length > 0 && touched.name ? 'input-error' : ''}
                 />
-                {/* ← Сообщения об ошибках */}
                 {errors.name.length > 0 && touched.name && (
                   <ul className="error-list">
                     {errors.name.map((err, i) => (
@@ -218,7 +208,6 @@ function WishlistAdd() {
                 )}
               </div>
               
-              {/* Поле цены */}
               <div className="form-group">
                 <label>Цена <span className="required">*</span></label>
                 <input 
@@ -229,9 +218,9 @@ function WishlistAdd() {
                   onChange={handlePriceChange}
                   onBlur={handleBlur}
                   inputMode="decimal"
+                  disabled={isSubmitting}
                   className={errors.price.length > 0 && touched.price ? 'input-error' : ''}
                 />
-                {/* ← Сообщения об ошибках */}
                 {errors.price.length > 0 && touched.price && (
                   <ul className="error-list">
                     {errors.price.map((err, i) => (
@@ -241,7 +230,6 @@ function WishlistAdd() {
                 )}
               </div>
               
-              {/* Поле ссылки */}
               <div className="form-group">
                 <label>Ссылка на товар</label>
                 <input 
@@ -250,11 +238,11 @@ function WishlistAdd() {
                   placeholder="https://..." 
                   value={formData.link}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                 />
               </div>
             </div>
             
-            {/* ПРАВАЯ КОЛОНКА - ЗАГРУЗКА */}
             <div className="form-right">
               <div 
                 className={`upload-area ${isDragging ? 'dragover' : ''}`}
@@ -262,6 +250,7 @@ function WishlistAdd() {
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
+                style={{ opacity: isSubmitting ? 0.6 : 1, pointerEvents: isSubmitting ? 'none' : 'auto' }}
               >
                 <i className="ti ti-upload" style={{ fontSize: '48px', color: '#44E858' }}></i>
                 <div className="upload-text">
@@ -277,6 +266,7 @@ function WishlistAdd() {
                   accept="image/*" 
                   multiple
                   onChange={handleFileSelect}
+                  disabled={isSubmitting}
                 />
               </div>
               
@@ -288,18 +278,29 @@ function WishlistAdd() {
                   ))}
                 </div>
               )}
+              
+              {submitError && (
+                <p style={{ color: '#e74c3c', fontSize: '14px', marginTop: '10px' }}>
+                   {submitError}
+                </p>
+              )}
             </div>
           </div>
           
-          {/* КНОПКИ */}
           <div className="wishlist-add-buttons">
-            <button type="submit" className="btn-primary">
-              Добавь в вишлист
+            <button 
+              type="submit" 
+              className="btn-primary" 
+              disabled={isSubmitting}
+              style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+            >
+              {isSubmitting ? 'Добавление...' : 'Добавь в вишлист'}
             </button>
             <button 
               type="button" 
               className="btn-secondary"
               onClick={handleGoBack}
+              disabled={isSubmitting}
             >
               Отмена
             </button>

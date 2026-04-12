@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+// Импортируем методы API для чата и назначений
 import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
+import { fetchAssignments } from '../api/gameApi.js';
 import './main.css';
 
 function SecretChat() {
@@ -12,17 +14,15 @@ function SecretChat() {
   
   const [message, setMessage] = useState('');
   
-  // Сообщения для двух чатов
+  // ← НОВОЕ: Состояния для данных с сервера
   const [messages, setMessages] = useState({
-    recipient: [  // Чат с тем, кому вы дарите
-      { id: 1, text: 'Привет! Это твой тайный Санта ', sender: 'them', time: '10:30' },
-      { id: 2, text: 'О, привет!', sender: 'me', time: '10:32' },
-      { id: 3, text: 'Уже выбрал(а) подарок?', sender: 'them', time: '10:35' },
-    ],
-    sender: [  // Чат с тем, кто дарит вам
-      { id: 1, text: 'Привет! Я твой тайный Санта ', sender: 'them', time: '11:00' },
-      { id: 2, text: 'Ура! А я уже добавил(а) всё в вишлист', sender: 'me', time: '11:02' },
-    ]
+    recipient: [],
+    sender: []
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [chatData, setChatData] = useState({
+    recipient: { title: 'Загрузка...', partner: '' },
+    sender: { title: 'Загрузка...', partner: '' }
   });
   
   const messagesEndRef = useRef(null);
@@ -36,34 +36,97 @@ function SecretChat() {
     scrollToBottom();
   }, [messages, activeTab]);
 
+  // ← НОВОЕ: Загрузка данных чата и имен при монтировании
   useEffect(() => {
-    if (!eventId?.trim()) {
-      navigate('/profile', { replace: true });
-      return;
-    }
-    if (activeTab !== 'recipient') return;
-    fetchRecipientChat(eventId).catch(() => {});
-  }, [activeTab, eventId, navigate]);
+    const loadData = async () => {
+      if (!eventId) return;
 
-  const handleSendMessage = (e) => {
+      try {
+        setIsLoading(true);
+
+        // 1. Получаем назначение, чтобы узнать имена
+        const assignment = await fetchAssignments(eventId);
+        
+        // Адаптируйте под структуру ответа API
+        const recipientName = assignment?.recipient?.name || 'Участник';
+        const senderName = assignment?.sender?.name || 'Тайный Санта';
+
+        // Обновляем заголовки
+        setChatData({
+          recipient: {
+            title: `Секретный чат с ${recipientName}`,
+            partner: recipientName
+          },
+          sender: {
+            title: `Секретный чат с ${senderName}`,
+            partner: senderName
+          }
+        });
+
+        // 2. Загружаем историю сообщений (только для вкладки recipient, так как API только для неё)
+        // Для вкладки sender логику нужно добавить, если есть соответствующий эндпоинт
+        try {
+          const chatHistory = await fetchRecipientChat(eventId);
+          
+          // Преобразуем ответ API в формат компонента
+          // Ожидаем массив: [{ id, text, senderId, createdAt, ... }]
+          const formattedMessages = Array.isArray(chatHistory) ? chatHistory.map(msg => ({
+            id: msg.id,
+            text: msg.text,
+            // Определяем, кто отправил: я или собеседник
+            sender: msg.isMine || msg.senderId === 'me' ? 'me' : 'them',
+            time: new Date(msg.createdAt || msg.time).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+          })) : [];
+
+          setMessages(prev => ({
+            ...prev,
+            recipient: formattedMessages
+          }));
+        } catch (chatErr) {
+          console.warn('Не удалось загрузить чат:', chatErr);
+        }
+
+      } catch (err) {
+        console.error('Ошибка загрузки данных чата:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, [eventId]);
+
+  // ← НОВОЕ: Отправка сообщения с сохранением на сервер
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (message.trim()) {
-      const text = message.trim();
-      const newMessage = {
-        id: Date.now(),
-        text,
-        sender: 'me',
-        time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
-      };
-      
-      // Добавляем сообщение в активный чат
-      setMessages(prev => ({
-        ...prev,
-        [activeTab]: [...prev[activeTab], newMessage]
-      }));
-      setMessage('');
-      if (activeTab === 'recipient' && eventId?.trim()) {
-        sendMessage(eventId, text).catch(() => {});
+    if (!message.trim() || !eventId) return;
+
+    const text = message.trim();
+    
+    // Оптимистичное обновление UI (сразу показываем сообщение)
+    const tempId = Date.now();
+    const newMessage = {
+      id: tempId,
+      text,
+      sender: 'me',
+      time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+    };
+    
+    setMessages(prev => ({
+      ...prev,
+      [activeTab]: [...prev[activeTab], newMessage]
+    }));
+    setMessage('');
+
+    // Отправка на сервер (только для вкладки recipient)
+    if (activeTab === 'recipient') {
+      try {
+        await sendMessage(eventId, text);
+        // Здесь можно заменить tempId на реальный ID из ответа сервера, если нужно
+      } catch (error) {
+        console.error('Ошибка отправки сообщения:', error);
+        alert('Не удалось отправить сообщение. Попробуйте позже.');
+        // Можно удалить сообщение из списка при ошибке
       }
     }
   };
@@ -72,22 +135,24 @@ function SecretChat() {
     navigate(-1);
   };
 
-  // Данные для отображения в заголовке
-  const chatData = {
-    recipient: {
-      title: 'Секретный чат с Имя',
-      partner: 'Имя'
-    },
-    sender: {
-      title: 'Секретный чат с Сантой',
-      partner: 'Тайный отправитель'
-    }
-  };
+  // Рендер состояния загрузки
+  if (isLoading) {
+    return (
+      <div className="chat-page">
+        <div className="chat-container">
+          <div style={{ textAlign: 'center', padding: '50px', width: '100%' }}>
+            <i className="ti ti-loader" style={{ fontSize: '48px', color: '#44E858', animation: 'spin 1s linear infinite' }}></i>
+            <p style={{ marginTop: '20px', color: '#757575' }}>Загрузка чата...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="chat-page">
       <div className="chat-container">
-      <button className="close" onClick={() => navigate(-1)}>
+        <button className="close" onClick={handleGoBack}>
            <i className="ti ti-x" style={{ fontSize: '24px', color: '#000000' }}></i>
         </button>
         
@@ -107,41 +172,47 @@ function SecretChat() {
         </div>
 
         <div className="chat-header">
+          {/* ← Динамический заголовок */}
           <h1 className="chat-title">{chatData[activeTab].title}</h1>
-          <h2 className="chat-team">Команда "КОМАНДА1"</h2>
+          <h2 className="chat-team">Команда</h2>
           <p className="chat-partner">Собеседник: {chatData[activeTab].partner}</p>
         </div>
 
         {/* Область сообщений */}
         <div className="chat-messages">
-          {messages[activeTab].map((msg) => (
-            <div 
-              key={msg.id} 
-              className={`message ${msg.sender === 'me' ? 'message-me' : 'message-them'}`}
-            >
-              {msg.sender === 'them' && (
-                <div className="message-avatar">
-                  {activeTab === 'recipient' ? (
-                    <i className="ti ti-gift" style={{ fontSize: '24px', color: '#44E858' }}></i>
-                  ) : (
-                    <i className="ti ti-christmas-tree" style={{ fontSize: '24px', color: '#44E858' }}></i>
-                  )}
-                </div>
-              )}
-              
-              <div className="message-bubble">
-                <p className="message-text">{msg.text}</p>
-                <span className="message-time">{msg.time}</span>
-              </div>
-
-              {/* Аватарка пользователя */}
-              {msg.sender === 'me' && (
-                <div className="message-avatar me">
-                  <i className="ti ti-user"></i> {/* ← Цвет задаётся через CSS */}
-                </div>
-              )}
+          {messages[activeTab].length === 0 ? (
+            <div style={{ textAlign: 'center', color: '#757575', marginTop: '40px' }}>
+              Пока нет сообщений. Напишите первым!
             </div>
-          ))}
+          ) : (
+            messages[activeTab].map((msg) => (
+              <div 
+                key={msg.id} 
+                className={`message ${msg.sender === 'me' ? 'message-me' : 'message-them'}`}
+              >
+                {msg.sender === 'them' && (
+                  <div className="message-avatar">
+                    {activeTab === 'recipient' ? (
+                      <i className="ti ti-gift" style={{ fontSize: '24px', color: '#44E858' }}></i>
+                    ) : (
+                      <i className="ti ti-christmas-tree" style={{ fontSize: '24px', color: '#44E858' }}></i>
+                    )}
+                  </div>
+                )}
+                
+                <div className="message-bubble">
+                  <p className="message-text">{msg.text}</p>
+                  <span className="message-time">{msg.time}</span>
+                </div>
+
+                {msg.sender === 'me' && (
+                  <div className="message-avatar me">
+                    <i className="ti ti-user"></i>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
           <div ref={messagesEndRef} />
         </div>
 
