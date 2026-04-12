@@ -5,7 +5,7 @@ import {
   fetchMyWishlist, 
   addWishlistItem, 
   deleteWishlistItem 
-} from '../api/wishlistApi.jsx'; // Убедитесь, что путь правильный
+} from '/src/api/gameApi.jsx'; 
 import './main.css';
 
 function Wishlist() {

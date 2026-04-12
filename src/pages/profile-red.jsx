@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Импортируем методы API
-import { fetchMe, updateMe } from '../api/gameApi.js';
+import { fetchMe, updateMe } from '/src/api/gameApi.jsx';
 import './main.css';
 
 // === ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ===

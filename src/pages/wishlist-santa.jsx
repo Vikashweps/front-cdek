@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // Импортируем нужный метод
-import { fetchParticipantWishlist } from '../api/gameApi.js'; // Проверьте путь к файлу
+import { fetchParticipantWishlist } from '/src/api/gameApi.jsx'; // Проверьте путь к файлу
 import './main.css';
 
 function Wishlist_Santa({ participantName: propName }) {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Импортируем метод создания игры
-import { createGame } from '../api/gameApi.js';
+import { createGame } from '/src/api/gameApi.jsx';
 import './main.css';
 
 // === ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ===

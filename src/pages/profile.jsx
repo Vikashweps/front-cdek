@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Импортируем нужные методы API
-import { fetchMe, fetchUserGames, joinGameByLink, logout as apiLogout } from '../api/gameApi.js';
+import { fetchMe, fetchUserGames, joinGameByLink, logout as apiLogout } from '/src/api/gameApi.jsx';
 import './main.css';
 
 function Profile() {

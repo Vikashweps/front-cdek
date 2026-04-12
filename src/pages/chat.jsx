@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // Импортируем методы API для чата и назначений
-import { fetchRecipientChat, sendMessage } from '../api/chatApi.jsx';
-import { fetchAssignments } from '../api/gameApi.js';
+import { fetchRecipientChat, sendMessage } from '/src/api/gameApi.jsx';
+import { fetchAssignments } from '/src/api/gameApi.jsx';
 import './main.css';
 
 function SecretChat() {

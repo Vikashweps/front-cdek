@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // Импортируем нужные методы API
-import { fetchGameById, fetchParticipants, fetchAssignments } from '../api/gameApi.js';
+import { fetchGameById, fetchParticipants, fetchAssignments } from '/src/api/gameApi.jsx';
 import './main.css';
 
 function Game() {

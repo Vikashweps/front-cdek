@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Импортируем функцию для получения данных пользователя
-import { fetchMe, fetchUserGames } from '../api/gameApi.js';
+import { fetchMe, fetchUserGames } from '/src/api/gameApi.jsx';
 import './main.css';
 
 function Registration_end() {

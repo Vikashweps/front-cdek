@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'; 
 import { useNavigate, useLocation } from 'react-router-dom';
 // Импортируем функции аутентификации, включая GitHub
-import { sendOtpCode, verifyOtpCode, loginWithGithub } from '../api/authApi'; 
+import { sendOtpCode, verifyOtpCode, loginWithGithub } from '/src/api/gameApi.jsx'; 
 import './main.css';
 
 // ... (Функция validateName остается без изменений) ...

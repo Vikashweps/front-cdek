@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // Импортируем нужные методы из вашего API
-import { fetchMyWishlist, addWishlistItem } from '../api/gameApi.js'; 
+import { fetchMyWishlist, addWishlistItem } from '/src/api/gameApi.jsx'; 
 import './main.css';
 
 // === ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ===

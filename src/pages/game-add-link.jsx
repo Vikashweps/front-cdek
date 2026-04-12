@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 // Импортируем нужные методы API
-import { generateInviteLink, sendInviteEmail } from '../api/gameApi.js';
+import { generateInviteLink, sendInviteEmail } from '/src/api/gameApi.jsx';
 import './main.css';
 
 function Game_add_link() {

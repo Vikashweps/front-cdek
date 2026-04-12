@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // Импортируем нужные методы API
-import { fetchGameById, updateGame, fetchParticipants, removeParticipant, generateInviteLink } from '../api/gameApi.js';
+import { fetchGameById, updateGame, fetchParticipants, removeParticipant, generateInviteLink } from '/src/api/gameApi.jsx';
 import './main.css';
 
 // === ФУНКЦИИ ВАЛИДАЦИИ (без изменений) ===
