@@ -105,7 +105,6 @@ front-cdek/
 
 ### Предварительные требования
 
-- [Node.js](https://nodejs.org/) версии 18.0 или выше
 - npm или yarn
 
   
